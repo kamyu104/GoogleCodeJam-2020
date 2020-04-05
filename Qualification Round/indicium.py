@@ -90,10 +90,7 @@ def indicium():
     N, K = map(int, raw_input().strip().split())
     if K == N+1 or K == N**2-1 or (N == 3 and K in (5, 7)):
         return "IMPOSSIBLE"
-    result = [[0]*N for _ in xrange(N)]
-    for i in xrange(N):
-        result[i][i] = 1
-    remain = K-N
+    result, remain = [[int(i == j) for j in xrange(N)] for i in xrange(N)], K-N
     for i in reversed(xrange(N)):
         d = min(remain, N-1)
         result[i][i] += d
