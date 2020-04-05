@@ -102,7 +102,7 @@ def indicium():
         result[0][0] += 1
         result[1][1] -= 1
     count, numbers = Counter(result[i][i] for i in xrange(N)), range(1, N+1)
-    numbers.sort(key=lambda x: count[x], reverse=True) 
+    numbers.sort(key=lambda x: N-count[x]) 
     for d in numbers:
         E = defaultdict(list)
         for i in xrange(N):
