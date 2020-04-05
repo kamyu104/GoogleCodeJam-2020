@@ -95,10 +95,10 @@ def indicium():
         d = min(remain, N-1)
         result[i][i] += d
         remain -= d
-    if 1 == result[-2][-2] < result[-1][-1]:
+    if 1 == result[-2][-2] < result[-1][-1]:  # make sure a, b, c form
         result[-2][-2] += 1
         result[-1][-1] -= 1
-    elif result[0][0] < result[1][1] == N:
+    elif result[0][0] < result[1][1] == N:  # make sure a, b, c form
         result[0][0] += 1
         result[1][1] -= 1
     count, numbers = Counter(result[i][i] for i in xrange(N)), range(1, N+1)
