@@ -109,7 +109,7 @@ def indicium():
             for j in xrange(N):
                  if not result[i][j] and result[i][i] != d and result[j][j] != d:
                        E[j].append(i)
-        M, _, _ = bipartiteMatch(E)  # make sure Latin square properties
+        M, _, _ = bipartiteMatch(E)  # make sure Latin square properties, Time: O(N^2 * sqrt(N))
         for i in xrange(N):
             if i in M:
                 result[i][M[i]] = d
