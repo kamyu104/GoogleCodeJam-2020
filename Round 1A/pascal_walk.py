@@ -12,13 +12,13 @@ def pattern_matching():
     rows = min(N, MIN_R)
     N -= rows
     lookup = set()
-    row_sum = 2**(rows-1)
-    for r in reversed(xrange(1, rows+1)):
-        if N >= row_sum-1:
-            N -= row_sum-1
+    r = 1
+    while N:
+        if N%2:
             lookup.add(r)
-        row_sum //= 2
-    rows += N
+        r += 1
+        N //= 2
+    rows += len(lookup)
     result, side = [], 1
     for r in xrange(1, rows+1):
         if r not in lookup:
