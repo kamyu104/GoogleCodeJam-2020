@@ -32,7 +32,7 @@ def pascal_walk():
         else:
             result.extend((r, c) for c in reversed(xrange(1, r+1)))
         side ^= 1
-    return "\n".join( map(lambda x: "{} {}".format(x[0], x[1]), result))
+    return "\n".join( map(lambda x: "{} {}".format(*x), result))
 
 MAX_N = 10**9
 MIN_R = ((MAX_N+1)-1).bit_length()  # 2^R-1 >= MAX_N, R >= log2(MAX_N+1)
