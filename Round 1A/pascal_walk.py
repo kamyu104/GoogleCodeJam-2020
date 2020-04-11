@@ -13,7 +13,7 @@ def pattern_matching():
     N -= rows
     lookup = set()
     r = 1
-    while N:
+    while N:  # walk full row if it's bit 1 of N in binary representation
         if N%2:
             lookup.add(r)
         r += 1
