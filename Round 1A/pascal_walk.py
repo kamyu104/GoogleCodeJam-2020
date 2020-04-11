@@ -7,7 +7,7 @@
 # Space: O(1)
 #
 
-def pattern_matching():
+def pascal_walk():
     N = input()
     rows = min(N, MIN_R)  # MIN_R = 30
     N -= rows
@@ -37,4 +37,4 @@ def pattern_matching():
 MAX_N = 10**9
 MIN_R = ((MAX_N+1)-1).bit_length()  # 2^R-1 >= MAX_N, R >= log2(MAX_N+1)
 for case in xrange(input()):
-    print 'Case #%d: \n%s' % (case+1, pattern_matching())
+    print 'Case #%d: \n%s' % (case+1, pascal_walk())
