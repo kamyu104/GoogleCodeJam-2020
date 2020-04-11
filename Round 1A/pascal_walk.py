@@ -9,7 +9,7 @@
 
 def pattern_matching():
     N = input()
-    rows = min(N, MIN_R)
+    rows = min(N, MIN_R)  # MIN_R = 30
     N -= rows
     lookup = set()
     r = 1
