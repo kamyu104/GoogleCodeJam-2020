@@ -31,7 +31,7 @@ def pattern_matching():
             result.extend((r, c) for c in xrange(1, r+1))
         else:
             result.extend((r, c) for c in reversed(xrange(1, r+1)))
-        side ^= 1        
+        side ^= 1
     return "\n".join( map(lambda x: "{} {}".format(x[0], x[1]), result))
 
 MAX_N = 10**9
