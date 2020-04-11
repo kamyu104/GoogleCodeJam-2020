@@ -13,7 +13,7 @@ def pascal_walk():
     N -= rows
     lookup = set()
     r = 1
-    while N:  # walk full row if it's one of bit 1 in N's binary representation
+    while N:  # walk full row if it's one of bit 1s in N's binary representation
         if N%2:
             lookup.add(r)
         r += 1
