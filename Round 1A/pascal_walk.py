@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd74/00000000002b1353
 #
 # Time:  O(logN^2)
-# Space: O(1)
+# Space: O(logN)
 #
 
 def pascal_walk():

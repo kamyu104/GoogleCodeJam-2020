@@ -19,5 +19,5 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Pattern Matching](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd74/00000000002b3034)| [Python](./Round%201A/pattern_matching.py)| _O(N * P)_ | _O(P)_ | Easy | | String |
-|B| [Pascal Walk](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd74/00000000002b1353)| [Python](./Round%201A/pascal_walk.py) | _O(logN^2)_ | _O(1)_ | Medium | | Math, Greedy, Bit Manipulation |
+|B| [Pascal Walk](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd74/00000000002b1353)| [Python](./Round%201A/pascal_walk.py) | _O(logN^2)_ | _O(logN)_ | Medium | | Math, Greedy, Bit Manipulation |
 |C| [Square Dance](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd74/00000000002b1355)| [Python](./Round%201A/square_dance.py)| _O(R * C)_ | _O(R * C)_ | Hard | | Simulation, BFS, Linked List |
