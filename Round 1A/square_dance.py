@@ -33,13 +33,13 @@ def square_dance():
     while q:
         to_remove, new_q = [], []
         for r, c in q:
-            neightbor_total, count = 0, 0
+            neighbor_total, count = 0, 0
             for nr, nc in neighbors(up, down, left, right, r, c):
                 if not (0 <= nr < R and 0 <= nc < C):
                     continue
-                neightbor_total += S[nr][nc]
+                neighbor_total += S[nr][nc]
                 count += 1
-            if neightbor_total > S[r][c]*count:
+            if neighbor_total > S[r][c]*count:
                 to_remove.append((r, c))
         if not to_remove:
             break
