@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Round 1B - Problem A. Expogo
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b62
 #
-# Time:  O(logX + logY)
+# Time:  O(log|X| + log|Y|)
 # Space: O(1)
 #
 
