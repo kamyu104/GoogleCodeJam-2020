@@ -11,11 +11,10 @@ def expogo():
     X, Y = map(int, raw_input().strip().split())
     if (abs(X)+abs(Y))%2 == 0:
         return "IMPOSSIBLE"
-    N, total = 1, 0
+    N, total = 0, 0
     while not (total >= abs(X)+abs(Y)):
+        N = 1 if not N else N*2
         total += N
-        N *= 2
-    N //= 2
     result = []
     while N:
         if abs(X) > abs(Y):
