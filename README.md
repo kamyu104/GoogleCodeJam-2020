@@ -26,4 +26,4 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 ## Round 1B
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
-|A| [Expogo](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b62)| [Python](./Round%201B/expogo.py) [Python](./Round%201B/expogo2.py) | _O(log(\|X\| + \|Y\|)_ | _O(1)_ | Medium | variant of [Pogo](https://code.google.com/codejam/contest/2437488/dashboard#s=p1) | Greedy
+|A| [Expogo](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b62)| [Python](./Round%201B/expogo.py) [Python](./Round%201B/expogo2.py) | _O(log(\|X\| + \|Y\|))_ | _O(1)_ | Medium | variant of [Pogo](https://code.google.com/codejam/contest/2437488/dashboard#s=p1) | Greedy
