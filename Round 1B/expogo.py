@@ -17,26 +17,23 @@ def expogo():
         if x%2:
             if ((x-1)//2+y//2)%2:
                 x, y = (x-1)//2, y//2
-                result.append(E)
+                result.append('E' if X > 0 else 'W')
             else:
                 x, y = (x+1)//2, y//2
-                result.append(W)
+                result.append('W' if X > 0 else 'E')
         else:
             if (x//2+(y-1)//2)%2:
                 x, y = x//2, (y-1)//2
-                result.append(N)
+                result.append('N' if Y > 0 else 'S')
             else:
                 x, y = x//2, (y+1)//2
-                result.append(S)
-    result.append(E if x else N)
-    lookup = ['E', 'W', 'N', 'S']
-    if X < 0:
-        lookup[E], lookup[W] = lookup[W], lookup[E]
-    if Y < 0:
-        lookup[N], lookup[S] = lookup[S], lookup[N]
-    return "".join(lookup[d] for d in result)
+                result.append('S' if Y > 0 else 'N')
+    if x:
+        result.append('E' if X > 0 else 'W')
+    else:
+        result.append('N' if Y > 0 else 'S')
+    return "".join(result)
 
-E, W, N, S = range(4)
 TARGET = set([(1, 0), (0, 1)])
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, expogo())
