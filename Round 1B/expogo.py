@@ -12,11 +12,6 @@ def expogo():
     x, y = abs(X), abs(Y)
     if (x+y)%2 == 0:
         return "IMPOSSIBLE"
-    lookup = ['E', 'W', 'N', 'S']
-    if X < 0:
-        lookup[E], lookup[W] = lookup[W], lookup[E]
-    if Y < 0:
-        lookup[N], lookup[S] = lookup[S], lookup[N]
     result = []
     while (x, y) not in TARGET:
         if x%2:
@@ -34,6 +29,11 @@ def expogo():
                 x, y = x//2, (y+1)//2
                 result.append(S)
     result.append(E if x else N)
+    lookup = ['E', 'W', 'N', 'S']
+    if X < 0:
+        lookup[E], lookup[W] = lookup[W], lookup[E]
+    if Y < 0:
+        lookup[N], lookup[S] = lookup[S], lookup[N]
     return "".join(lookup[d] for d in result)
 
 E, W, N, S = range(4)
