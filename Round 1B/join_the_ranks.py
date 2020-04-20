@@ -11,19 +11,19 @@ def find_len_A(deck):
     for i in xrange(1, len(deck)):
         if deck[i] != deck[0]:
             break
-    for right in xrange(i+1, len(deck)):
-        if deck[right] != deck[i]:
+    for j in xrange(i+1, len(deck)):
+        if deck[j] != deck[i]:
             break
-    return right
+    return j
 
-def find_len_B(deck, len_A):
-    for i in xrange(len_A, len(deck)):
+def find_len_B(deck, start):
+    for i in xrange(start, len(deck)):
         if deck[i] == deck[0]:
             break
-    for right in xrange(i+1, len(deck)):
-        if deck[right] != deck[i]:
+    for j in xrange(i+1, len(deck)):
+        if deck[j] != deck[i]:
             break
-    return right-len_A
+    return j-start
 
 def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
