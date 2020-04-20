@@ -28,14 +28,14 @@ def find_len_B(deck, start):
 def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
     result, deck = [], range(1, R+1)*S
-    for _ in xrange((R*S-R)//2):
+    for _ in xrange((R*S-R)//2):  # each step, reduce adjacent cards of different ranks from (R*S-1) to (R-1) by 2
         len_A = find_len_A(deck)
         len_B = find_len_B(deck, len_A)
-        assert(len_A+len_B < len(deck))
+        assert(len_A+len_B < len(deck))  # the last card won't be exchanged
         result.append((len_A, len_B))
         deck[:] = deck[len_A:len_A+len_B] + deck[:len_A] + deck[len_A+len_B:]
-    if (R*S-R)%2:
-        result.append((S-1, len(deck)-(S-1)))
+    if (R*S-R)%2:  # if odd, reduce adjacent cards of different ranks from R to (R-1) by 1
+        result.append((S-1, len(deck)-(S-1)))  # the last step, the ranks of top S-1 cards must be all R, and others are sorted
         deck[:] = deck[S-1:] + deck[:S-1]
     return "{}\n{}".format(len(result), "\n".join(map(lambda x: "{} {}".format(*x), result)))
 
