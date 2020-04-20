@@ -10,7 +10,7 @@
 def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
     result, groups = [], [1]*(R*S)
-    for l in xrange(R+1, R*S, 2):  # each step, decrease the number of adjacent cards of different ranks from (R*S-1) to (R-1) by 2
+    for l in xrange(R+1, R*S, 2):  # each step, decrease the number of adjacent cards of different ranks from (R*S-1) to (R-1) by 2, and sort extra 2 cards without the last one
         len_A = groups[0]+groups[1]
         result.append((len_A, l-len_A))
         for i in xrange(len(groups)):
