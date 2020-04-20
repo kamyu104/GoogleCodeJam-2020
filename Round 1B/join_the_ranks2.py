@@ -9,21 +9,14 @@
 
 def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
-    result, groups = [], [1]*(R*S)
-    groups.reverse()  # treat groups as stack
+    result, groups = [], [1]*(R*S)  # treat groups as stack
     for l in xrange(R+1, R*S, 2):  # each step, decrease the number of adjacent cards of different ranks from (R*S-1) to (R-1) by 2, and sort extra 2 cards without the last one
-        new_groups = []
-        while len(new_groups) < R+2:  # Time: O(R)
-            new_groups.append(groups.pop())
-        result.append((new_groups[0]+new_groups[1], l-(new_groups[0]+new_groups[1])))
-        new_groups[:] = new_groups[2:R] + [new_groups[R]+new_groups[0]] + [new_groups[1]+new_groups[R+1]]
-        while new_groups:
-            groups.append(new_groups.pop())
-    groups.reverse()  # restore groups
+        result.append((groups[-1]+groups[-2], l-(groups[-1]+groups[-2])))
+        groups[-R-2:] = [groups[-R-2]+groups[-2]] + [groups[-1] + groups[-R-1]] + groups[-R:-2]  # Time: O(R)
     if (R*S-R)%2:  # if odd, decrease the number of adjacent cards of different ranks from R to (R-1) by 1
-        assert(groups[0] == S-1 and groups[-1] == 1)
-        result.append((groups[0], R*S-groups[0]))  # in the last step, the ranks of the top S-1 cards and the last one must be all R, and the others are sorted
-        groups[:] = groups[1:-1] + [groups[-1]+groups[0]]
+        assert(groups[-1] == S-1 and groups[0] == 1)
+        result.append((groups[-1], R*S-groups[-1]))  # in the last step, the ranks of the top S-1 cards and the last one must be all R, and the others are sorted
+        groups[:] = [groups[-1]+groups[0]] + groups[1:-1]
     assert(len(groups) == R and all(x == groups[0] for x in groups))
     return "{}\n{}".format(len(result), "\n".join(map(lambda x: "{} {}".format(*x), result)))
 
