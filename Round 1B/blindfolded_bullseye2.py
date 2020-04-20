@@ -33,7 +33,7 @@ def query(x, y):
     return r == "HIT"
 
 def blindfolded_bullseye():
-    for x0, y0 in product(xrange(-M, M+1, A),  xrange(-M, M+1, A)):
+    for x0, y0 in product(xrange(-M, M+1, A), xrange(-M, M+1, A)):
         if query(x0, y0):  # at most 25 queries
             break
     left_x = binary_search(-M, x0, lambda x: query(x, y0), True)
