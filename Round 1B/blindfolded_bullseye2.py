@@ -34,7 +34,7 @@ def query(x, y):
 
 def blindfolded_bullseye():
     for x0, y0 in [(-A, 0), (A, 0), (0, -A), (0, A)]:
-        if query(x0, y0):  # at most 4 queries, which covers all possible centers of 3 test cases
+        if query(x0, y0):  # at most 4 queries, which cover all possible centers of 3 test cases
             break
     left_x = binary_search(-M, x0, lambda x: query(x, y0), True)
     right_x = binary_search(x0, M, lambda x: query(x, y0), False)
