@@ -37,7 +37,6 @@ def blindfolded_bullseye():
         x0, y0 = randint(-M, M), randint(-M, M)
         if query(x0, y0):  # hit rate = pi*(M/2)^2 / (2*M)^2 = pi/16 for test set 3
             break
-
     left_x = binary_search(-M, x0, lambda x: query(x, y0), True)
     right_x = binary_search(x0, M, lambda x: query(x, y0), False)
     left_y = binary_search(-M, y0, lambda y: query(x0, y), True)
