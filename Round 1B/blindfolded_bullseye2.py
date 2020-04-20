@@ -34,7 +34,7 @@ def query(x, y):
 
 def blindfolded_bullseye():
     for x0, y0 in product(xrange(-M, M+1, A), xrange(-M, M+1, A)):
-        if (x0, y0) in [(-M, -M), (M, -M), (-M, M), (M, M)]:
+        if (x0, y0) in IGNORES:
             continue
         if query(x0, y0):  # at most 21 queries
             break
@@ -46,6 +46,7 @@ def blindfolded_bullseye():
     exit()  # should not reach here
 
 M = 10**9
+IGNORES = set([(-M, -M), (M, -M), (-M, M), (M, M)])
 T, A, B = map(int, raw_input().strip().split())
 for case in xrange(T):
     try:
