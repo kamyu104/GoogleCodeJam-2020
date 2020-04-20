@@ -12,7 +12,6 @@
 
 from sys import stdout
 from itertools import product
-from random import randint
 
 def binary_search(left, right, check, is_left):
     while left <= right:
