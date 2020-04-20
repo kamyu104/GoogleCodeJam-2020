@@ -27,10 +27,7 @@ def find_len_B(deck, start):
 
 def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
-    deck = []
-    for _ in xrange(S):
-        deck.extend(i for i in xrange(1, R+1))
-    result = []
+    result, deck = [], range(1, R+1)*S
     for _ in xrange((R*S-R)//2):
         len_A = find_len_A(deck)
         len_B = find_len_B(deck, len_A)
