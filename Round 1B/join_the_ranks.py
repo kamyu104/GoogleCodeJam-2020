@@ -34,6 +34,7 @@ def join_the_ranks():
     for _ in xrange((R*S-R)//2):
         len_A = find_len_A(deck)
         len_B = find_len_B(deck, len_A)
+        assert(len_A+len_B != len(deck))
         result.append((len_A, len_B))
         deck[:] = deck[len_A:len_A+len_B] + deck[:len_A] + deck[len_A+len_B:]
     if (R*S-R)%2:
