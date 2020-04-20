@@ -3,8 +3,8 @@
 # Google Code Jam 2020 Round 1B - Problem B. Blindfolded Bullseye
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b63
 #
-# Time:  O((2*10^9//A+1)^2-2^2 + 4 * ceil(log(2*10^9 + 1)/log2))
-#        = O(21 + 4 * 31) = O(145) for all cases of test set 3
+# Time:  O(4 + 4 * ceil(log(2*10^9 + 1)/log2))
+#        = O(4 + 4 * 31) = O(128) for all cases
 # Space: O(1)
 #
 # Usage: python interactive_runner.py python local_testing_tool.py 2 -- python blindfolded_bullseye2.py
@@ -33,10 +33,8 @@ def query(x, y):
     return r == "HIT"
 
 def blindfolded_bullseye():
-    for x0, y0 in product(xrange(-M, M+1, A), xrange(-M, M+1, A)):
-        if (x0, y0) in IGNORES:
-            continue
-        if query(x0, y0):  # at most 21 queries
+    for x0, y0 in [(-A, 0), (A, 0), (0, -A), (0, A)]:
+        if query(x0, y0):  # at most 4 queries, which covers all possible centers of 3 test cases
             break
     left_x = binary_search(-M, x0, lambda x: query(x, y0), True)
     right_x = binary_search(x0, M, lambda x: query(x, y0), False)
@@ -46,7 +44,6 @@ def blindfolded_bullseye():
     exit()  # should not reach here
 
 M = 10**9
-IGNORES = set([(-M, -M), (M, -M), (-M, M), (M, M)])
 T, A, B = map(int, raw_input().strip().split())
 for case in xrange(T):
     try:
