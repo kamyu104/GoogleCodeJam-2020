@@ -44,7 +44,7 @@ def blindfolded_bullseye():
     left_y, _ = binary_search(-B, y0, lambda y: query(x0, y))
     _, right_y = binary_search(y0, B, lambda y: not query(x0, y))
     query((left_x+right_x)//2, (left_y+right_y)//2)
-    exit()
+    exit()  # should not reach here
 
 B = 10**9
 T, A, B = map(int, raw_input().strip().split())
