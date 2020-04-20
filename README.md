@@ -1,4 +1,4 @@
-# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-9%20%2F%2011-ff69b4.svg)
+# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-10%20%2F%2011-ff69b4.svg)
 
 Python solutions of Google Code Jam 2020. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds).
 
@@ -27,3 +27,4 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Expogo](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b62)| [Python](./Round%201B/expogo.py) [Python](./Round%201B/expogo2.py) | _O(log(\|X\| + \|Y\|))_ | _O(1)_ | Medium | variant of [Pogo](https://code.google.com/codejam/contest/2437488/dashboard#s=p1) | Greedy
+|B| [Blindfolded Bullseye](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b63)| [Python](./Round%201B/blindfolded_bullseye.py) | _O(156)_ | _O(1)_ | Medium || Binary Search, Probability
