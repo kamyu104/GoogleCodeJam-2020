@@ -13,11 +13,7 @@ def join_the_ranks():
     for l in xrange(R+1, R*S, 2):  # each step, decrease the number of adjacent cards of different ranks from (R*S-1) to (R-1) by 2, and sort extra 2 cards without the last one
         len_A = groups[0]+groups[1]
         result.append((len_A, l-len_A))
-        for i in xrange(len(groups)):
-            l -= groups[i]
-            if not l:
-                break
-        groups[:] = groups[2:i] + [groups[i]+groups[0]] + [groups[1]+groups[i+1]] + groups[i+2:]
+        groups[:] = groups[2:R] + [groups[R]+groups[0]] + [groups[1]+groups[R+1]] + groups[R+2:]
     if (R*S-R)%2:  # if odd, decrease the number of adjacent cards of different ranks from R to (R-1) by 1
         assert(groups[0] == S-1 and groups[-1] == 1)
         result.append((groups[0], R*S-groups[0]))  # in the last step, the ranks of the top S-1 cards and the last one must be all R, and the others are sorted
