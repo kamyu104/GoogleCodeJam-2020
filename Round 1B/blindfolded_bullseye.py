@@ -29,7 +29,7 @@ def query(x, y):
     if r == "WRONG":  # error
         exit()
     if r == "CENTER":
-        raise "CENTER"
+        raise
     return r == "HIT"
 
 def blindfolded_bullseye():
