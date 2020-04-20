@@ -35,7 +35,7 @@ def join_the_ranks():
         result.append((len_A, len_B))
         deck[:] = deck[len_A:len_A+len_B] + deck[:len_A] + deck[len_A+len_B:]
     if (R*S-R)%2:  # if odd, decrease the number of adjacent cards of different ranks from R to (R-1) by 1
-        result.append((S-1, len(deck)-(S-1)))  # the last step, the ranks of the top S-1 cards and the last one must be all R, and the others are sorted
+        result.append((S-1, len(deck)-(S-1)))  # in the last step, the ranks of the top S-1 cards and the last one must be all R, and the others are sorted
         deck[:] = deck[S-1:] + deck[:S-1]
     return "{}\n{}".format(len(result), "\n".join(map(lambda x: "{} {}".format(*x), result)))
 
