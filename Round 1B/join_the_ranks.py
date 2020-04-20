@@ -7,20 +7,11 @@
 # Space: O(R * S)
 #
 
-def find_len_A(deck):
-    for i in xrange(1, len(deck)):
-        if deck[i] != deck[0]:
-            break
-    for j in xrange(i+1, len(deck)):
-        if deck[j] != deck[i]:
-            break
-    return j
-
-def find_len_B(deck, start):
+def find_len_of_target(deck, start, check):
     for i in xrange(start, len(deck)):
-        if deck[i] == deck[0]:
+        if check(deck[i]):
             break
-    for j in xrange(i+1, len(deck)):
+    for j in xrange(i, len(deck)):
         if deck[j] != deck[i]:
             break
     return j-start
@@ -29,8 +20,8 @@ def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
     result, deck = [], range(1, R+1)*S
     for _ in xrange((R*S-R)//2):  # each step, decrease the number of adjacent cards of different ranks from (R*S-1) to (R-1) by 2
-        len_A = find_len_A(deck)
-        len_B = find_len_B(deck, len_A)
+        len_A = find_len_of_target(deck, 0, lambda x: x != deck[0])
+        len_B = find_len_of_target(deck, len_A, lambda x: x == deck[0])
         assert(len_A+len_B < len(deck))  # the rank of the last card is always R and won't be exchanged in these steps
         result.append((len_A, len_B))
         deck[:] = deck[len_A:len_A+len_B] + deck[:len_A] + deck[len_A+len_B:]
