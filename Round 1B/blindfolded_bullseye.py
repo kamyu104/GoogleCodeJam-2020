@@ -34,18 +34,18 @@ def query(x, y):
 
 def blindfolded_bullseye():
     while True:
-        x0, y0 = randint(-B, B), randint(-B, B)
+        x0, y0 = randint(-M, M), randint(-M, M)
         if query(x0, y0):
             break
 
-    left_x, _ = binary_search(-B, x0, lambda x: query(x, y0))
-    _, right_x = binary_search(x0, B, lambda x: not query(x, y0))
-    left_y, _ = binary_search(-B, y0, lambda y: query(x0, y))
-    _, right_y = binary_search(y0, B, lambda y: not query(x0, y))
+    left_x, _ = binary_search(-M, x0, lambda x: query(x, y0))
+    _, right_x = binary_search(x0, M, lambda x: not query(x, y0))
+    left_y, _ = binary_search(-M, y0, lambda y: query(x0, y))
+    _, right_y = binary_search(y0, M, lambda y: not query(x0, y))
     query((left_x+right_x)//2, (left_y+right_y)//2)
     exit()  # should not reach here
 
-B = 10**9
+M = 10**9
 T, A, B = map(int, raw_input().strip().split())
 for case in xrange(T):
     try:
