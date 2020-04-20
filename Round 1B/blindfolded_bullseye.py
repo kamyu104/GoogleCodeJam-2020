@@ -13,14 +13,14 @@
 from sys import stdout
 from random import randint
 
-def binary_search(left, right, check):
+def binary_search(left, right, check, is_left):
     while left <= right:
         mid = left + (right-left)//2
-        if check(mid):
+        if check(mid) == is_left:
             right = mid-1
         else:
             left = mid+1
-    return left, right
+    return left if is_left else right
 
 def query(x, y):
     print x, y
@@ -38,10 +38,10 @@ def blindfolded_bullseye():
         if query(x0, y0):  # hit rate = pi*(M/2)^2 / (2*M)^2 = pi/16 for test set 3
             break
 
-    left_x, _ = binary_search(-M, x0, lambda x: query(x, y0))
-    _, right_x = binary_search(x0, M, lambda x: not query(x, y0))
-    left_y, _ = binary_search(-M, y0, lambda y: query(x0, y))
-    _, right_y = binary_search(y0, M, lambda y: not query(x0, y))
+    left_x = binary_search(-M, x0, lambda x: query(x, y0), True)
+    right_x = binary_search(x0, M, lambda x: query(x, y0), False)
+    left_y = binary_search(-M, y0, lambda y: query(x0, y), True)
+    right_y = binary_search(y0, M, lambda y: query(x0, y), False)
     query((left_x+right_x)//2, (left_y+right_y)//2)
     exit()  # should not reach here
 
