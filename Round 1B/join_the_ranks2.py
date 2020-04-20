@@ -19,6 +19,7 @@ def join_the_ranks():
                 break
         groups[:] = groups[2:i] + [groups[i]+groups[0]] + [groups[1]+groups[i+1]] + groups[i+2:]
     if (R*S-R)%2:  # if odd, decrease the number of adjacent cards of different ranks from R to (R-1) by 1
+        assert(groups[0] == S-1 and groups[-1] == 1)
         result.append((groups[0], R*S-groups[0]))  # in the last step, the ranks of the top S-1 cards and the last one must be all R, and the others are sorted
         groups[:] = groups[1:-1] + [groups[-1]+groups[0]]
     assert(len(groups) == R and all(x == groups[0] for x in groups))
