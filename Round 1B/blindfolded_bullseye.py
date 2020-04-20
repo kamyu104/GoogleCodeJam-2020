@@ -34,8 +34,7 @@ def query(x, y):
 
 def blindfolded_bullseye():
     while True:
-        x0 = randint(-B, B)
-        y0 = randint(-B, B)
+        x0, y0 = randint(-B, B), randint(-B, B)
         if query(x0, y0):
             break
 
