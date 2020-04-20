@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b63
 #
 # Time:  O(N + 4 * ceil(log(2*10^9 + 1)/log2)), 1-(1-pi/16)^N >= 99.9%, N >= 32
-#        = O(32 + 4 * 31) = O(156) for 99.9% cases
+#        = O(32 + 4 * 31) = O(156) for 99.9% cases of test set 3
 # Space: O(1)
 #
 # Usage: python interactive_runner.py python local_testing_tool.py 2 -- python blindfolded_bullseye.py
@@ -35,7 +35,7 @@ def query(x, y):
 def blindfolded_bullseye():
     while True:
         x0, y0 = randint(-M, M), randint(-M, M)
-        if query(x0, y0):
+        if query(x0, y0):  # hit rate = pi*(M/2)^2 / (2*M)^2 = pi/16 for test set 3
             break
 
     left_x, _ = binary_search(-M, x0, lambda x: query(x, y0))
