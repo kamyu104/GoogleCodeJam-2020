@@ -38,7 +38,7 @@ def join_the_ranks():
         deck[:] = deck[len_A:len_A+len_B] + deck[:len_A] + deck[len_A+len_B:]
     if (R*S-R)%2:
         result.append((S-1, len(deck)-(S-1)))
-        deck[:] = deck[S-1:len(deck)] + deck[:S-1]
+        deck[:] = deck[S-1:] + deck[:S-1]
     return "{}\n{}".format(len(result), "\n".join(map(lambda x: "{} {}".format(*x), result)))
 
 for case in xrange(input()):
