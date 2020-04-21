@@ -13,6 +13,7 @@ def group_gen(R, S):
     for i in xrange(1, S):
         for _ in xrange(R):
             yield i
+
 def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
     result, it = [], group_gen(R, S)
