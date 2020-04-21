@@ -21,7 +21,7 @@ def join_the_ranks():
         # each step, merge 2 groups with the same rank, and keep the invariant:
         # 1. each group with rank X is followed by the group with rank (X+1) mod R
         # 2. the last group is not merged until it is the last step
-        # each 2 groups (a, b) sequences in a pattern: 1*R, 2*R, ..., (S-1)*R
+        # => each 2 groups (a, b) sequences in a pattern: 1*R, 2*R, ..., (S-1)*R
         a, b = next(it), next(it)
         result.append((a+b, l-(a+b)))
     a = next(it, None)
