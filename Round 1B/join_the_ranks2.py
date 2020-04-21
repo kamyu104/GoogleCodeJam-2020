@@ -15,7 +15,7 @@ def join_the_ranks():
     for l in xrange(R+1, R*S, 2):
         # each step, merge 2 groups with the same rank, and keep the invariant:
         # 1. each group with rank X is followed by the group with rank (X+1) mod R
-        # 2. the last group is never merged
+        # 2. the last group is not merged until it is the last step
         result.append((groups[0]+groups[1], l-(groups[0]+groups[1])))
         groups[R], groups[R+1] = groups[R]+groups[0], groups[1]+groups[R+1]
         groups.popleft(), groups.popleft()
