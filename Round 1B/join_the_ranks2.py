@@ -23,7 +23,7 @@ def join_the_ranks():
     if len(groups) == R+1:  # case: R*(S-1), 1*S, 2*S, ..., (R-1)*S, R*1
         assert(groups[0] == S-1 and groups[-1] == 1)
         result.append((groups[0], R*S-groups[0]))
-        groups[-1] = groups[-1]+groups[0]  # merge the last group
+        groups[-1] = groups[-1]+groups[0]  # merge the last group with the first one
         groups.popleft()
     assert(len(groups) == R and all(x == S for x in groups))
     return "{}\n{}".format(len(result), "\n".join(map(lambda x: "{} {}".format(*x), result)))
