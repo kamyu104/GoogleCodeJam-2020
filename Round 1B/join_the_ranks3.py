@@ -7,8 +7,6 @@
 # Space: O(1)
 #
 
-from collections import deque
-
 def group_gen(R, S):
     for i in xrange(1, S):
         for _ in xrange(R):
