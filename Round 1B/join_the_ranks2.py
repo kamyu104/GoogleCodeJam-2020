@@ -12,17 +12,20 @@ from collections import deque
 def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
     result, groups = [], deque([1]*(R+2))
-    for l in xrange(R+1, R*S, 2):  # each step, decrease the number of adjacent cards of different ranks from (R*S-1) to (R-1) by 2, and sort extra 2 cards without the last one
+    for l in xrange(R+1, R*S, 2):
+        # each step, merge 2 groups with the same rank, keep the invariant:
+        # 1. each group with rank X is followed by the group with rank (X+1) mod R
+        # 2. the last group is never merged
         result.append((groups[0]+groups[1], l-(groups[0]+groups[1])))
         groups[R], groups[R+1] = groups[R]+groups[0], groups[1]+groups[R+1]
         groups.popleft(), groups.popleft()
         groups.extend([1]*(min(R*S-(l+1), 2)))
-    if R*S-(l+1) == 1:  # if odd, decrease the number of adjacent cards of different ranks from R to (R-1) by 1
+    if len(groups) == R+1:  # case: R*(S-1), 1*S, 2*S, ..., (R-1)*S, R*1
         assert(groups[0] == S-1 and groups[-1] == 1)
-        result.append((groups[0], R*S-groups[0]))  # in the last step, the ranks of the top S-1 cards and the last one must be all R, and the others are sorted
-        groups[-1] = groups[-1]+groups[0]
+        result.append((groups[0], R*S-groups[0]))
+        groups[-1] = groups[-1]+groups[0]  # merge the last group
         groups.popleft()
-    assert(len(groups) == R and all(x == groups[0] for x in groups))
+    assert(len(groups) == R and all(x == S for x in groups))
     return "{}\n{}".format(len(result), "\n".join(map(lambda x: "{} {}".format(*x), result)))
 
 for case in xrange(input()):
