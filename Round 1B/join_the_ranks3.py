@@ -26,7 +26,6 @@ def join_the_ranks():
         result.append((a+b, l-(a+b)))
     a = next(it, None)
     if a:  # case: R*(S-1), 1*S, 2*S, ..., (R-1)*S, R*1
-        assert(a == S-1)
         result.append((a , R*S-a))
     return "{}\n{}".format(len(result), "\n".join(map(lambda x: "{} {}".format(*x), result)))
 
