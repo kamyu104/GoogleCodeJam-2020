@@ -13,7 +13,7 @@ def join_the_ranks():
     R, S = map(int, raw_input().strip().split())
     result, groups = [], deque([1]*(R+2))
     for l in xrange(R+1, R*S, 2):
-        # each step, merge 2 groups with the same rank, keep the invariant:
+        # each step, merge 2 groups with the same rank, and keep the invariant:
         # 1. each group with rank X is followed by the group with rank (X+1) mod R
         # 2. the last group is never merged
         result.append((groups[0]+groups[1], l-(groups[0]+groups[1])))
