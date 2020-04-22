@@ -22,8 +22,8 @@ def join_the_ranks():
         # => each 2 groups (a, b) sequences in a pattern: 1*R, 2*R, ..., (S-1)*R
         a, b = next(it), next(it)
         result.append((a+b, l-(a+b)))
-    a = next(it, None)
-    if a:  # case: R*(S-1), 1*S, 2*S, ..., (R-1)*S, R*1
+    if (S-1)*R%2:  # case: R*(S-1), 1*S, 2*S, ..., (R-1)*S, R*1
+        a = next(it)
         result.append((a , R*S-a))
     return "{}\n{}".format(len(result), "\n".join(map(lambda x: "{} {}".format(*x), result)))
 
