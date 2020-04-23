@@ -28,4 +28,4 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Expogo](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b62)| [Python](./Round%201B/expogo.py) [Python](./Round%201B/expogo2.py) | _O(log(\|X\| + \|Y\|))_ | _O(1)_ | Medium | variant of [Pogo](https://code.google.com/codejam/contest/2437488/dashboard#s=p1) | Invariant, Greedy
 |B| [Blindfolded Bullseye](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b63)| [Python](./Round%201B/blindfolded_bullseye2.py) | _O(128)_ | _O(1)_ | Medium || Probability, Binary Search, Geometry
-|C| [Join the Ranks](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b64)| [Python](./Round%201B/join_the_ranks5.py) | _O(R * S)_ | _O(1)_ | Hard || Invariant, Sort, One-Liner
+|C| [Join the Ranks](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef2/00000000002d5b64)| [Python](./Round%201B/join_the_ranks5.py) | _O(R * S)_ | _O(1)_ | Hard | One-Liner | Invariant, Sort
