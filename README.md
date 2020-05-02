@@ -36,4 +36,4 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Overexcited Fan](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/0000000000317409)| [Python](./Round%201C/overexcited_fan.py) | _O(M)_ | _O(1)_ | Easy || Simulation, Math
 |B| [Overrandomized](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1)| [Python](./Round%201C/overrandomized.py) | _O(L * U)_ | _O(1)_ | Easy || Probability
-|C| [Oversized Pancake Choppers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1)| [PyPy](./Round%201C/oversized_pancake_choppers.py) | _O(NlogN + D * N * log(max(A)))_ | _O(D * N)_ | Hard || Sort, Hash, Euclidean Algorithm, Binary Search, Greedy
+|C| [Oversized Pancake Choppers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1)| [PyPy](./Round%201C/oversized_pancake_choppers.py) | _O(D * N * log(max(A)))_ | _O(D * N)_ | Hard || Sort, Hash, Euclidean Algorithm, Binary Search, Greedy

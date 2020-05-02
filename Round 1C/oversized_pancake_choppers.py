@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1
 #
 # Time:  O(NlogN + D * N * log(max(A)) + O(D * N * log(D * N)) + O(log(D * N) * N) + D * N)
-#        = O(NlogN + D * N * log(max(A)))
+#        = O(D * N * log(max(A)))
 # Space: O(D * N)
 #
 
