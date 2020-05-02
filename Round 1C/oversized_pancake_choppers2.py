@@ -36,9 +36,10 @@ def oversized_pancake_choppers():
     lookup = defaultdict(lambda: [0])
     for y in xrange(1, D+1):  # Time: O(D * N)
         for x in A:
-            if x*(lcm//y) > limit:
+            key = x*(lcm//y)
+            if key > limit:
                 break
-            lookup[x*(lcm//y)].append(lookup[x*(lcm//y)][-1]+y)
+            lookup[key].append(lookup[key][-1]+y)
     result = 0
     for count in lookup.itervalues():  # Time: O(D * N)
         c = bisect_left(count, D)  # sum(len(count)) = O(D * N)
