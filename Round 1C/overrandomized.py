@@ -1,6 +1,6 @@
 # Copyright (c) 2020 kamyu. All rights reserved.
 #
-# Google Code Jam 2020 Round 1C - Problem B. Overexcited Fan
+# Google Code Jam 2020 Round 1C - Problem B. Overrandomized
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1
 #
 # Time:  O(L * U)
