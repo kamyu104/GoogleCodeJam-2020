@@ -16,6 +16,6 @@ def overexcited_fan():
             return t
     return "IMPOSSIBLE"
 
-LOOKUP = {'E':(1, 0), 'S':(0, -1), 'W':(-1, 0), 'N': (0, 1)}
+LOOKUP = {'E':(1, 0), 'S':(0, -1), 'W':(-1, 0), 'N':(0, 1)}
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, overexcited_fan())
