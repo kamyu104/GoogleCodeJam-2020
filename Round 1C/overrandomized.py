@@ -17,8 +17,8 @@ def overrandomized():
         result.add(R[-1])
         if len(R) == U:
             count[R[0]] += 1
-    return "".join(list(result-set(count.keys())) +
-                   sorted(count.keys(), key=lambda x:count[x], reverse=True))
+    count[(result-set(count.iterkeys())).pop()] = L-sum(count.itervalues())
+    return "".join(sorted(count.keys(), key=lambda x:count[x], reverse=True))
 
 L = 10**4
 for case in xrange(input()):
