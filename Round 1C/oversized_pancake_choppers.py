@@ -37,7 +37,7 @@ def oversized_pancake_choppers():
     targets = sorted(lookup.iterkeys(), cmp=lambda x, y: cmp(x[0]*y[1], x[1]*y[0]))
     M = 1
     for i in xrange(binary_search_right(targets, lambda a: sum(x*a[1]//a[0] for x in A) >= D)+1):  # Time: O(D * N)
-        c = bisect_left(lookup[targets[i]], D)  # sum(len(count)) = O(D * N)
+        c = bisect_left(lookup[targets[i]], D)  # sum(len(lookup[targets[i]])) = O(D * N)
         M = max(M, (c-int(lookup[targets[i]][c] != D)) if c != len(lookup[targets[i]]) else c-1)
     return D-M
 
