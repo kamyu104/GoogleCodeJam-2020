@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Round 1C - Problem C. Oversized Pancake Choppers
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1
 #
-# Time:  O(NlogN + log(D * N) * N + D * N * log(max(A)) + D * N)
+# Time:  O(NlogN + D * N * log(max(A)) + O(D * N * log(D * N)) + O(log(D * N) * N) + D * N)
 #        = O(NlogN + D * N * log(max(A)))
 # Space: O(D * N)
 #
@@ -34,7 +34,7 @@ def oversized_pancake_choppers():
         for x in A:
             common = gcd(x, y)
             lookup[x//common, y//common].append(lookup[x//common, y//common][-1]+y)
-    targets = sorted(lookup.iterkeys(), cmp=lambda x, y: cmp(x[0]*y[1], x[1]*y[0]))
+    targets = sorted(lookup.iterkeys(), cmp=lambda x, y: cmp(x[0]*y[1], x[1]*y[0]))  # Time: O(D * N * log(D * N))
     result = 0
     for i in xrange(binary_search_right(targets, lambda a: sum(x*a[1]//a[0] for x in A) >= D)+1):  # Time: O(D * N)
         c = bisect_left(lookup[targets[i]], D)  # sum(len(lookup[targets[i]])) = O(D * N)
