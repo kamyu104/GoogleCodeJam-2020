@@ -3,8 +3,9 @@
 # Google Code Jam 2020 Round 1C - Problem C. Oversized Pancake Choppers
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1
 #
-# Time:  O(D^2 * logD + NlogN + log(max(A) * D * N) * N + D * N * log(max(A)) + D * N)
-#        = O(D * N * log(max(A)))
+# Time:  O(D * log(D!) + NlogN + log(max(A) * D!) * N + D * N)
+#        = O(D^2 * logD + NlogN + log(max(A)) * N + DlogD * N + D * N)
+#        = O(N * DlogD)
 # Space: O(D * N)
 #
 
@@ -16,7 +17,7 @@ def gcd(a, b):  # Time: O(log(a + b))
         a, b = b, a % b
     return a
 
-def binary_search_right(left, right, check):  # Time: O(log(max(A) * D * N) * N)
+def binary_search_right(left, right, check):  # Time: O(log(max(A) * D!) * N)
     while left <= right:
         mid = left + (right-left)//2
         if not check(mid):
@@ -33,14 +34,13 @@ def oversized_pancake_choppers():
     A = sorted(map(int, raw_input().strip().split()))  # Time: O(NlogN)
     limit = binary_search_right(1, max(A)*lcm, lambda a: sum(x*lcm//a for x in A) >= D)
     lookup = defaultdict(lambda: [0])
-    for y in xrange(1, D+1):  # Time: O(D * N * log(max(A)))
+    for y in xrange(1, D+1):  # Time: O(D * N)
         for x in A:
             if x*(lcm//y) > limit:
                 break
-            common = gcd(x, y)
-            lookup[x//common, y//common].append(lookup[x//common, y//common][-1]+y)
+            lookup[x*(lcm//y)].append(lookup[x*(lcm//y)][-1]+y)
     result = 0
-    for k, count in lookup.iteritems():  # Time: O(D * N)
+    for count in lookup.itervalues():  # Time: O(D * N)
         c = bisect_left(count, D)  # sum(len(count)) = O(D * N)
         result = max(result, (c-int(count[c] != D)) if c != len(count) else c-1)
     return D-result
