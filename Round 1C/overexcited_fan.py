@@ -10,10 +10,10 @@
 def overexcited_fan():
     X, Y, M = raw_input().strip().split()
     X, Y = int(X), int(Y)
-    for minute, d in enumerate(M, 1):
+    for t, d in enumerate(M, 1):
         X, Y = X+LOOKUP[d][0], Y+LOOKUP[d][1]
-        if minute >= abs(X)+abs(Y):
-            return minute
+        if t >= abs(X)+abs(Y):
+            return t
     return "IMPOSSIBLE"
 
 LOOKUP = {'E':(1, 0), 'S':(0, -1), 'W':(-1, 0), 'N': (0, 1)}
