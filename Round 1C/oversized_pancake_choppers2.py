@@ -27,14 +27,15 @@ def binary_search_right(left, right, check):  # Time: O(log(max(A) * D^2) * N)
 
 def oversized_pancake_choppers():
     N, D = map(int, raw_input().strip().split())
+    bucket_size = D*(D-1)  # 1/bucket_size <= 1/(D-1)-1/D, => bucket_size >= D*(D-1)
     A = sorted(map(int, raw_input().strip().split()))  # Time: O(NlogN)
-    limit = binary_search_right(1, max(A)*BUCKET_SIZE, lambda a: sum(x*BUCKET_SIZE//a for x in A) >= D)
+    limit = binary_search_right(1, max(A)*bucket_size, lambda a: sum(x*bucket_size//a for x in A) >= D)
     lookup = defaultdict(lambda: [0])
     for y in xrange(1, D+1):  # Time: O(D * N * log(max(A)))
         for x in A:
-            if x*BUCKET_SIZE >= (limit+1)*y:
+            if x*bucket_size >= (limit+1)*y:
                 break
-            if x*BUCKET_SIZE > limit*y and not (sum(a*y//x for a in A) >= D):
+            if x*bucket_size > limit*y and not (sum(a*y//x for a in A) >= D):
                 break  # unknown range of the buckets, check again (at most once due to at most one fraction in a bucket)
             common = gcd(x, y)
             lookup[x//common, y//common].append(lookup[x//common, y//common][-1]+y)
@@ -44,7 +45,5 @@ def oversized_pancake_choppers():
         result = max(result, (c-int(count[c] != D)) if c != len(count) else c-1)
     return D-result
 
-MAX_D = 50
-BUCKET_SIZE = MAX_D*(MAX_D-1)  # 1/BUCKET_SIZE <= 1/(MAX_D-1)-1/MAX_D, => BUCKET_SIZE >= MAX_D*(MAX_D-1)
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, oversized_pancake_choppers())
