@@ -1,7 +1,7 @@
 # Copyright (c) 2020 kamyu. All rights reserved.
 #
 # Google Code Jam 2020 Round 1C - Problem C. Oversized Pancake Choppers
-# https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1
+# https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003172d1
 #
 # Time:  O(NlogN + D * N * log(max(A)) + O(D * N * log(D * N)) + O(log(D * N) * N) + D * N)
 #        = O(D * N * log(max(A)))
