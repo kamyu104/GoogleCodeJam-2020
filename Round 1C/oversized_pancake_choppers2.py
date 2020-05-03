@@ -32,11 +32,13 @@ def oversized_pancake_choppers():
     limit = binary_search_right(1, max(A)*bucket_size, lambda a: sum(x*bucket_size//a for x in A) >= D)
     lookup = defaultdict(lambda: [0])
     for y in xrange(1, D+1):  # Time: O(D * N * log(max(A)))
+        prev = None
         for x in A:
             if x*bucket_size >= (limit+1)*y:
                 break
-            if x*bucket_size > limit*y and not (sum(a*y//x for a in A) >= D):
+            if x != prev and x*bucket_size > limit*y and not (sum(a*y//x for a in A) >= D):
                 break  # unknown range of the buckets, check again (at most once due to at most one fraction in a bucket)
+            prev = x
             common = gcd(x, y)
             lookup[x//common, y//common].append(lookup[x//common, y//common][-1]+y)
     result = 0
