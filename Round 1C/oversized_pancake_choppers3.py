@@ -3,8 +3,9 @@
 # Google Code Jam 2020 Round 1C - Problem C. Oversized Pancake Choppers
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003172d1
 #
-# Time:  O(NlogN + log(max(A) * D^2) * N + D * N * log(max(A)) + D * N)
-#        = O(D * N * log(max(A))), dealing fraction with bucket
+# Time:  O(D * log(D!) + NlogN + log(max(A) * D!) * N + D * N)
+#        = O(D^2 * logD + NlogN + log(max(A)) * N + DlogD * N + D * N)
+#        = O(N * DlogD), dealing fraction with lcm
 # Space: O(D * N)
 #
 
@@ -16,7 +17,7 @@ def gcd(a, b):  # Time: O(log(a + b))
         a, b = b, a % b
     return a
 
-def binary_search_right(left, right, check):  # Time: O(log(max(A) * D^2) * N)
+def binary_search_right(left, right, check):  # Time: O(log(max(A) * D!) * N)
     while left <= right:
         mid = left + (right-left)//2
         if not check(mid):
@@ -27,24 +28,23 @@ def binary_search_right(left, right, check):  # Time: O(log(max(A) * D^2) * N)
 
 def oversized_pancake_choppers():
     N, D = map(int, raw_input().strip().split())
+    lcm = 1
+    for i in xrange(2, D+1):  # Time: O(D^2 * logD)
+        lcm = lcm * i // gcd(lcm, i)
     A = sorted(map(int, raw_input().strip().split()))  # Time: O(NlogN)
-    limit = binary_search_right(1, max(A)*BUCKET_SIZE, lambda a: sum(x*BUCKET_SIZE//a for x in A) >= D)
+    limit = binary_search_right(1, max(A)*lcm, lambda a: sum(x*lcm//a for x in A) >= D)
     lookup = defaultdict(lambda: [0])
-    for y in xrange(1, D+1):  # Time: O(D * N * log(max(A)))
+    for y in xrange(1, D+1):  # Time: O(D * N)
         for x in A:
-            if x*BUCKET_SIZE >= (limit+1)*y:
+            key = x*(lcm//y)
+            if key > limit:
                 break
-            if x*BUCKET_SIZE > limit*y and not (sum(a*y//x for a in A) >= D):
-                break  # unknown range of the buckets, check again (at most once due to at most one fraction in a bucket)
-            common = gcd(x, y)
-            lookup[x//common, y//common].append(lookup[x//common, y//common][-1]+y)
+            lookup[key].append(lookup[key][-1]+y)
     result = 0
     for count in lookup.itervalues():  # Time: O(D * N)
         c = bisect_left(count, D)  # sum(len(count)) = O(D * N)
         result = max(result, (c-int(count[c] != D)) if c != len(count) else c-1)
     return D-result
 
-MAX_D = 50
-BUCKET_SIZE = MAX_D*(MAX_D-1)  # 1/BUCKET_SIZE <= 1/(MAX_D-1)-1/MAX_D, => BUCKET_SIZE >= MAX_D*(MAX_D-1)
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, oversized_pancake_choppers())
