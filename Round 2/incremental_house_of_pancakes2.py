@@ -14,7 +14,7 @@ def s(a, d, n):
 
 def f(a, d, x):
     r = int((-(2.0*a-d)+sqrt((2.0*a-d)**2+8.0*d*x))/(2.0*d))
-    if s(a, d, r) > x:  # adjust accuracy
+    if s(a, d, r) > x:  # adjust float accuracy
         r -= 1
     return r
 
