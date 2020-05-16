@@ -7,13 +7,11 @@
 # Space: O(1)
 #
 
-from math import sqrt
-
 def s(a, d, n):
     return (2*a + (n-1)*d)*n//2
 
 def f(a, d, x):
-    r = int((-(2*a-d)+sqrt((2*a-d)**2+8*d*x))/(2*d))
+    r = int((-(2*a-d)+(2*a-d)**2+8*d*x)**0.5/(2*d))
     if s(a, d, r) > x:  # adjust float accuracy
         r -= 1
     return r
