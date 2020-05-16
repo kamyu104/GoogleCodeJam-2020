@@ -35,7 +35,7 @@ def incremental_house_of_pancakes():
     R -= s(n+2, 2, r)
     if is_swapped:
         L, R = R, L
-    return "{} {} {}".format(max(n+1 + (l-1)*2, n+2 + (r-1)*2), L, R)
+    return "{} {} {}".format(n+l+r, L, R)
 
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, incremental_house_of_pancakes())
