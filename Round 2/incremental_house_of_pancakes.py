@@ -7,7 +7,7 @@
 # Space: O(1)
 #
 
-def f(a, d, n):
+def s(a, d, n):
     return (2*a + (n-1)*d)*n//2
 
 def binary_search_right(left, right, check):
@@ -25,14 +25,14 @@ def incremental_house_of_pancakes():
     if L < R:
         L, R = R, L
         is_swapped = True
-    n = binary_search_right(1, L-R, lambda x: f(1, 1, x) <= L-R)
-    L -= f(1, 1, n)
+    n = binary_search_right(1, L-R, lambda x: s(1, 1, x) <= L-R)
+    L -= s(1, 1, n)
     if L == R:
         is_swapped = False
-    l = binary_search_right(1, L, lambda x: f(n+1, 2, x) <= L)
-    r = binary_search_right(1, R, lambda x: f(n+2, 2, x) <= R)
-    L -= f(n+1, 2, l)
-    R -= f(n+2, 2, r)
+    l = binary_search_right(1, L, lambda x: s(n+1, 2, x) <= L)
+    r = binary_search_right(1, R, lambda x: s(n+2, 2, x) <= R)
+    L -= s(n+1, 2, l)
+    R -= s(n+2, 2, r)
     if is_swapped:
         L, R = R, L
     return "{} {} {}".format(max(n+1 + (l-1)*2, n+2 + (r-1)*2), L, R)
