@@ -33,10 +33,9 @@ def incremental_house_of_pancakes():
     r = binary_search_right(1, R, lambda x: f(n+2, 2, x) <= R)
     L -= f(n+1, 2, l)
     R -= f(n+2, 2, r)
-    n = max(n+1 + (l-1)*2, n+2 + (r-1)*2)
     if is_swapped:
         L, R = R, L
-    return "{} {} {}".format(n, L, R)
+    return "{} {} {}".format(max(n+1 + (l-1)*2, n+2 + (r-1)*2), L, R)
 
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, incremental_house_of_pancakes())
