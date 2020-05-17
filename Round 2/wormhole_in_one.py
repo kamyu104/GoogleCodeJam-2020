@@ -26,9 +26,7 @@ def norm(a, b):
 
 def wormhole_in_one():
     N = input()
-    H = []
-    for _ in xrange(N):
-        H.append(map(int, raw_input().strip().split()))
+    H = [map(int, raw_input().strip().split()) for _ in xrange(N)]
     directions = defaultdict(set)
     for j in xrange(len(H)):
         x2, y2 = H[j]
