@@ -20,12 +20,10 @@ def wormhole_in_one():
     for _ in xrange(N):
         H.append(map(int, raw_input().strip().split()))
     directions = defaultdict(set)
-    for i in xrange(len(H)):
-        x1, y1 = H[i]
-        for j in xrange(len(H)):
-            if i == j:
-                continue
-            x2, y2 = H[j]
+    for j in xrange(len(H)):
+        x2, y2 = H[j]
+        for i in xrange(j):
+            x1, y1 = H[i]
             a, b = y2-y1, x2-x1
             if b == 0:
                 a = 1
@@ -34,11 +32,12 @@ def wormhole_in_one():
                     a, b = -a, -b
                 common = gcd(abs(a), b)
                 a, b = a//common, b//common
+            directions[a, b].add(i)
             directions[a, b].add(j)
-    result = 1
+    result = 0
     for points in directions.itervalues():
-        result = max(result, len(points)+min(1 if len(points)%2 else 2, N-len(points)))
-    return result
+        result = max(result, len(points))
+    return min(result+1, N) if result%2 else min(result+2, N)
     
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, wormhole_in_one())
