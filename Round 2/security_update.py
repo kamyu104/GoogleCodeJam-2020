@@ -16,22 +16,22 @@ def security_update():
             T.append((x, i))
         elif x < 0:
             R.append((-x, i)) 
-    resolved_T, last_merged = {0:0}, (0, 0, 0)
+    assigned_T, last_merged = {0:0}, (0, 0, 0)
     R.sort(), T.sort()  # Time: O(ClogC)
     i, j = 0, 0
     while i != len(R) or j != len(T):
-        if j == len(T) or (i != len(R) and R[i][0] <= len(resolved_T)):
+        if j == len(T) or (i != len(R) and R[i][0] <= len(assigned_T)):
             last_merged = (last_merged[0] if R[i][0] == last_merged[1] else last_merged[0]+1, R[i][0], R[i][1])
-            resolved_T[R[i][1]] = last_merged[0]
+            assigned_T[R[i][1]] = last_merged[0]
             i += 1
         else:
-            last_merged = (T[j][0], last_merged[1] if T[j][0] == last_merged[0] else len(resolved_T), T[j][1])
-            resolved_T[T[j][1]] = last_merged[0]
+            last_merged = (T[j][0], last_merged[1] if T[j][0] == last_merged[0] else len(assigned_T), T[j][1])
+            assigned_T[T[j][1]] = last_merged[0]
             j += 1
     result = []
     for _ in xrange(D):  # Time: O(D)
         U, V = map(int, raw_input().strip().split())
-        result.append(max(abs(resolved_T[U-1]-resolved_T[V-1]), 1))
+        result.append(max(abs(assigned_T[U-1]-assigned_T[V-1]), 1))
     return " ".join(map(str, result))
     
 for case in xrange(input()):
