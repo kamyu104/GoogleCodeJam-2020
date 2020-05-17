@@ -3,8 +3,8 @@
 # Google Code Jam 2020 Round 2 - Problem B. Security Update
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033871f
 #
-# Time:  O(NlogN)
-# Space: O(N)
+# Time:  O(ClogC + D)
+# Space: O(C)
 #
 
 def security_update():
