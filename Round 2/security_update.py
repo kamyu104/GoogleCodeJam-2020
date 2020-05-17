@@ -17,7 +17,7 @@ def security_update():
         elif x < 0:
             R.append((-x, i)) 
     resolved_T, last_merged = {0:0}, (0, 0, 0)
-    R.sort(), T.sort()
+    R.sort(), T.sort()  # Time: O(ClogC)
     i, j = 0, 0
     while i != len(R) or j != len(T):
         if j == len(T) or (i != len(R) and R[i][0] <= len(resolved_T)):
@@ -29,7 +29,7 @@ def security_update():
             resolved_T[T[j][1]] = last_merged[0]
             j += 1
     result = []
-    for _ in xrange(D):
+    for _ in xrange(D):  # Time: O(D)
         U, V = map(int, raw_input().strip().split())
         result.append(max(abs(resolved_T[U-1]-resolved_T[V-1]), 1))
     return " ".join(map(str, result))
