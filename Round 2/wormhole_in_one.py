@@ -37,7 +37,7 @@ def wormhole_in_one():
     result = 0
     for points in directions.itervalues():
         result = max(result, len(points))
-    return min(result+1, N) if result%2 else min(result+2, N)
+    return min(result+1 if result%2 else result+2, N)
     
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, wormhole_in_one())
