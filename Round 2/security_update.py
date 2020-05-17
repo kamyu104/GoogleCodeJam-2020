@@ -7,11 +7,12 @@
 # Space: O(C)
 #
 
+from itertools import imap
+
 def security_update():
     C, D = map(int, raw_input().strip().split())
-    R_T = map(int, raw_input().strip().split())
     R, T = [], []
-    for i, x in enumerate(R_T, 1):
+    for i, x in enumerate(imap(int, raw_input().strip().split()), 1):
         if x < 0:
             R.append((-x, i)) 
         else:
