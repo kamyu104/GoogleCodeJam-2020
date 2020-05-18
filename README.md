@@ -42,7 +42,7 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 ## Round 2
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
-|A| [Incremental House of Pancakes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/00000000003384ea)| [Python](./Round%202/incremental_house_of_pancakes.py) | _O(log(L + R))_ | _O(1)_ | Easy || Binary Search, Math
+|A| [Incremental House of Pancakes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/00000000003384ea)| [Python](./Round%202/incremental_house_of_pancakes.py) [Python](./Round%202/incremental_house_of_pancakes2.py)| _O(log(L + R))_ | _O(1)_ | Easy || Binary Search, Math
 |B| [Security Update](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033871f)| [Python](./Round%202/security_update.py) | _O(ClogC + D)_ | _O(C)_ | Medium || Sort
 |C| [Wormhoe in One](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/00000000003386d0)| [Python](./Round%202/wormhole_in_one.py) | _O(N^2)_ | _O(N^2)_ | Medium || Math
 |D| [Emacs++](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033893b)| | _O(K * (logK)^2 + QlogK)_ | _O(KlogK)_ | Hard || Tree, Recursion, Dijkstra's Algorithm
