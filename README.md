@@ -1,4 +1,4 @@
-# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-14%20%2F%2014-ff69b4.svg)
+# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-17%20%2F%2018-ff69b4.svg)
 
 Python solutions of Google Code Jam 2020. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds).
 
@@ -7,7 +7,8 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 * [Round 1A](https://github.com/kamyu104/GoogleCodeJam-2020#round-1a)
 * [Round 1B](https://github.com/kamyu104/GoogleCodeJam-2020#round-1b)
 * [Round 1C](https://github.com/kamyu104/GoogleCodeJam-2020#round-1c)
-
+* [Round 2](https://github.com/kamyu104/GoogleCodeJam-2020#round-2)
+  
 ## Qualification Round
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
@@ -37,3 +38,11 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |A| [Overexcited Fan](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/0000000000317409)| [Python](./Round%201C/overexcited_fan.py) | _O(M)_ | _O(1)_ | Easy || Simulation, Math
 |B| [Overrandomized](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003179a1)| [Python](./Round%201C/overrandomized.py) | _O(L * U)_ | _O(1)_ | Easy || Probability
 |C| [Oversized Pancake Choppers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fef4/00000000003172d1)| [PyPy](./Round%201C/oversized_pancake_choppers.py) [Python](./Round%201C/oversized_pancake_choppers2.py) [Python](./Round%201C/oversized_pancake_choppers3.py) | _O(N * DlogD)_ | _O(D * N)_ | Hard || Sort, Hash Table, Euclidean Algorithm, Binary Search, Greedy, Bucket, LCM
+
+## Round 2
+| # | Title | Solution | Time | Space | Difficulty | Tag | Note |
+|---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
+|A| [Incremental House of Pancakes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/00000000003384ea)| [Python](./Round%202/incremental_house_of_pancakes.py) | _O(log(L + R))_ | _O(1)_ | Easy || Binary Search, Math
+|B| [Security Update](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033871f)| [Python](./Round%202/security_update.py) | _O(ClogC + D)_ | _O(C)_ | Medium || Sort
+|C| [Wormhoe in One](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/00000000003386d0)| [Python](./Round%202/wormhole_in_one.py) | _O(N^2)_ | _O(N^2)_ | Medium || Math
+|D| [Emacs++](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033893b)| | _O(K * (logK)^2 + QlogK)_ | _O(KlogK)_ | Hard || Tree, Recursion, Dijkstra's Algorithm
