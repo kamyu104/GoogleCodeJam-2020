@@ -1,8 +1,9 @@
 from random import randint
 
-T = 100
+T = 1
+K, Q, MAX_L, MAX_R, MAX_P = 6, 10, 10**6, 10**6, 10**6
+
 print T
-K, Q, MAX_L, MAX_R, MAX_P = 10, 10, 10**6, 10**6, 10**6
 for _ in xrange(T):
     PRG, l, r = [], K//2, K//2
     while l or r:
@@ -20,7 +21,7 @@ for _ in xrange(T):
     for _ in xrange(Q):
         while True:
             a, b = randint(1, K), randint(1, K)
-            if (a, b) not in lookup:
+            if a != b and (a, b) not in lookup:
                 lookup.add((a, b))
                 break
         S.append(a)
