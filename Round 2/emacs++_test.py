@@ -18,7 +18,7 @@ for _ in xrange(T):
         L.append(randint(1, MAX_L))
         R.append(randint(1, MAX_R))
         P.append(randint(1, MAX_P))
-    for _ in xrange(Q):
+    for _ in xrange(min(K*(K-1), Q)):
         while True:
             a, b = randint(1, K), randint(1, K)
             if a != b and (a, b) not in lookup:
@@ -26,7 +26,7 @@ for _ in xrange(T):
                 break
         S.append(a)
         E.append(b)
-    print K, Q
+    print K, len(S)
     print "".join(PRG)
     print " ".join(map(str, L))
     print " ".join(map(str, R))
