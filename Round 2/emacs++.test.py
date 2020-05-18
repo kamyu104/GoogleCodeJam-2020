@@ -1,7 +1,7 @@
 from random import randint
 
 T = 1
-K, Q, MAX_L, MAX_R, MAX_P = 6, 10, 10**6, 10**6, 10**6
+K, Q, MAX_L, MAX_R, MAX_P = 100000, 100000, 10**6, 10**6, 10**6
 
 print T
 for _ in xrange(T):
