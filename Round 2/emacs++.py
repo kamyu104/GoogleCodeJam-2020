@@ -95,12 +95,12 @@ def region(partitions, t):  # Time: O(1)
     return 0
 
 def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy ctor, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
-    if len(tree[node]) == 3:
+    if len(tree[node]) == 3:  # unvisited
         brackets, l, r = tree[node]
         partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
         partitions = map(lambda x: l if x == -1 else (r if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
         children = [0]*4
-        tree[node] = [partitions, children, l, r]
+        tree[node] = [partitions, children, l, r]  # visited
         for i in partition_idxs:
             if i in (-1, len(brackets)):  # virtual brackets we added
                 continue
