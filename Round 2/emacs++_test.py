@@ -1,7 +1,6 @@
 from random import randint
 
 T = 200
-
 print T
 for i in xrange(T):
     if i == 0:
