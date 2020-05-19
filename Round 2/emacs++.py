@@ -27,6 +27,20 @@ def dijkstra(adj, t):  # Time: O(KlogK)
             heappush(min_heap, (curr+w, v))
     return result
 
+def update_adj(lookup, brackets, adj, is_reversed, front, back, direction, end, d, l, r):  # Time: O(K)
+    prev = back if front-d != end else end
+    for src in direction(brackets):
+        if prev == end:
+            prev = src
+            continue
+        dst, via = prev, src-d
+        if via == dst:
+            w = l[src] if not is_reversed else r[dst]
+        else:
+            w = lookup[via][not is_reversed][src] + lookup[via][is_reversed][dst]
+        adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
+        prev = src
+
 def find_shortest_path(L, R, P, pair, lookup, brackets, t):  # Time: O(KlogK)
     result = []
     for is_reversed in xrange(2):
@@ -37,30 +51,12 @@ def find_shortest_path(L, R, P, pair, lookup, brackets, t):  # Time: O(KlogK)
             if src not in adj:
                 adj[src] = {}
             adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
-        prev = brackets[-1] if brackets[0]-1 != -1 else -1
-        for src in brackets:
-            if prev == -1:
-                prev = src
-                continue
-            dst, via = prev, src-1
-            if via == dst:
-                w = L[src] if not is_reversed else R[dst]
-            else:
-                w = lookup[via][not is_reversed][src] + lookup[via][is_reversed][dst]
-            adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
-            prev = src
-        prev = brackets[0] if brackets[-1]+1 != len(pair) else len(pair)
-        for src in reversed(brackets):
-            if prev == len(pair):
-                prev = src
-                continue
-            dst, via = prev, src+1
-            if via == dst:
-                w = R[src] if not is_reversed else L[dst]
-            else:
-                w = lookup[via][not is_reversed][src] + lookup[via][is_reversed][dst]
-            adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
-            prev = src
+        update_adj(lookup, brackets, adj, is_reversed,
+                   brackets[0], brackets[-1], lambda x:x,
+                   -1, 1, L, R)
+        update_adj(lookup, brackets, adj, is_reversed,
+                   brackets[-1], brackets[0], lambda x:reversed(x),
+                   len(pair), -1, R, L)
         result.append(dijkstra(adj, t))
     return result
 
