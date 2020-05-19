@@ -116,7 +116,6 @@ def find_outer_brackets(pair, brackets, partition_idxs, i, l, r):
         if partition_idxs[i] == len(brackets):  # virtual brackets we added
             return l, r
         return pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]
-    assert(False)
 
 def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy ctor, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
     while True:
