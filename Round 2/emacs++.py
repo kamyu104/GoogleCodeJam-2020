@@ -98,7 +98,7 @@ def find_subregions(brackets, partition_idxs, i):
 def find_outer_brackets(pair, brackets, partition_idxs, i, outer_l, outer_r):
     if i == 0:
          return outer_l, outer_r
-    if i == 1:
+    elif i == 1:
         if partition_idxs[i-1] == -1:  # virtual brackets we added
             return outer_l, outer_r
         return brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
