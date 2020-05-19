@@ -98,7 +98,7 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
     if len(tree[node]) == 3:
         brackets, l, r = tree[node]
         partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
-        partitions = map(lambda x: -1 if x == -1 else (len(PRG) if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
+        partitions = map(lambda x: l if x == -1 else (r if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
         children = [0]*4
         tree[node] = [partitions, children, l, r]
         for i in partition_idxs:
@@ -106,19 +106,15 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
                 continue
             lookup[brackets[i]] = find_shortest_path(PRG, L, R, P, pair, lookup, brackets, brackets[i])  # Time: O(KlogK)
         for i in xrange(len(partition_idxs)):
+            new_l, new_r = l, r
             if i == 0:
                 if partition_idxs[0] == -1:  # virtual brackets we added
                     continue
                 new_brackets = brackets[:partition_idxs[0]] + brackets[partition_idxs[-1]+1:]
-                new_l, new_r = l, r
             else:
                 new_brackets = brackets[partition_idxs[i-1]+1:partition_idxs[i]]
-                if partition_idxs[i] == len(brackets):
-                    new_l, new_r = l, r # -1, len(PRG)
-                elif brackets[partition_idxs[i-1]] == '(':
-                    new_l, new_r = partition_idxs[i-1], pair[brackets[partition_idxs[i-1]]]
-                else:
-                    new_l, new_r = pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]     
+                if brackets[partition_idxs[i-1]] == '(':
+                    new_l, new_r = partition_idxs[i-1], pair[brackets[partition_idxs[i-1]]]                    
             if not new_brackets:
                 continue
             children[i] = len(tree)
@@ -127,8 +123,7 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
     a, b = region(partitions, s), region(partitions, e)
     if not (a != b or s in partitions or e in partitions):  # same region without covering partition nodes
         return query(PRG, L, R, P, pair, lookup, tree, children[a], s, e)
-    vias = map(lambda x: l if x == -1 else (r if x == len(PRG) else x), partitions)  # replace virtual brackets with outer brackets
-    return min((lookup[p][1][s] if s != p else 0) + (lookup[p][0][e] if p != e else 0) for p in vias if 0 <= p < len(PRG)) 
+    return min((lookup[p][1][s] if s != p else 0) + (lookup[p][0][e] if p != e else 0) for p in partitions if 0 <= p < len(PRG)) 
 
 def find_pair(s):  # Time: O(K)
     result, stk = [0]*len(s), []
