@@ -64,7 +64,7 @@ def find_shortest_path(PRG, L, R, P, pair, lookup, brackets, t):  # Time: O(Klog
         result.append(dijkstra(adj, t))
     return result
 
-def find_next(PRG, brackets, curr, d):  # Time: O(K)
+def find_next_bracket(PRG, brackets, curr, d):  # Time: O(K)
     count = 0
     while True:
         curr += d
@@ -81,12 +81,12 @@ def find_next(PRG, brackets, curr, d):  # Time: O(K)
 def find_partitions(PRG, brackets):  # Time: O(K)
     result, mid = [-1]*4, (len(brackets)-1)//2
     if PRG[brackets[mid]] == '(':
-        left, right = mid, find_next(PRG, brackets, mid, 1)
+        left, right = mid, find_next_bracket(PRG, brackets, mid, 1)
     else:
-        left, right = find_next(PRG, brackets, mid, -1), mid
+        left, right = find_next_bracket(PRG, brackets, mid, -1), mid
     while 2*(right-left+1) <= len(brackets)+2:  # including virtual brackets we added
         result[1], result[2] = left, right
-        left, right = find_next(PRG, brackets, left, -1), find_next(PRG, brackets, right, 1)
+        left, right = find_next_bracket(PRG, brackets, left, -1), find_next_bracket(PRG, brackets, right, 1)
     result[0], result[-1] = left, right
     return result
 
