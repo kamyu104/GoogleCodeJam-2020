@@ -94,7 +94,7 @@ def region(partitions, t):  # Time: O(1)
             return i
     return 0
 
-def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2), run at most O(KlogK) in each depth, at most O(logK) depth
+def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy ctor, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
     if len(tree[node]) == 3:
         brackets, l, r = tree[node]
         partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
@@ -114,14 +114,14 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
             else:
                 new_brackets = brackets[partition_idxs[i-1]+1:partition_idxs[i]]
                 if i == 1:
-                    if partition_idxs[i-1] == -1:
+                    if partition_idxs[i-1] == -1:  # virtual brackets we added
                         new_l, new_r = l, r
                     else:
                         new_l, new_r = brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
                 elif i == 2:
                     new_l, new_r = brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
                 else:
-                    if partition_idxs[i] == len(brackets):
+                    if partition_idxs[i] == len(brackets):  # virtual brackets we added
                         new_l, new_r = l, r
                     else:
                         new_l, new_r = pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]
