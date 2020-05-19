@@ -27,7 +27,7 @@ def dijkstra(adj, t):  # Time: O(KlogK)
             heappush(min_heap, (curr+w, v))
     return result
 
-def find_shortest_path(PRG, L, R, P, pair, lookup, brackets, t):  # Time: O(KlogK)
+def find_shortest_path(L, R, P, pair, lookup, brackets, t):  # Time: O(KlogK)
     result = []
     for is_reversed in xrange(2):
         adj = {}
@@ -49,9 +49,9 @@ def find_shortest_path(PRG, L, R, P, pair, lookup, brackets, t):  # Time: O(Klog
                 w = lookup[via][not is_reversed][src] + lookup[via][is_reversed][dst]
             adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
             prev = src
-        prev = brackets[0] if brackets[-1]+1 != len(PRG) else len(PRG)
+        prev = brackets[0] if brackets[-1]+1 != len(pair) else len(pair)
         for src in reversed(brackets):
-            if prev == len(PRG):
+            if prev == len(pair):
                 prev = src
                 continue
             dst, via = prev, src+1
@@ -131,7 +131,7 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
             for i in partition_idxs:
                 if i in (-1, len(brackets)):  # virtual brackets we added
                     continue
-                lookup[brackets[i]] = find_shortest_path(PRG, L, R, P, pair, lookup, brackets, brackets[i])  # Time: O(KlogK)
+                lookup[brackets[i]] = find_shortest_path(L, R, P, pair, lookup, brackets, brackets[i])  # Time: O(KlogK)
             for i in xrange(len(partition_idxs)):
                 new_brackets = find_subregions(brackets, partition_idxs, i)
                 if not new_brackets:
