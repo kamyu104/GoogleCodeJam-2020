@@ -7,12 +7,11 @@
 # Space: O(KlogK), optimized without MLE, but TLE in pypy2
 #
 
-from collections import defaultdict
 from itertools import izip
 from heapq import heappop, heappush
 
-def dijkstra(adj, result, t):  # Time: O(KlogK)
-    visited = set()
+def dijkstra(adj, t):  # Time: O(KlogK)
+    result, visited = {}, set()
     min_heap = [(0, t)]
     while min_heap and len(visited) != len(adj):
         curr, u = heappop(min_heap)
@@ -26,11 +25,18 @@ def dijkstra(adj, result, t):  # Time: O(KlogK)
                 continue
             result[v] = curr+w
             heappush(min_heap, (curr+w, v))
+    return result
 
 def find_shortest_path(PRG, L, R, P, pair, lookup, brackets, t):  # Time: O(KlogK)
-    result = [{}, {}]
+    result = []
     for is_reversed in xrange(2):
-        adj = defaultdict(dict)
+        adj = {}
+        for src in brackets:
+            dst = pair[src]
+            w = P[src] if not is_reversed else P[dst]
+            if src not in adj:
+                adj[src] = {}
+            adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
         prev = brackets[-1] if brackets[0]-1 != -1 else -1
         for src in brackets:
             if prev == -1:
@@ -55,11 +61,7 @@ def find_shortest_path(PRG, L, R, P, pair, lookup, brackets, t):  # Time: O(Klog
                 w = lookup[via][not is_reversed][src] + lookup[via][is_reversed][dst]
             adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
             prev = src
-        for src in brackets:
-            dst = pair[src]
-            w = P[src] if not is_reversed else P[dst]
-            adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
-        dijkstra(adj, result[is_reversed], t)
+        result.append(dijkstra(adj, t))
     return result
 
 def find_next(PRG, brackets, curr, d):  # Time: O(K)
