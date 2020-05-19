@@ -11,7 +11,7 @@ from collections import defaultdict
 from itertools import izip
 from heapq import heappop, heappush
 
-def dijkstra(adj, result, t, is_reversed):
+def dijkstra(adj, result, t, is_reversed):  # Time: O(KlogK)
     visited = set()
     min_heap = [(0, t)]
     while min_heap and len(visited) != len(adj):
@@ -62,7 +62,7 @@ def find_shortest_path(PRG, L, R, P, pair, lookup, brackets, t):  # Time: O(Klog
         dijkstra(adj, result, t, is_reversed)
     return result
 
-def find_next(PRG, brackets, curr, d):
+def find_next(PRG, brackets, curr, d):  # Time: O(K)
     count = 0
     while True:
         curr += d
@@ -150,7 +150,7 @@ def emacs():
     PRG = raw_input().strip()
     L, R, P, S, E = [map(int, raw_input().strip().split()) for _ in xrange(5)]
     result, pair, lookup, tree = 0, find_pair(PRG), {}, [[range(len(PRG)), -1, len(PRG)]]
-    return sum(query(PRG, L, R, P, pair, lookup, tree, 0, s-1, e-1) for s, e in izip(S, E))  # Time: O(QlogK)
+    return sum(query(PRG, L, R, P, pair, lookup, tree, 0, s-1, e-1) for s, e in izip(S, E))
 
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, emacs())
