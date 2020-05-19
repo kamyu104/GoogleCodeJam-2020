@@ -143,8 +143,8 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
         a, b = which_subregion(partitions, s), which_subregion(partitions, e)
         if a != b or s in partitions or e in partitions:
             break
-        node = children[a]  # same region without covering partition nodes, visit subregion
-    return min((lookup[p][1][s] if s != p else 0) + (lookup[p][0][e] if p != e else 0) for p in partitions if 0 <= p < len(PRG)) 
+        node = children[a]  # same subregion without covering partition nodes, visit subregion
+    return min((lookup[p][1][s] if s != p else 0) + (lookup[p][0][e] if p != e else 0) for p in partitions if 0 <= p < len(PRG))
 
 def find_pair(s):  # Time: O(K)
     result, stk = [0]*len(s), []
