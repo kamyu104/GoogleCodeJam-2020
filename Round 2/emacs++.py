@@ -96,45 +96,52 @@ def region(partitions, t):  # Time: O(1)
             return i
     return 0
 
+def find_subregions(brackets, partition_idxs, i):
+    if i == 0:
+        if partition_idxs[0] == -1:  # virtual brackets we added
+            return []
+        return brackets[:partition_idxs[0]] + brackets[partition_idxs[-1]+1:]
+    return brackets[partition_idxs[i-1]+1:partition_idxs[i]]
+
+def find_outer_brackets(pair, brackets, partition_idxs, i, l, r):
+    if i == 0:
+         return l, r
+    if i == 1:
+        if partition_idxs[i-1] == -1:  # virtual brackets we added
+            return l, r
+        return brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
+    elif i == 2:
+        return brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
+    elif i == 3:
+        if partition_idxs[i] == len(brackets):  # virtual brackets we added
+            return l, r
+        return pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]
+    assert(False)
+
 def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy ctor, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
-    if len(tree[node]) == 3:  # unvisited
-        brackets, l, r = tree[node]
-        partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
-        partitions = map(lambda x: l if x == -1 else (r if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
-        children = [0]*4
-        tree[node] = [partitions, children, l, r]  # visited
-        for i in partition_idxs:
-            if i in (-1, len(brackets)):  # virtual brackets we added
-                continue
-            lookup[brackets[i]] = find_shortest_path(PRG, L, R, P, pair, lookup, brackets, brackets[i])  # Time: O(KlogK)
-        for i in xrange(len(partition_idxs)):
-            if i == 0:
-                if partition_idxs[0] == -1:  # virtual brackets we added
+    while True:
+        if len(tree[node]) == 3:  # unvisited
+            brackets, l, r = tree[node]
+            partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
+            partitions = map(lambda x: l if x == -1 else (r if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
+            children = [0]*4
+            tree[node] = [partitions, children, l, r]  # visited
+            for i in partition_idxs:
+                if i in (-1, len(brackets)):  # virtual brackets we added
                     continue
-                new_brackets = brackets[:partition_idxs[0]] + brackets[partition_idxs[-1]+1:]
-                new_l, new_r = l, r
-            else:
-                new_brackets = brackets[partition_idxs[i-1]+1:partition_idxs[i]]
-                if i == 1:
-                    if partition_idxs[i-1] == -1:  # virtual brackets we added
-                        new_l, new_r = l, r
-                    else:
-                        new_l, new_r = brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
-                elif i == 2:
-                    new_l, new_r = brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
-                else:
-                    if partition_idxs[i] == len(brackets):  # virtual brackets we added
-                        new_l, new_r = l, r
-                    else:
-                        new_l, new_r = pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]
-            if not new_brackets:
-                continue
-            children[i] = len(tree)
-            tree.append([new_brackets, new_l, new_r])
-    partitions, children, l, r = tree[node]
-    a, b = region(partitions, s), region(partitions, e)
-    if not (a != b or s in partitions or e in partitions):  # same region without covering partition nodes
-        return query(PRG, L, R, P, pair, lookup, tree, children[a], s, e)
+                lookup[brackets[i]] = find_shortest_path(PRG, L, R, P, pair, lookup, brackets, brackets[i])  # Time: O(KlogK)
+            for i in xrange(len(partition_idxs)):
+                new_brackets = find_subregions(brackets, partition_idxs, i)
+                if not new_brackets:
+                    continue
+                new_l, new_r = find_outer_brackets(pair, brackets, partition_idxs, i, l, r)
+                children[i] = len(tree)
+                tree.append([new_brackets, new_l, new_r])
+        partitions, children, l, r = tree[node]
+        a, b = region(partitions, s), region(partitions, e)
+        if a != b or s in partitions or e in partitions:
+            break
+        node = children[a]  # same region without covering partition nodes, visit subregion
     return min((lookup[p][1][s] if s != p else 0) + (lookup[p][0][e] if p != e else 0) for p in partitions if 0 <= p < len(PRG)) 
 
 def find_pair(s):  # Time: O(K)
