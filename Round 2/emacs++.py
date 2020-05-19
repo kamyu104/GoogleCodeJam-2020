@@ -128,10 +128,10 @@ def build(PRG, L, R, P, pair, lookup, tree, node):  # Time: O(KlogK)
         tree.append([new_brackets, new_outer_l, new_outer_r])
 
 def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy build, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
-    depth, ceil_log2_K_p_1 = 0, ((len(PRG)+1)-1).bit_length()  # 2^d-1 >= k, d >= ceil(log(k+1))
+    depth, ceil_log2_Kp1 = 0, ((len(PRG)+1)-1).bit_length()  # 2^d-1 >= k, d >= ceil(log(k+1))
     while True:
         depth += 1
-        assert(depth <= ceil_log2_K_p_1)
+        assert(depth <= ceil_log2_Kp1)
         if len(tree[node]) == 3:  # unvisited
             build(PRG, L, R, P, pair, lookup, tree, node)
         partitions, children, l, r = tree[node]
@@ -153,7 +153,7 @@ def find_pair(s):  # Time: O(K)
             result[left], result[right] = right, left
     return result
 
-def emacs():
+def emacspp():
     K, Q = map(int, raw_input().strip().split())
     PRG = raw_input().strip()
     L, R, P, S, E = [map(int, raw_input().strip().split()) for _ in xrange(5)]
@@ -161,4 +161,4 @@ def emacs():
     return sum(query(PRG, L, R, P, pair, lookup, tree, 0, s-1, e-1) for s, e in izip(S, E))
 
 for case in xrange(input()):
-    print 'Case #%d: %s' % (case+1, emacs())
+    print 'Case #%d: %s' % (case+1, emacspp())
