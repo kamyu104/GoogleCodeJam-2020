@@ -1,18 +1,27 @@
 from random import randint
 
-T = 1
+T = 100
 K, Q, MAX_L, MAX_R, MAX_P = 100000, 100000, 10**6, 10**6, 10**6
 
 print T
-for _ in xrange(T):
+for i in xrange(T):
     PRG, l, r = [], K//2, K//2
-    while l or r:
-        if l == 0 or (l < r and randint(0, 1)):
-            PRG.append(')')
-            r -= 1
-        else:
-            PRG.append('(')
-            l -= 1
+    if i == 0:
+        PRG.append('('*l + ')'*r)
+    elif i == 1:
+        PRG.append('()'*l)
+    else:
+        if i == 9:
+            K, Q = 1000, 1000
+        elif i == 90:
+            MAX_R, MAX_P = 1, 1
+        while l or r:
+            if l == 0 or (l < r and randint(0, 1)):
+                PRG.append(')')
+                r -= 1
+            else:
+                PRG.append('(')
+                l -= 1
     L, R, P, S, E, lookup  = [], [], [], [], [], set()
     for _ in xrange(K):
         L.append(randint(1, MAX_L))
