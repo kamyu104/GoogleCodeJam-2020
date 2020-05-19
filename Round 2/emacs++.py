@@ -94,26 +94,26 @@ def find_subregions(brackets, partition_idxs, i):
         return brackets[:partition_idxs[0]] + brackets[partition_idxs[-1]+1:]
     return brackets[partition_idxs[i-1]+1:partition_idxs[i]]
 
-def find_outer_brackets(pair, brackets, partition_idxs, i, l, r):
+def find_outer_brackets(pair, brackets, partition_idxs, i, outer_l, outer_r):
     if i == 0:
-         return l, r
+         return outer_l, outer_r
     if i == 1:
         if partition_idxs[i-1] == -1:  # virtual brackets we added
-            return l, r
+            return outer_l, outer_r
         return brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
     elif i == 2:
         return brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
     elif i == 3:
         if partition_idxs[i] == len(brackets):  # virtual brackets we added
-            return l, r
+            return outer_l, outer_r
         return pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]
 
 def build(PRG, L, R, P, pair, lookup, tree, node):  # Time: O(KlogK)
-    brackets, l, r = tree[node]
+    brackets, outer_l, outer_r = tree[node]
     partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
-    partitions = map(lambda x: l if x == -1 else (r if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
+    partitions = map(lambda x: outer_l if x == -1 else (outer_r if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
     children = [0]*4
-    tree[node] = [partitions, children, l, r]  # visited
+    tree[node] = [partitions, children, outer_l, outer_r]  # visited
     for i in partition_idxs:
         if i in (-1, len(brackets)):  # virtual brackets we added
             continue
@@ -122,9 +122,9 @@ def build(PRG, L, R, P, pair, lookup, tree, node):  # Time: O(KlogK)
         new_brackets = find_subregions(brackets, partition_idxs, i)
         if not new_brackets:
             continue
-        new_l, new_r = find_outer_brackets(pair, brackets, partition_idxs, i, l, r)
+        new_outer_l, new_outer_r = find_outer_brackets(pair, brackets, partition_idxs, i, outer_l, outer_r)
         children[i] = len(tree)
-        tree.append([new_brackets, new_l, new_r])
+        tree.append([new_brackets, new_outer_l, new_outer_r])
 
 def which_subregion(partitions, t):  # Time: O(1)
     for i, p in enumerate(partitions):
