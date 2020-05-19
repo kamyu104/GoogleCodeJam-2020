@@ -6,16 +6,16 @@ print T
 for i in xrange(T):
     if i == 0:
         K, Q, MAX_L, MAX_R, MAX_P = 100000, 100000, 1, 1, 1
-    if i == 100:
-         K, Q, MAX_L, MAX_R, MAX_P = 100000, 100000, 10**6, 10**6, 10**6
+    elif i == 100:
+        K, Q, MAX_L, MAX_R, MAX_P = 100000, 100000, 10**6, 10**6, 10**6
+    elif i%100 == 9:
+        K, Q = 1000, 1000
     PRG, l, r = [], K//2, K//2
     if i%100 == 0:
         PRG.append('('*l + ')'*r)
     elif i%100 == 1:
         PRG.append('()'*l)
     else:
-        if i%100 == 9:
-            K, Q = 1000, 1000
         while l or r:
             if l == 0 or (l < r and randint(0, 1)):
                 PRG.append(')')
