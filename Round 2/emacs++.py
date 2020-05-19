@@ -90,12 +90,6 @@ def find_partitions(PRG, brackets):  # Time: O(K)
     result[0], result[-1] = left, right
     return result
 
-def which_subregion(partitions, t):  # Time: O(1)
-    for i, p in enumerate(partitions):
-        if p > t:
-            return i
-    return 0
-
 def find_subregions(brackets, partition_idxs, i):
     if i == 0:
         if partition_idxs[0] == -1:  # virtual brackets we added
@@ -116,6 +110,12 @@ def find_outer_brackets(pair, brackets, partition_idxs, i, l, r):
         if partition_idxs[i] == len(brackets):  # virtual brackets we added
             return l, r
         return pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]
+
+def which_subregion(partitions, t):  # Time: O(1)
+    for i, p in enumerate(partitions):
+        if p > t:
+            return i
+    return 0
 
 def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy ctor, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
     while True:
