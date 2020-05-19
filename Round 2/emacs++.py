@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033893b
 #
 # Time:  O(K * (logK)^2 + QlogK)
-# Space: O(KlogK), optimized without MLE, but TLE in pypy2
+# Space: O(KlogK), fully correct by testing, optimized without MLE, but TLE in pypy2
 #
 
 from itertools import izip
