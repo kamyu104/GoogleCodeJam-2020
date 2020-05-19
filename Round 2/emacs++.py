@@ -128,10 +128,10 @@ def build(PRG, L, R, P, pair, lookup, tree, node):  # Time: O(KlogK)
         tree.append([new_brackets, new_outer_l, new_outer_r])
 
 def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy build, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
-    depth, ceil_logK = 0, (len(PRG)-1).bit_length()
+    depth, ceil_log2_K_p_1 = 0, ((len(PRG)+1)-1).bit_length()  # 2^d-1 >= k, d >= ceil(log(k+1))
     while True:
         depth += 1
-        assert(depth <= ceil_logK)
+        assert(depth <= ceil_log2_K_p_1)
         if len(tree[node]) == 3:  # unvisited
             build(PRG, L, R, P, pair, lookup, tree, node)
         partitions, children, l, r = tree[node]
