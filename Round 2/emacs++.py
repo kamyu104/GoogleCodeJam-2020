@@ -10,6 +10,7 @@
 
 from itertools import izip
 from heapq import heappop, heappush
+from bisect import bisect_right
 
 def dijkstra(adj, t):  # Time: O(KlogK)
     result, visited = {t:0}, set()
@@ -126,12 +127,6 @@ def build(PRG, L, R, P, pair, lookup, tree, node):  # Time: O(KlogK)
         children[i] = len(tree)
         tree.append([new_brackets, new_outer_l, new_outer_r])
 
-def which_subregion(partitions, t):  # Time: O(1)
-    for i, p in enumerate(partitions):
-        if p > t:
-            return i
-    return 0
-
 def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy build, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
     depth, ceil_logK = 0, (len(PRG)-1).bit_length()
     while True:
@@ -140,8 +135,10 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
         if len(tree[node]) == 3:  # unvisited
             build(PRG, L, R, P, pair, lookup, tree, node)
         partitions, children, l, r = tree[node]
-        a, b = which_subregion(partitions, s), which_subregion(partitions, e)
-        if a != b or s in partitions or e in partitions:
+        if s in partitions or e in partitions:
+            break
+        a, b = map(lambda x: bisect_right(partitions, x)%len(partitions), (s, e))
+        if a != b:
             break
         node = children[a]  # same subregion without covering partition nodes, visit subregion
     return min(lookup[p][1][s] + lookup[p][0][e] for p in partitions if 0 <= p < len(PRG))
