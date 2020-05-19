@@ -11,7 +11,7 @@ from collections import defaultdict
 from itertools import izip
 from heapq import heappop, heappush
 
-def dijkstra(adj, result, t, is_reversed):  # Time: O(KlogK)
+def dijkstra(adj, result, t):  # Time: O(KlogK)
     visited = set()
     min_heap = [(0, t)]
     while min_heap and len(visited) != len(adj):
@@ -22,9 +22,9 @@ def dijkstra(adj, result, t, is_reversed):  # Time: O(KlogK)
         for v, w in adj[u].iteritems():
             if v in visited:
                 continue
-            if v in result[is_reversed] and result[is_reversed][v] <= curr+w:
+            if v in result and result[v] <= curr+w:
                 continue
-            result[is_reversed][v] = curr+w
+            result[v] = curr+w
             heappush(min_heap, (curr+w, v))
 
 def find_shortest_path(PRG, L, R, P, pair, lookup, brackets, t):  # Time: O(KlogK)
@@ -59,7 +59,7 @@ def find_shortest_path(PRG, L, R, P, pair, lookup, brackets, t):  # Time: O(Klog
             dst = pair[src]
             w = P[src] if not is_reversed else P[dst]
             adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
-        dijkstra(adj, result, t, is_reversed)
+        dijkstra(adj, result[is_reversed], t)
     return result
 
 def find_next(PRG, brackets, curr, d):  # Time: O(K)
