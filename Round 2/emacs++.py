@@ -118,7 +118,10 @@ def which_subregion(partitions, t):  # Time: O(1)
     return 0
 
 def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy ctor, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
+    # depth, ceil_logK = 0, (len(PRG)-1).bit_length()
     while True:
+        # depth += 1
+        # assert(depth <= ceil_logK)
         if len(tree[node]) == 3:  # unvisited
             brackets, l, r = tree[node]
             partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
