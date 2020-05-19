@@ -90,7 +90,7 @@ def find_partitions(PRG, brackets):  # Time: O(K)
     result[0], result[-1] = left, right
     return result
 
-def region(partitions, t):  # Time: O(1)
+def which_subregion(partitions, t):  # Time: O(1)
     for i, p in enumerate(partitions):
         if p > t:
             return i
@@ -137,7 +137,7 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
                 children[i] = len(tree)
                 tree.append([new_brackets, new_l, new_r])
         partitions, children, l, r = tree[node]
-        a, b = region(partitions, s), region(partitions, e)
+        a, b = which_subregion(partitions, s), which_subregion(partitions, e)
         if a != b or s in partitions or e in partitions:
             break
         node = children[a]  # same region without covering partition nodes, visit subregion
