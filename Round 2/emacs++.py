@@ -141,7 +141,7 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
         if a != b:
             break
         node = children[a]  # same subregion without covering partition nodes, visit subregion
-    return min(lookup[p][1][s] + lookup[p][0][e] for p in partitions if 0 <= p < len(PRG))
+    return min(lookup[p][1][s] + lookup[p][0][e] for p in partitions if 0 <= p < len(PRG))  # find min LCA dist
 
 def find_pair(s):  # Time: O(K)
     result, stk = [0]*len(s), []
