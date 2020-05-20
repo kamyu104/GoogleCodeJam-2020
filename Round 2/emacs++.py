@@ -157,7 +157,7 @@ def emacspp():
     K, Q = map(int, raw_input().strip().split())
     PRG = raw_input().strip()
     L, R, P, S, E = [map(int, raw_input().strip().split()) for _ in xrange(5)]
-    pair, lookup, tree = find_pair(PRG), {}, [[range(len(PRG)), -1, len(PRG)]]
+    pair, lookup, tree = find_pair(PRG), [0]*K, [[range(len(PRG)), -1, len(PRG)]]
     return sum(query(PRG, L, R, P, pair, lookup, tree, 0, s-1, e-1) for s, e in izip(S, E))
 
 for case in xrange(input()):
