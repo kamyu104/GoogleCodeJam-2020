@@ -30,10 +30,10 @@ def dijkstra(adj, t):  # Time: O(KlogK)
             heappush(min_heap, (curr+w, v))
     return result
 
-def update_adj(lookup, brackets, adj, is_reversed, front, back, direction, end, d, l, r):  # Time: O(K)
-    prev = back if front-d != end else end
+def update_adj(lookup, brackets, adj, is_reversed, front, back, direction, dummy, d, l, r):  # Time: O(K)
+    prev = back if front-d != dummy else dummy
     for src in direction(brackets):
-        if prev == end:
+        if prev == dummy:
             prev = src
             continue
         dst, via = prev, src-d
