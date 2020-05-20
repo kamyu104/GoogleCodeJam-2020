@@ -13,7 +13,7 @@
 
 from itertools import izip
 from heapq import heappop, heappush
-from bisect import bisect_right
+from bisect import bisect_left
 
 def dijkstra(adj, t):  # Time: O(KlogK)
     result, visited = {t:0}, set()
@@ -138,10 +138,8 @@ def query(PRG, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for laz
         if len(tree[node]) == 3:  # unvisited
             build(PRG, pair, lookup, tree, node)
         partitions, children, _, _ = tree[node]
-        if s in partitions or e in partitions:
-            break
-        a, b = map(lambda x: bisect_right(partitions, x)%len(partitions), (s, e))
-        if a != b:
+        a, b = map(lambda x: bisect_left(partitions, x)%len(partitions), (s, e))
+        if s == partitions[a] or e == partitions[b] or a != b:
             break
         node = children[a]  # same subregion without covering partition nodes, visit subregion
     return min(lookup[p][1][s] + lookup[p][0][e] for p in partitions if 0 <= p < len(PRG))  # find min LCA dist
