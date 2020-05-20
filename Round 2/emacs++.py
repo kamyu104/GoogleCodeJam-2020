@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033893b
 #
 # Time:  O(K * (logK)^2 + QlogK)
-# Space: O(KlogK), fully correct by testing, optimized without MLE,
+# Space: O(KlogK), fully correct by testing, optimized without MLE by lazy build,
 #                  but still TLE in pypy2 (time is very tight for python/pypy2)
 #
 
