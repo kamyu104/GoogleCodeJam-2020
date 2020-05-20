@@ -135,7 +135,7 @@ def query(PRG, L, R, P, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2
         assert(depth <= ceil_log2_Kp1)
         if len(tree[node]) == 3:  # unvisited
             build(PRG, L, R, P, pair, lookup, tree, node)
-        partitions, children, l, r = tree[node]
+        partitions, children, _, _ = tree[node]
         a, b = map(lambda x: bisect_left(partitions, x)%len(partitions), (s, e))
         if s == partitions[a] or e == partitions[b] or a != b:
             break
