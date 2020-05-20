@@ -3,7 +3,8 @@
 # Google Code Jam 2020 Round 2 - Problem D. Emacs++
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033893b
 #
-# Time:  O(K * (logK)^2 + QlogK), correct and fully tested by lots of edge cases, optimized without MLE by lazy build,
+# Time:  O(K * (logK)^2 + QlogK), correct and fully tested by lots of edge cases,
+#                                 optimized without MLE by lazy build,
 #                                 but still TLE in PyPy2 (time is very tight for Python/PyPy2)
 # Space: O(KlogK)
 # 
