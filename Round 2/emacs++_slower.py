@@ -16,20 +16,20 @@ from heapq import heappop, heappush
 from bisect import bisect_left
 
 def dijkstra(adj, t):  # Time: O(KlogK)
-    result, visited = {t:0}, set([t])
+    result, visited = {t:0}, set()
     min_heap = [(0, t)]
     while min_heap and len(visited) != len(adj):
         curr, u = heappop(min_heap)
-        new_q = {}
+        if u in visited:
+            continue
+        visited.add(u)
         for v, w in adj[u].iteritems():
-            if (v in visited or
-                (v in result and result[v] <= curr+w) or
-                (v in new_q and new_q[v] <= curr+w)):
+            if v in visited:
                 continue
-            new_q[v] = curr+w
-        for v, w in new_q.iteritems():
-            result[v] = w
-            heappush(min_heap, (w, v))
+            if v in result and result[v] <= curr+w:
+                continue
+            result[v] = curr+w
+            heappush(min_heap, (curr+w, v))
     return result
 
 def update_adj(lookup, brackets, adj, is_reversed, front, back, direction, dummy, d):  # Time: O(K)
