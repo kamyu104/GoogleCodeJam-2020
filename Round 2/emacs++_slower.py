@@ -5,7 +5,7 @@
 #
 # Time:  O(K * (logK)^2 + QlogK), correct and fully tested by lots of edge cases,
 #                                 optimized without MLE by lazy build,
-#                                 but still TLE in PyPy2 (time is very tight for Python/PyPy2)
+#                                 pass in test case 1 for PyPy2 byt TLE in test case 2 (time is very tight for Python/PyPy2)
 # Space: O(KlogK)
 # 
 # cleaner by slower solution
@@ -46,9 +46,9 @@ def update_adj(lookup, brackets, adj, is_reversed, front, back, direction, dummy
         adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
         prev = src
 
-def find_shortest_path(pair, lookup, brackets, t):  # Time: O(KlogK)
+def find_shortest_path(is_undir, pair, lookup, brackets, t):  # Time: O(KlogK)
     result = []
-    for is_reversed in xrange(2):
+    for is_reversed in xrange(1 if is_undir else 2):
         adj = {}
         for src in brackets:
             dst = pair[src]
@@ -63,6 +63,8 @@ def find_shortest_path(pair, lookup, brackets, t):  # Time: O(KlogK)
                    brackets[-1], brackets[0], lambda x:reversed(x),
                    len(pair), -1)
         result.append(dijkstra(adj, t))
+    if is_undir:
+        result.append(result[-1])
     return result
 
 def find_next_bracket(PRG, brackets, curr, d):  # Time: O(K)
@@ -112,7 +114,7 @@ def find_outer_brackets(pair, brackets, partition_idxs, i, outer_l, outer_r):
             return outer_l, outer_r
         return pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]
 
-def build(PRG, pair, lookup, tree, node):  # Time: O(KlogK)
+def build(PRG, is_undir, pair, lookup, tree, node):  # Time: O(KlogK)
     brackets, outer_l, outer_r = tree[node]
     partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
     partitions = map(lambda x: outer_l if x == -1 else (outer_r if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
@@ -121,7 +123,7 @@ def build(PRG, pair, lookup, tree, node):  # Time: O(KlogK)
     for i in partition_idxs:
         if i in (-1, len(brackets)):  # virtual brackets we added
             continue
-        lookup[brackets[i]] = find_shortest_path(pair, lookup, brackets, brackets[i])  # Time: O(KlogK)
+        lookup[brackets[i]] = find_shortest_path(is_undir, pair, lookup, brackets, brackets[i])  # Time: O(KlogK)
     for i in xrange(len(partition_idxs)):
         new_brackets = find_subregions(brackets, partition_idxs, i)
         if not new_brackets:
@@ -130,13 +132,13 @@ def build(PRG, pair, lookup, tree, node):  # Time: O(KlogK)
         children[i] = len(tree)
         tree.append([new_brackets, new_outer_l, new_outer_r])
 
-def query(PRG, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy build, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
+def query(PRG, is_undir, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy build, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
     depth, ceil_log2_Kp1 = 0, ((len(PRG)+1)-1).bit_length()  # 2^d-1 >= k, d >= ceil(log(k+1))
     while True:
         depth += 1
         assert(depth <= ceil_log2_Kp1)
         if len(tree[node]) == 3:  # unvisited
-            build(PRG, pair, lookup, tree, node)
+            build(PRG, is_undir, pair, lookup, tree, node)
         partitions, children, _, _ = tree[node]
         a, b = map(lambda x: bisect_left(partitions, x)%len(partitions), (s, e))
         if s == partitions[a] or e == partitions[b] or a != b:
@@ -168,13 +170,25 @@ def init_dist(L, R, P, pair):
             lookup[i][1][i+1] = L[i+1] if i+1 not in lookup[i][1] else min(lookup[i][1][i+1], L[i+1])
     return lookup
 
+def is_undirected(L, R, P, pair):
+    for i in xrange(len(pair)):
+        if P[i] != P[pair[i]]:
+            break
+        if i-1 >= 0 and L[i] != R[i-1]:
+            break
+        if i+1 < len(pair) and R[i] != L[i+1]:
+            break
+    else:
+        return True
+    return False
+
 def emacspp():
     K, Q = map(int, raw_input().strip().split())
     PRG = raw_input().strip()
     L, R, P, S, E = [map(int, raw_input().strip().split()) for _ in xrange(5)]
     pair = find_pair(PRG)
-    lookup, tree = init_dist(L, R, P, pair), [[range(len(PRG)), -1, len(PRG)]]
-    return sum(query(PRG, pair, lookup, tree, 0, s-1, e-1) for s, e in izip(S, E))
+    is_undir, lookup, tree = is_undirected(L, R, P, pair), init_dist(L, R, P, pair), [[range(len(PRG)), -1, len(PRG)]]
+    return sum(query(PRG, is_undir, pair, lookup, tree, 0, s-1, e-1) for s, e in izip(S, E))
 
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, emacspp())
