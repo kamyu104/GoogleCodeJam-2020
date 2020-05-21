@@ -108,7 +108,7 @@ def build(PRG, is_undir, pairs, parents, lookup, tree, node):  # Time: O(KlogK)
     brackets = tree[node][0]
     partitions = find_partitions(PRG, pairs, parents, brackets)  # Time: O(K)
     children = [0]*4
-    tree[node] = [partitions, children, brackets[0], brackets[-1]]
+    tree[node] = [partitions, children]
     for p in partitions:
         if not (brackets[0] <= p <= brackets[-1]):  # virtual brackets we added
             continue
@@ -126,7 +126,7 @@ def query(PRG, is_undir, pairs, parents, lookup, tree, node, s, e):  # Time: O(K
         assert(depth <= ceil_log2_Kp1)
         if len(tree[node]) == 1:  # unvisited
             build(PRG, is_undir, pairs, parents, lookup, tree, node)
-        partitions, children, front, back = tree[node]
+        partitions, children = tree[node]
         a, b = map(lambda x: bisect_left(partitions, x)%4, (s, e))
         if s == partitions[a] or e == partitions[b] or a != b:
             break
