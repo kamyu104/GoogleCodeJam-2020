@@ -46,12 +46,12 @@ def update_adj(lookup, brackets, adj, is_reversed, front, back, direction, dummy
         adj[src][dst] = w if dst not in adj[src] else min(adj[src][dst], w)
         prev = src
 
-def find_shortest_path(is_undir, pair, lookup, brackets, t):  # Time: O(KlogK)
+def find_shortest_path(is_undir, pairs, lookup, brackets, t):  # Time: O(KlogK)
     result = []
     for is_reversed in xrange(1 if is_undir else 2):
         adj = {}
         for src in brackets:
-            dst = pair[src]
+            dst = pairs[src]
             w = lookup[dst][not is_reversed][src]
             if src not in adj:
                 adj[src] = {}
@@ -61,7 +61,7 @@ def find_shortest_path(is_undir, pair, lookup, brackets, t):  # Time: O(KlogK)
                    -1, 1)
         update_adj(lookup, brackets, adj, is_reversed,
                    brackets[-1], brackets[0], lambda x:reversed(x),
-                   len(pair), -1)
+                   len(pairs), -1)
         result.append(dijkstra(adj, t))
     if is_undir:
         result.append(result[-1])
@@ -81,102 +81,96 @@ def find_next_bracket(PRG, brackets, curr, d):  # Time: O(K)
             break
     return curr
 
-def find_partitions(PRG, brackets):  # Time: O(K)
+def find_partitions(PRG, pairs, parents, brackets):  # Time: O(K)
     result, mid = [-1]*4, (len(brackets)-1)//2
     if PRG[brackets[mid]] == '(':
         left, right = mid, find_next_bracket(PRG, brackets, mid, 1)
     else:
         left, right = find_next_bracket(PRG, brackets, mid, -1), mid
     while 2*(right-left+1) <= len(brackets)+2:  # including virtual brackets we added
-        result[1], result[2] = left, right
+        result[1], result[2] = brackets[left], brackets[right]
         left, right = find_next_bracket(PRG, brackets, left, -1), find_next_bracket(PRG, brackets, right, 1)
-    result[0], result[-1] = left, right
+    result[0] = brackets[left] if left != -1 else parents[brackets[0]]
+    result[-1] = brackets[right] if right != len(brackets) else parents[brackets[-1]]
     return result
 
-def find_subregions(brackets, partition_idxs, i):
-    if i == 0:
-        if partition_idxs[0] == -1:  # virtual brackets we added
-            return []
-        return brackets[:partition_idxs[0]] + brackets[partition_idxs[-1]+1:]
-    return brackets[partition_idxs[i-1]+1:partition_idxs[i]]
-
-def find_outer_brackets(pair, brackets, partition_idxs, i, outer_l, outer_r):
-    if i == 0:
-         return outer_l, outer_r
-    elif i == 1:
-        if partition_idxs[i-1] == -1:  # virtual brackets we added
-            return outer_l, outer_r
-        return brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
-    elif i == 2:
-        return brackets[partition_idxs[i-1]], pair[brackets[partition_idxs[i-1]]]
-    elif i == 3:
-        if partition_idxs[i] == len(brackets):  # virtual brackets we added
-            return outer_l, outer_r
-        return pair[brackets[partition_idxs[i]]], brackets[partition_idxs[i]]
-
-def build(PRG, is_undir, pair, lookup, tree, node):  # Time: O(KlogK)
-    brackets, outer_l, outer_r = tree[node]
-    partition_idxs = find_partitions(PRG, brackets)  # Time: O(K)
-    partitions = map(lambda x: outer_l if x == -1 else (outer_r if x == len(brackets) else brackets[x]), partition_idxs)  # replace virtual brackets with outer brackets
-    children = [0]*4
-    tree[node] = [partitions, children, outer_l, outer_r]  # visited
-    for i in partition_idxs:
-        if i in (-1, len(brackets)):  # virtual brackets we added
+def find_subregions(brackets, partitions):
+    i, new_brackets = 0, [[] for _ in xrange(4)]
+    for b in brackets:
+        if i < 4 and b > partitions[i]:
+            i += 1
+        if i < 4 and b == partitions[i]:
             continue
-        lookup[brackets[i]] = find_shortest_path(is_undir, pair, lookup, brackets, brackets[i])  # Time: O(KlogK)
-    for i in xrange(len(partition_idxs)):
-        new_brackets = find_subregions(brackets, partition_idxs, i)
+        new_brackets[i%4].append(b)
+    return new_brackets
+
+def build(PRG, is_undir, pairs, parents, lookup, tree, node):  # Time: O(KlogK)
+    brackets = tree[node][0]
+    partitions = find_partitions(PRG, pairs, parents, brackets)  # Time: O(K)
+    children = [0]*4
+    tree[node] = [partitions, children, brackets[0], brackets[-1]]
+    for p in partitions:
+        if not (brackets[0] <= p <= brackets[-1]):  # virtual brackets we added
+            continue
+        lookup[p] = find_shortest_path(is_undir, pairs, lookup, brackets, p)  # Time: O(KlogK)
+    for i, new_brackets in enumerate(find_subregions(brackets, partitions)):
         if not new_brackets:
             continue
-        new_outer_l, new_outer_r = find_outer_brackets(pair, brackets, partition_idxs, i, outer_l, outer_r)
         children[i] = len(tree)
-        tree.append([new_brackets, new_outer_l, new_outer_r])
+        tree.append([new_brackets])
 
-def query(PRG, is_undir, pair, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy build, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
+def query(PRG, is_undir, pairs, parents, lookup, tree, node, s, e):  # Time: O(K * (logK)^2) for lazy build, O(QlogK) for query, run at most O(KlogK) in each depth, at most O(logK) depth
     depth, ceil_log2_Kp1 = 0, ((len(PRG)+1)-1).bit_length()  # 2^d-1 >= k, d >= ceil(log(k+1))
     while True:
         depth += 1
         assert(depth <= ceil_log2_Kp1)
-        if len(tree[node]) == 3:  # unvisited
-            build(PRG, is_undir, pair, lookup, tree, node)
-        partitions, children, _, _ = tree[node]
-        a, b = map(lambda x: bisect_left(partitions, x)%len(partitions), (s, e))
+        if len(tree[node]) == 1:  # unvisited
+            build(PRG, is_undir, pairs, parents, lookup, tree, node)
+        partitions, children, front, back = tree[node]
+        a, b = map(lambda x: bisect_left(partitions, x)%4, (s, e))
         if s == partitions[a] or e == partitions[b] or a != b:
             break
         node = children[a]  # same subregion without covering partition nodes, visit subregion
     return min(lookup[p][1][s] + lookup[p][0][e] for p in partitions if 0 <= p < len(PRG))  # find min LCA dist
 
-def find_pair(s):  # Time: O(K)
-    result, stk = [0]*len(s), []
+def find_pairs_and_parents(s):  # Time: O(K)
+    pairs, parents, stk = [0]*len(s), [None]*len(s), []
+    parent = -1
     for right, p in enumerate(s):
         if p == '(':
+            parents[right] = parent
+            parent = right
             stk.append(right)
         else:
             left = stk.pop()
-            result[left], result[right] = right, left
-    return result
+            parent = parents[left]
+            pairs[left], pairs[right] = right, left
+    for i in xrange(len(s)):
+        if parents[i] is None:
+            parents[i] = pairs[parents[pairs[i]]] if parents[pairs[i]] != -1 else len(s)
+    return pairs, parents
 
-def init_dist(L, R, P, pair):
-    lookup = [0]*len(pair)
-    for i in xrange(len(pair)):
+def init_dist(L, R, P, pairs):
+    lookup = [0]*len(pairs)
+    for i in xrange(len(pairs)):
         lookup[i] = [{}, {}]
-        lookup[i][0][pair[i]] = P[i] if pair[i] not in lookup[i][0] else min(lookup[i][0][pair[i]], P[i])
-        lookup[i][1][pair[i]] = P[pair[i]] if pair[i] not in lookup[i][1] else min(lookup[i][1][pair[i]], P[pair[i]])
+        lookup[i][0][pairs[i]] = P[i] if pairs[i] not in lookup[i][0] else min(lookup[i][0][pairs[i]], P[i])
+        lookup[i][1][pairs[i]] = P[pairs[i]] if pairs[i] not in lookup[i][1] else min(lookup[i][1][pairs[i]], P[pairs[i]])
         if i-1 >= 0:
             lookup[i][0][i-1] = L[i] if i-1 not in lookup[i][0] else min(lookup[i][0][i-1], L[i])
             lookup[i][1][i-1] = R[i-1] if i-1 not in lookup[i][1] else min(lookup[i][1][i-1], R[i-1])
-        if i+1 < len(pair):
+        if i+1 < len(pairs):
             lookup[i][0][i+1] = R[i] if i+1 not in lookup[i][0] else min(lookup[i][0][i+1], R[i])
             lookup[i][1][i+1] = L[i+1] if i+1 not in lookup[i][1] else min(lookup[i][1][i+1], L[i+1])
     return lookup
 
-def is_undirected(L, R, P, pair):
-    for i in xrange(len(pair)):
-        if P[i] != P[pair[i]]:
+def is_undirected(L, R, P, pairs):
+    for i in xrange(len(pairs)):
+        if P[i] != P[pairs[i]]:
             break
         if i-1 >= 0 and L[i] != R[i-1]:
             break
-        if i+1 < len(pair) and R[i] != L[i+1]:
+        if i+1 < len(pairs) and R[i] != L[i+1]:
             break
     else:
         return True
@@ -186,9 +180,9 @@ def emacspp():
     K, Q = map(int, raw_input().strip().split())
     PRG = raw_input().strip()
     L, R, P, S, E = [map(int, raw_input().strip().split()) for _ in xrange(5)]
-    pair = find_pair(PRG)
-    is_undir, lookup, tree = is_undirected(L, R, P, pair), init_dist(L, R, P, pair), [[range(len(PRG)), -1, len(PRG)]]
-    return sum(query(PRG, is_undir, pair, lookup, tree, 0, s-1, e-1) for s, e in izip(S, E))
+    pairs, parents = find_pairs_and_parents(PRG)
+    is_undir, lookup, tree = is_undirected(L, R, P, pairs), init_dist(L, R, P, pairs), [[range(len(PRG))]]
+    return sum(query(PRG, is_undir, pairs, parents, lookup, tree, 0, s-1, e-1) for s, e in izip(S, E))
 
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, emacspp())
