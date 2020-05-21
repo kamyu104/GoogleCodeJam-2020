@@ -156,14 +156,14 @@ def find_pair(s):  # Time: O(K)
 
 def init_dist(L, R, P, pair):
     lookup = [0]*len(pair)
-    for i in xrange(len(P)):
+    for i in xrange(len(pair)):
         lookup[i] = [{}, {}]
         lookup[i][0][pair[i]] = P[i] if pair[i] not in lookup[i][0] else min(lookup[i][0][pair[i]], P[i])
         lookup[i][1][pair[i]] = P[pair[i]] if pair[i] not in lookup[i][1] else min(lookup[i][1][pair[i]], P[pair[i]])
         if i-1 >= 0:
             lookup[i][0][i-1] = L[i] if i-1 not in lookup[i][0] else min(lookup[i][0][i-1], L[i])
             lookup[i][1][i-1] = R[i-1] if i-1 not in lookup[i][1] else min(lookup[i][1][i-1], R[i-1])
-        if i+1 < len(P):
+        if i+1 < len(pair):
             lookup[i][0][i+1] = R[i] if i+1 not in lookup[i][0] else min(lookup[i][0][i+1], R[i])
             lookup[i][1][i+1] = L[i+1] if i+1 not in lookup[i][1] else min(lookup[i][1][i+1], L[i+1])
     return lookup
