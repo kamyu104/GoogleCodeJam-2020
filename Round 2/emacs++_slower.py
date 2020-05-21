@@ -5,7 +5,7 @@
 #
 # Time:  O(K * (logK)^2 + QlogK), correct and fully tested by lots of edge cases,
 #                                 optimized without MLE by lazy build,
-#                                 pass in test case 1 for PyPy2 byt TLE in test case 2 (time is very tight for Python/PyPy2)
+#                                 pass in test case 1 for PyPy2 but TLE in test case 2 (time is very tight for Python/PyPy2)
 # Space: O(KlogK)
 # 
 # cleaner by slower solution
