@@ -159,6 +159,7 @@ def find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, r
                                                    prefix_sum_from_left_inner_to_left_outer[i]+
                                                    left_outer_to_right_outer[curr]+
                                                    prefix_sum_from_right_outer_to_right_inner[i])
+        for i, child in enumerate(children[curr]):
             right_outer_to_left_outer[child] = min(right_outer_to_left_outer[child],
                                                    prefix_sum_from_right_inner_to_right_outer[i]+
                                                    right_outer_to_left_outer[curr]+
