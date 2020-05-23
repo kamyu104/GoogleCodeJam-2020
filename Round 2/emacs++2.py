@@ -124,7 +124,7 @@ def init_dist(L, R, P, nodes, children):
         stk.pop()()
     return left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent
 
-def find_dist_and_prefix_dist(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer):
+def find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer):
     def divide(curr):
         for child in reversed(children[curr]):
             stk.append(partial(divide, child))
@@ -297,7 +297,7 @@ def emacspp():
     nodes, children = build_tree(PRG)
     pairid_and_side = find_pairid_and_side(nodes)
     left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent = init_dist(L, R, P, nodes, children)
-    ret = find_dist_and_prefix_dist(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer)
+    ret = find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer)
     up_dist_matrix, down_dist_matrix, prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child = ret
     tree_infos = TreeInfos(children, partial(accu_dist, up_dist_matrix, down_dist_matrix))
     return sum(query(L, R, nodes, children, pairid_and_side,
