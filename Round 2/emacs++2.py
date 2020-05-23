@@ -253,8 +253,7 @@ def query(L, R,
           up_dist_matrix, down_dist_matrix, prefix_sum_from_left, prefix_sum_from_right,
           tree_infos,
           s, e):  # Time: O(logK) per query
-    pairid_a, side_a = pairid_and_side[s]
-    pairid_b, side_b = pairid_and_side[e]
+    (pairid_a, side_a), (pairid_b, side_b) = pairid_and_side[s], pairid_and_side[e]
     if pairid_a == pairid_b:
         return init_up_dist_array(left_outer_to_right_outer, right_outer_to_left_outer, pairid_a, side_a)[side_b]
     lca = tree_infos.lca(pairid_a, pairid_b)
