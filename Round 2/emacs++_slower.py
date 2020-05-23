@@ -113,7 +113,7 @@ def build(PRG, is_undir, pairs, parents, lookup, tree, node):  # Time: O(KlogK)
         if not (brackets[0] <= partitions[i] <= brackets[-1]):  # virtual brackets we added
             continue
         lookup[partitions[i]] = find_shortest_path(is_undir, pairs, lookup, brackets, partitions[i])  # Time: O(KlogK)
-    middle_brackets = [x for x in brackets if partitions[0] < x < partitions[3]]
+    middle_brackets = [b for b in brackets if partitions[0] < b < partitions[3]]
     for i in [1, 2]:
         lookup[partitions[i]] = find_shortest_path(is_undir, pairs, lookup, middle_brackets, partitions[i])  # Time: O(KlogK)
     for i, new_brackets in enumerate(find_subregions(brackets, partitions)):
