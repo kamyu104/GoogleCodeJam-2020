@@ -12,7 +12,7 @@ from functools import partial
 
 # Template:
 # https://github.com/kamyu104/FacebookHackerCup-2019/blob/master/Final%20Round/temporal_revision.py
-class TreeInfos(object):
+class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of nodes
     def __init__(self, children, cb=lambda *x:None):
         def preprocess(curr, parent):
             # depth of the node i
@@ -79,12 +79,6 @@ def accu_dist(up_dist_matrix, down_dist_matrix, P, curr, i):
         down_dist_matrix[curr].append(add_dist_matrix(down_dist_matrix[curr][i],
                                                       down_dist_matrix[P[curr][i]][i]))
 
-def find_pairid_and_side(nodes):
-    pairid_and_side = [None]*(len(nodes)*2)
-    for i, (l, r) in enumerate(nodes):
-        pairid_and_side[l], pairid_and_side[r] = (i, 0), (i, 1)
-    return pairid_and_side
-
 def build_tree(s):  # Time: O(K)
     nodes, children, stk = [], [[] for _ in xrange(len(s)//2)], []
     parent = -1
@@ -98,7 +92,13 @@ def build_tree(s):  # Time: O(K)
             nodes[stk.pop()][1] = i
     return nodes, children
 
-def init_dist(L, R, P, nodes, children):
+def find_pairid_and_side(nodes):  # Time: O(K)
+    pairid_and_side = [None]*(len(nodes)*2)
+    for i, (l, r) in enumerate(nodes):
+        pairid_and_side[l], pairid_and_side[r] = (i, 0), (i, 1)
+    return pairid_and_side
+
+def init_dist(L, R, P, nodes, children):  # Time: O(K)
     def divide(curr):
         stk.append(partial(postprocess, curr))
         for child in reversed(children[curr]):
@@ -124,7 +124,7 @@ def init_dist(L, R, P, nodes, children):
         stk.pop()()
     return left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent
 
-def find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer):
+def find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer):  # Time: O(K)
     def divide(curr):
         for child in reversed(children[curr]):
             stk.append(partial(divide, child))
@@ -212,7 +212,7 @@ def init_down_dist_array(left_outer_to_right_outer, right_outer_to_left_outer, c
         return [0, right_outer_to_left_outer[curr]]
     return [left_outer_to_right_outer[curr], 0]
 
-def go_up(left_outer_to_right_outer, right_outer_to_left_outer, tree_infos, up_dist_matrix, curr, side, lca):
+def go_up(left_outer_to_right_outer, right_outer_to_left_outer, tree_infos, up_dist_matrix, curr, side, lca):  # Time: O(logK)
     up_dist_array = init_up_dist_array(left_outer_to_right_outer, right_outer_to_left_outer, curr, side)
     for i in reversed(xrange(len(tree_infos.P[curr]))):  # O(logN)
         if i < len(tree_infos.P[curr]) and tree_infos.P[curr][i] != -1 and \
@@ -222,7 +222,7 @@ def go_up(left_outer_to_right_outer, right_outer_to_left_outer, tree_infos, up_d
     assert(curr != lca and tree_infos.P[curr][0] == lca)
     return [curr, up_dist_array]
 
-def go_down(left_outer_to_right_outer, right_outer_to_left_outer, tree_infos, down_dist_matrix, curr, side, lca):
+def go_down(left_outer_to_right_outer, right_outer_to_left_outer, tree_infos, down_dist_matrix, curr, side, lca):  # Time: O(logK)
     down_dist_array = init_down_dist_array(left_outer_to_right_outer, right_outer_to_left_outer, curr, side)
     for i in reversed(xrange(len(tree_infos.P[curr]))):  # O(logN)
         if i < len(tree_infos.P[curr]) and tree_infos.P[curr][i] != -1 and \
@@ -250,7 +250,7 @@ def query(L, R, nodes, children, pairid_and_side,
           up_dist_matrix, down_dist_matrix,
           prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child,
           tree_infos,
-          s, e):
+          s, e):  # Time: O(logK) per query
     pairid_a, side_a = pairid_and_side[s]
     pairid_b, side_b = pairid_and_side[e]
     if pairid_a == pairid_b:
