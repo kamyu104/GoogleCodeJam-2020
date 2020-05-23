@@ -82,8 +82,7 @@ def accu_dist(up_dist_matrix, down_dist_matrix, P, curr, i):
 def find_pairid_and_side(nodes):
     pairid_and_side = [None]*(len(nodes)*2)
     for i, (l, r) in enumerate(nodes):
-        pairid_and_side[l] = (i, 0)
-        pairid_and_side[r] = (i, 1)
+        pairid_and_side[l], pairid_and_side[r] = (i, 0), (i, 1)
     return pairid_and_side
 
 def build_tree(s):  # Time: O(K)
@@ -195,8 +194,8 @@ def find_dist_and_prefix_dist(L, R, nodes, children, left_outer_to_right_outer, 
                 down[j][1] = min(down[j][1], right_outer_to_left_outer[curr]+down[j][0])
             down_dist_matrix[child] = [down]
 
-    up_dist_matrix, down_dist_matrix = [[] for _ in xrange(len(nodes))], [[] for _ in xrange(len(nodes))]
-    prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child = [[] for _ in xrange(len(nodes))], [[] for _ in xrange(len(nodes))]
+    up_dist_matrix, down_dist_matrix = [[[] for _ in xrange(len(nodes))] for _ in xrange(2)]
+    prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child = [[[] for _ in xrange(len(nodes))] for _ in xrange(2)]
     stk = []
     stk.append(partial(divide, 0))
     while stk:
@@ -298,8 +297,8 @@ def emacspp():
     nodes, children = build_tree(PRG)
     pairid_and_side = find_pairid_and_side(nodes)
     left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent = init_dist(L, R, P, nodes, children)
-    up_dist_matrix, down_dist_matrix, prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child  \
-        = find_dist_and_prefix_dist(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer)
+    ret = find_dist_and_prefix_dist(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer)
+    up_dist_matrix, down_dist_matrix, prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child = ret
     tree_infos = TreeInfos(children, partial(accu_dist, up_dist_matrix, down_dist_matrix))
     return sum(query(L, R, nodes, children, pairid_and_side,
                      left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent,
