@@ -71,7 +71,7 @@ def add_dist_array(a, b):
 def add_dist_matrix(a, b):
     return [add_dist_array(a[i], b) for i in xrange(2)]
 
-def accu_dist(up_dist_matrix, down_dist_matrix, P, curr, i):
+def accu_dist_matrix(up_dist_matrix, down_dist_matrix, P, curr, i):
     if i < len(up_dist_matrix[P[curr][i]]):
         up_dist_matrix[curr].append(add_dist_matrix(up_dist_matrix[curr][i],
                                                     up_dist_matrix[P[curr][i]][i]))
@@ -300,7 +300,7 @@ def emacspp():
     pairid_and_side = find_pairid_and_side(nodes)
     left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent = init_dist(L, R, P, nodes, children)
     up_dist_matrix, down_dist_matrix, prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child = find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer)
-    tree_infos = TreeInfos(children, partial(accu_dist, up_dist_matrix, down_dist_matrix))
+    tree_infos = TreeInfos(children, partial(accu_dist_matrix, up_dist_matrix, down_dist_matrix))
     return sum(query(L, R,
                      nodes, children,
                      pairid_and_side,
