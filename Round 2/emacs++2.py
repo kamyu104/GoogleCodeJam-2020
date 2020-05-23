@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Round 2 - Problem D. Emacs++
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033893b
 #
-# Time:  O(KlogK + QlogK)
+# Time:  O(KlogK + QlogK), pass in PyPy2 but Python2
 # Space: O(KlogK)
 #
 
