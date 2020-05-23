@@ -124,7 +124,7 @@ def init_dist(L, R, P, nodes, children):  # Time: O(K)
         stk.pop()()
     return left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent
 
-def find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer):  # Time: O(K)
+def find_dist_matrix_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer):  # Time: O(K)
     def divide(curr):
         for child in reversed(children[curr]):
             stk.append(partial(divide, child))
@@ -164,16 +164,16 @@ def find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, r
                                                    prefix_sum_from_right_inner_to_right_outer[i]+
                                                    right_outer_to_left_outer[curr]+
                                                    prefix_sum_from_left_outer_to_left_inner[i])
-        prefix_sum_from_first_to_curr_child[curr].append(0)
+        prefix_sum_from_left[curr].append(0)
         for child in children[curr]:
             _, child_r = nodes[child]
-            prefix_sum_from_first_to_curr_child[curr].append(prefix_sum_from_first_to_curr_child[curr][-1]+
-                                                             left_outer_to_right_outer[child]+R[child_r])
-        prefix_sum_from_curr_to_first_child[curr].append(0)
+            prefix_sum_from_left[curr].append(prefix_sum_from_left[curr][-1]+
+                                              left_outer_to_right_outer[child]+R[child_r])
+        prefix_sum_from_right[curr].append(0)
         for child in children[curr]:
             child_l, _ = nodes[child]
-            prefix_sum_from_curr_to_first_child[curr].append(prefix_sum_from_curr_to_first_child[curr][-1]+
-                                                             right_outer_to_left_outer[child]+L[child_l])
+            prefix_sum_from_right[curr].append(prefix_sum_from_right[curr][-1]+
+                                               right_outer_to_left_outer[child]+L[child_l])
         for i, child in enumerate(children[curr]):
             up = [[prefix_sum_from_left_inner_to_left_outer[i],
                    prefix_sum_from_left_inner_to_left_outer[i]+left_outer_to_right_outer[curr]],
@@ -196,12 +196,12 @@ def find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, r
             down_dist_matrix[child] = [down]
 
     up_dist_matrix, down_dist_matrix = [[[] for _ in xrange(len(nodes))] for _ in xrange(2)]
-    prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child = [[[] for _ in xrange(len(nodes))] for _ in xrange(2)]
+    prefix_sum_from_left, prefix_sum_from_right = [[[] for _ in xrange(len(nodes))] for _ in xrange(2)]
     stk = []
     stk.append(partial(divide, 0))
     while stk:
         stk.pop()()
-    return up_dist_matrix, down_dist_matrix, prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child
+    return up_dist_matrix, down_dist_matrix, prefix_sum_from_left, prefix_sum_from_right
 
 def init_up_dist_array(left_outer_to_right_outer, right_outer_to_left_outer, curr, side):
     if side == 0:
@@ -238,19 +238,19 @@ def prefix_sum(a, l, r):
         return 0
     return a[r+1]-a[l]
 
-def prefix_sum_of_child_node_from_left(R, nodes, children, prefix_sum_from_first_to_curr_child, curr, l, r):
+def prefix_sum_of_child_node_from_left(R, nodes, children, prefix_sum_from_left, curr, l, r):
     assert(l < r)
-    return R[nodes[children[curr][l]][1]]+prefix_sum(prefix_sum_from_first_to_curr_child[curr], l+1, r-1)
+    return R[nodes[children[curr][l]][1]]+prefix_sum(prefix_sum_from_left[curr], l+1, r-1)
 
-def prefix_sum_of_child_node_from_right(L, nodes, children, prefix_sum_from_curr_to_first_child, curr, l, r):
+def prefix_sum_of_child_node_from_right(L, nodes, children, prefix_sum_from_right, curr, l, r):
     assert(l < r)
-    return L[nodes[children[curr][r]][0]]+prefix_sum(prefix_sum_from_curr_to_first_child[curr], l+1, r-1)
+    return L[nodes[children[curr][r]][0]]+prefix_sum(prefix_sum_from_right[curr], l+1, r-1)
 
 def query(L, R,
           nodes, children,
           pairid_and_side,
           left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent,
-          up_dist_matrix, down_dist_matrix, prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child,
+          up_dist_matrix, down_dist_matrix, prefix_sum_from_left, prefix_sum_from_right,
           tree_infos,
           s, e):  # Time: O(logK) per query
     pairid_a, side_a = pairid_and_side[s]
@@ -277,14 +277,14 @@ def query(L, R,
         result = min(result,
                      child_up_dist_array[1]+
                      prefix_sum_of_child_node_from_left(
-                         R, nodes, children, prefix_sum_from_first_to_curr_child,
+                         R, nodes, children, prefix_sum_from_left,
                          lca, child_idx_of_parent[child_a], child_idx_of_parent[child_b])+
                      child_down_dist_array[0])
     else:
         result = min(result,
                      child_up_dist_array[0]+
                      prefix_sum_of_child_node_from_right(
-                         L, nodes, children, prefix_sum_from_curr_to_first_child,
+                         L, nodes, children, prefix_sum_from_right,
                          lca, child_idx_of_parent[child_b], child_idx_of_parent[child_a])+
                      child_down_dist_array[1])
     return result
@@ -299,13 +299,13 @@ def emacspp():
     nodes, children = build_tree(PRG)
     pairid_and_side = find_pairid_and_side(nodes)
     left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent = init_dist(L, R, P, nodes, children)
-    up_dist_matrix, down_dist_matrix, prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child = find_dist_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer)
+    up_dist_matrix, down_dist_matrix, prefix_sum_from_left, prefix_sum_from_right = find_dist_matrix_and_prefix_sum(L, R, nodes, children, left_outer_to_right_outer, right_outer_to_left_outer)
     tree_infos = TreeInfos(children, partial(accu_dist_matrix, up_dist_matrix, down_dist_matrix))
     return sum(query(L, R,
                      nodes, children,
                      pairid_and_side,
                      left_outer_to_right_outer, right_outer_to_left_outer, child_idx_of_parent,
-                     up_dist_matrix, down_dist_matrix, prefix_sum_from_first_to_curr_child, prefix_sum_from_curr_to_first_child,
+                     up_dist_matrix, down_dist_matrix, prefix_sum_from_left, prefix_sum_from_right,
                      tree_infos,
                      s, e)
                for s, e in izip(S, E))
