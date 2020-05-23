@@ -109,10 +109,13 @@ def build(PRG, is_undir, pairs, parents, lookup, tree, node):  # Time: O(KlogK)
     partitions = find_partitions(PRG, pairs, parents, brackets)  # Time: O(K)
     children = [0]*4
     tree[node] = [partitions, children]
-    for p in partitions:
-        if not (brackets[0] <= p <= brackets[-1]):  # virtual brackets we added
+    for i in [0, 3]:
+        if not (brackets[0] <= partitions[i] <= brackets[-1]):  # virtual brackets we added
             continue
-        lookup[p] = find_shortest_path(is_undir, pairs, lookup, brackets, p)  # Time: O(KlogK)
+        lookup[partitions[i]] = find_shortest_path(is_undir, pairs, lookup, brackets, partitions[i])  # Time: O(KlogK)
+    middle_brackets = [x for x in brackets if partitions[0] < x < partitions[3]]
+    for i in [1, 2]:
+        lookup[partitions[i]] = find_shortest_path(is_undir, pairs, lookup, middle_brackets, partitions[i])  # Time: O(KlogK)
     for i, new_brackets in enumerate(find_subregions(brackets, partitions)):
         if not new_brackets:
             continue
@@ -131,7 +134,7 @@ def query(PRG, is_undir, pairs, parents, lookup, tree, node, s, e):  # Time: O(K
         if s == partitions[a] or e == partitions[b] or a != b:
             break
         node = children[a]  # same subregion without covering partition nodes, visit subregion
-    return min(lookup[p][1][s] + lookup[p][0][e] for p in partitions if 0 <= p < len(PRG))  # find min LCA dist
+    return min(lookup[p][1][s] + lookup[p][0][e] for p in partitions if 0 <= p < len(PRG) and s in lookup[p][1] and e in lookup[p][0])  # find min LCA dist
 
 def find_pairs_and_parents(s):  # Time: O(K)
     pairs, parents, stk = [0]*len(s), [None]*len(s), []
