@@ -238,11 +238,11 @@ def prefix_sum(a, l, r):
         return 0
     return a[r+1]-a[l]
 
-def prefix_sum_of_child_node_from_left(R, nodes, children, prefix_sum_from_left, curr, l, r):
+def prefix_sum_from_left_in_range(R, nodes, children, prefix_sum_from_left, curr, l, r):
     assert(l < r)
     return R[nodes[children[curr][l]][1]]+prefix_sum(prefix_sum_from_left[curr], l+1, r-1)
 
-def prefix_sum_of_child_node_from_right(L, nodes, children, prefix_sum_from_right, curr, l, r):
+def prefix_sum_from_right_in_range(L, nodes, children, prefix_sum_from_right, curr, l, r):
     assert(l < r)
     return L[nodes[children[curr][r]][0]]+prefix_sum(prefix_sum_from_right[curr], l+1, r-1)
 
@@ -276,14 +276,14 @@ def query(L, R,
     if child_idx_of_parent[child_a] < child_idx_of_parent[child_b]:
         result = min(result,
                      child_up_dist_array[1]+
-                     prefix_sum_of_child_node_from_left(
+                     prefix_sum_from_left_in_range(
                          R, nodes, children, prefix_sum_from_left,
                          lca, child_idx_of_parent[child_a], child_idx_of_parent[child_b])+
                      child_down_dist_array[0])
     else:
         result = min(result,
                      child_up_dist_array[0]+
-                     prefix_sum_of_child_node_from_right(
+                     prefix_sum_from_right_in_range(
                          L, nodes, children, prefix_sum_from_right,
                          lca, child_idx_of_parent[child_b], child_idx_of_parent[child_a])+
                      child_down_dist_array[1])
