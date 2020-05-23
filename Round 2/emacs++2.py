@@ -164,16 +164,6 @@ def find_dist_matrix_and_prefix_sum(L, R, nodes, children, left_outer_to_right_o
                                                    prefix_sum_from_right_inner_to_right_outer[i]+
                                                    right_outer_to_left_outer[curr]+
                                                    prefix_sum_from_left_outer_to_left_inner[i])
-        prefix_sum_from_left[curr].append(0)
-        for child in children[curr]:
-            _, child_r = nodes[child]
-            prefix_sum_from_left[curr].append(prefix_sum_from_left[curr][-1]+
-                                              left_outer_to_right_outer[child]+R[child_r])
-        prefix_sum_from_right[curr].append(0)
-        for child in children[curr]:
-            child_l, _ = nodes[child]
-            prefix_sum_from_right[curr].append(prefix_sum_from_right[curr][-1]+
-                                               right_outer_to_left_outer[child]+L[child_l])
         for i, child in enumerate(children[curr]):
             up = [[prefix_sum_from_left_inner_to_left_outer[i],
                    prefix_sum_from_left_inner_to_left_outer[i]+left_outer_to_right_outer[curr]],
@@ -194,6 +184,16 @@ def find_dist_matrix_and_prefix_sum(L, R, nodes, children, left_outer_to_right_o
             for j in xrange(2):
                 down[j][1] = min(down[j][1], right_outer_to_left_outer[curr]+down[j][0])
             down_dist_matrix[child] = [down]
+        prefix_sum_from_left[curr].append(0)
+        for child in children[curr]:
+            _, child_r = nodes[child]
+            prefix_sum_from_left[curr].append(prefix_sum_from_left[curr][-1]+
+                                              left_outer_to_right_outer[child]+R[child_r])
+        prefix_sum_from_right[curr].append(0)
+        for child in children[curr]:
+            child_l, _ = nodes[child]
+            prefix_sum_from_right[curr].append(prefix_sum_from_right[curr][-1]+
+                                               right_outer_to_left_outer[child]+L[child_l])
 
     up_dist_matrix, down_dist_matrix = [[[] for _ in xrange(len(nodes))] for _ in xrange(2)]
     prefix_sum_from_left, prefix_sum_from_right = [[[] for _ in xrange(len(nodes))] for _ in xrange(2)]
