@@ -173,9 +173,7 @@ def find_dist_matrix_and_prefix_sum(L, R, nodes, children, dist):  # Time: O(K)
     return dist_matrix, prefix_sum
 
 def init_dist_array(dist, d, curr, side):
-    if side == 0:
-        return [0, dist[d][curr]]
-    return [dist[d^1][curr], 0]
+    return [0, dist[d][curr]] if not side else [dist[d^1][curr], 0]
 
 def accu_dist(dist, tree_infos, dist_matrix, d, curr, side, lca):  # Time: O(logK)
     dist_array = init_dist_array(dist, d, curr, side)
