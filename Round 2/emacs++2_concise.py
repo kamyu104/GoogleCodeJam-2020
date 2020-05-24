@@ -6,7 +6,7 @@
 # Time:  O(KlogK + QlogK), pass in PyPy2 but Python2
 # Space: O(KlogK)
 #
-# concise solution of emacs++2.py
+# concise but slower solution of emacs++2.py
 #
 
 from itertools import izip
