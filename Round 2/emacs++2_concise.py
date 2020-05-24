@@ -153,9 +153,8 @@ def find_dist_matrix_and_prefix_sum(L, R, nodes, children, dist):  # Time: O(K)
                 matrix = [[prefix_sum_from[d][0][i], prefix_sum_from[d][0][i]+dist[0][dst]],
                           [prefix_sum_from[d][1][i]+dist[1][dst], prefix_sum_from[d][1][i]]]
                 for j in xrange(2):
-                    matrix[0][j] = min(matrix[0][j], dist[0][src]+matrix[1][j])
-                for j in xrange(2):
-                    matrix[1][j] = min(matrix[1][j], dist[1][src]+matrix[0][j])
+                    for k in xrange(2):
+                        matrix[j][k] = min(matrix[j][k], dist[j][src]+matrix[j^1][k])
                 if d:
                     matrix = zip(*matrix)
                 dist_matrix[d][child] = [matrix]
