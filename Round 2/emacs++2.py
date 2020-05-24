@@ -81,7 +81,6 @@ def accu_dist_matrix(up_dist_matrix, down_dist_matrix, P, curr, i):
 
 def build_tree(s):  # Time: O(K)
     nodes, children, stk = [], [[] for _ in xrange(len(s)//2)], []
-    parent = -1
     for i, p in enumerate(s):
         if p == '(':
             if i:
