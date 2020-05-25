@@ -131,17 +131,13 @@ def find_dist_matrix_and_prefix_sum(L, R, nodes, children, dist):  # Time: O(K)
     def preprocess(curr):
         prefix_sum_from = [[[0]*len(children[curr]) for _ in xrange(2)] for _ in xrange(2)]
         for d, direction in [(0, lambda x:x), (1, lambda x:reversed(x))]:
-            accu = 0
-            for i in direction(xrange(len(children[curr]))):
-                child = children[curr][i]
-                accu += costs[d][nodes[child][d]]
-                prefix_sum_from[0][d][i] = accu
-                accu += dist[d^1][child]
-            accu = costs[d^1][nodes[curr][d]]
-            for i in direction(xrange(len(children[curr]))):
-                child = children[curr][i]
-                prefix_sum_from[1][d][i] = accu
-                accu += dist[d][child]+costs[d^1][nodes[child][d^1]]
+            for j in xrange(2):
+                accu = 0
+                for i in direction(xrange(len(children[curr]))):
+                    child = children[curr][i]
+                    accu += costs[d^j][nodes[child][d]-j*(-2*d+1)]
+                    prefix_sum_from[j][d][i] = accu
+                    accu += dist[d^j^1][child]
         for d in xrange(2):
             for i, child in enumerate(children[curr]):
                 dist[d][child] = min(dist[d][child], prefix_sum_from[0][d][i]+dist[d][curr]+prefix_sum_from[1][d^1][i])
