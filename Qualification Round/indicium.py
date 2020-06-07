@@ -8,6 +8,7 @@
 #
 
 from collections import Counter, defaultdict
+from functools import partial
 
 # Time:  O(E * sqrt(V))
 # Space: O(V)
@@ -83,8 +84,44 @@ def bipartiteMatch(graph):
                             matching[v] = u
                             return 1
             return 0
+        
+        def recurse_iter(v):
+            def divide(v):
+                if v not in preds:
+                    return
+                L = preds[v]
+                del preds[v]
+                for u in L :
+                    if u in pred and pred[u] is unmatched:  # early return
+                        del pred[u]
+                        matching[v] = u
+                        ret[0] = True
+                        return
+                stk.append(partial(conquer, v, iter(L)))
 
-        for v in unmatched: recurse(v)
+            def conquer(v, it):
+                for u in it:
+                    if u not in pred:
+                        continue
+                    pu = pred[u]
+                    del pred[u]
+                    stk.append(partial(postprocess, v, u, it))
+                    stk.append(partial(divide, pu))
+                    return
+
+            def postprocess(v, u, it):
+                if not ret[0]:
+                    stk.append(partial(conquer, v, it))
+                    return
+                matching[v] = u
+
+            ret, stk = [False], []
+            stk.append(partial(divide, v))
+            while stk:
+                stk.pop()()
+            return ret[0]
+
+        for v in unmatched: recurse_iter(v)
 
 def indicium():
     N, K = map(int, raw_input().strip().split())
