@@ -37,6 +37,8 @@ def naming_compromise():
                 result.append(S2[j-1])
             i -= 1
             j -= 1
+        else:
+            assert(False)
     return S1[:i] + "".join(reversed(result))
 
 for case in xrange(input()):
