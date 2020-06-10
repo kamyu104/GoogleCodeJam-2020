@@ -1,4 +1,4 @@
-# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-18%20%2F%2018-ff69b4.svg)
+# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-19%20%2F%2022-ff69b4.svg)
 
 Python solutions of Google Code Jam 2020. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds).
 
@@ -8,7 +8,8 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 * [Round 1B](https://github.com/kamyu104/GoogleCodeJam-2020#round-1b)
 * [Round 1C](https://github.com/kamyu104/GoogleCodeJam-2020#round-1c)
 * [Round 2](https://github.com/kamyu104/GoogleCodeJam-2020#round-2)
-  
+* [Round 3](https://github.com/kamyu104/GoogleCodeJam-2020#round-3)
+   
 ## Qualification Round
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
@@ -46,3 +47,11 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |B| [Security Update](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033871f)| [Python](./Round%202/security_update.py) | _O(ClogC + D)_ | _O(C)_ | Medium || Sort
 |C| [Wormhoe in One](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/00000000003386d0)| [Python](./Round%202/wormhole_in_one.py) | _O(N^2)_ | _O(N^2)_ | Medium || Math
 |D| [Emacs++](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/000000000033893b)| [PyPy*](./Round%202/emacs++.py) [PyPy](./Round%202/emacs++2_concise.py) | _O(KlogK + QlogK)_ | _O(KlogK)_ | Hard || Tree, Lazy Construction, Middle Line, Dijkstra's Algorithm, Iterative Recursion, LCA, Prefix Sum, Tree Ancestors (Binary Jump)
+
+## Round 3
+| # | Title | Solution | Time | Space | Difficulty | Tag | Note |
+|---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
+|A| [Naming Compromise](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003774db)| [Python](./Round%203/naming_compromise.py) | _O(C * J)_ | _O(C * J)_ | Easy | | DP, Edit Distance
+|B| [Thermometers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b)| | | | Medium ||
+|C| [Pen Testing](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630)| | | | Hard ||
+|D| [Recalculating](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9)| | | | Hard ||
