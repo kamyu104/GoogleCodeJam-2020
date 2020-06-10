@@ -29,7 +29,7 @@ def naming_compromise():
             mid -= 1
             result.append(S2[j-1])
             j -= 1
-        elif i and j and dp[i][j] == dp[i-1][j-1]+(S1[i-1] != S2[j-1]):
+        elif i and j and dp[i][j] == dp[i-1][j-1]+(S1[i-1] != S2[j-1]):  # same or replace
             mid -= (S1[i-1] != S2[j-1])
             result.append(S2[j-1])
             i -= 1
