@@ -19,8 +19,7 @@ def naming_compromise():
                 dp[i][j] = min(dp[i][j], dp[i][j-1]+1)
             if i and j:
                 dp[i][j] = min(dp[i][j], dp[i-1][j-1]+(S1[i-1] != S2[j-1]))
-    mid = dp[-1][-1]//2
-    result, i, j = [], len(S1), len(S2)
+    result, i, j, mid = [], len(S1), len(S2), dp[-1][-1]//2
     while (i or j) and mid:
         if i and dp[i][j] == dp[i-1][j]+1:  # delete
             mid -= 1
