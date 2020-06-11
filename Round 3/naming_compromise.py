@@ -1,6 +1,6 @@
 # Copyright (c) 2020 kamyu. All rights reserved.
 #
-# Google Code Jam 2020 Round 3-Problem A. Naming Compromise
+# Google Code Jam 2020 Round 3 - Problem A. Naming Compromise
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003774db
 #
 # Time:  O(C * J)
