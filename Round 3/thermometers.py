@@ -37,7 +37,7 @@ def thermometers():
         else:  # the last step is curr+v
             if not (curr-K):  # curr+v == v+K, => curr-K == 0 and left < right
                 return N
-    result = N+(N//2)
+    result = N+(N//2)  # no adjacent segments with 2 thermometers
     for i in xrange(N):
         extra, j = 0, i
         while j < i+N:
