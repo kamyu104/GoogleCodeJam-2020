@@ -12,12 +12,12 @@ def getX(X, K, N, i):
     return X[i%N]+(i//N)*K
 
 def greedy(K, N, X, i):
-    # init curr with 0, and assume starts at curr+v with v in range of (X[i], X[i+1])
+    # init curr with 0, and assumed that it starts at curr+v with v in range of (X[i], X[i+1])
     result, curr, left, right = 0, 0, getX(X, K, N, i), getX(X, K, N, i+1)
     for j in xrange(N):
         k = i+1+j
-        curr = 2*getX(X, K, N, k) - curr
-        if not j%2: # X[k] < curr-v < X[k+1]
+        curr = 2*getX(X, K, N, k)-curr
+        if not j%2:  # X[k] < curr-v < X[k+1]
             left = max(left, curr-getX(X, K, N, k+1))
         else:  # X[k] < curr+v < X[k+1]
             right = min(right, getX(X, K, N, k+1)-curr)
@@ -33,10 +33,10 @@ def thermometers():
     if result == N:
         assert(left < right)
         if not (N-1)%2:  # the last step is curr-v
-            if 2*left < (curr-K) and (curr-K) < 2*right:  # curr - v == v + K, => v = (curr - K) / 2 and left < v < right
+            if 2*left < (curr-K) and (curr-K) < 2*right:  # curr-v == v+K, => v = (curr-K)/2 and left < v < right
                 return N
         else:
-            if curr-K == 0:  # curr + v == v + K, => curr-K == 0 and left < right
+            if not (curr-K):  # curr+v == v+K, => curr-K == 0 and left < right
                 return N
     result = 2*N
     for i in xrange(N):
