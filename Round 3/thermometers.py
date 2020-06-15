@@ -17,10 +17,10 @@ def greedy(K, N, X, i):
     for j in xrange(N):
         k = i+1+j
         curr = 2*getX(X, K, N, k) - curr
-        if not j%2: # X[k] < curr - v < X[k+1]
+        if not j%2: # X[k] < curr-v < X[k+1]
             left = max(left, curr-getX(X, K, N, k+1))
-        else:  # X[k] < v + curr < X[k+1]
-            right = min(right, getX(X, K, N, k+1) - curr)
+        else:  # X[k] < curr+v < X[k+1]
+            right = min(right, getX(X, K, N, k+1)-curr)
         if left >= right:
             break
         result += 1
