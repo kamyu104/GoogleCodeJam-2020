@@ -14,13 +14,12 @@ def getX(X, K, N, i):
 def greedy(K, N, X, i):
     # init curr with 0, and assumed that it starts at curr+v with v in range of (X[i], X[i+1])
     result, curr, left, right = 0, 0, getX(X, K, N, i), getX(X, K, N, i+1)
-    for j in xrange(N):
-        k = i+1+j
-        curr = 2*getX(X, K, N, k)-curr
-        if not j%2:  # X[k] < curr-v < X[k+1]
-            left = max(left, curr-getX(X, K, N, k+1))
-        else:  # X[k] < curr+v < X[k+1]
-            right = min(right, getX(X, K, N, k+1)-curr)
+    for j in xrange(i+1, i+1+N):
+        curr = 2*getX(X, K, N, j)-curr
+        if not (j-(i+1))%2:  # X[j] < curr-v < X[j+1]
+            left = max(left, curr-getX(X, K, N, j+1))
+        else:  # X[j] < curr+v < X[j+1]
+            right = min(right, getX(X, K, N, j+1)-curr)
         if left >= right:
             break
         result += 1
