@@ -10,7 +10,7 @@
 def check(D, z):
     for j in xrange(len(D)):
         z = 2*D[j]-z
-        if z <= 0:
+        if z < 0:  # z won't be zero
             return False
     return True
 
