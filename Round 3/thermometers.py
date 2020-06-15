@@ -39,11 +39,11 @@ def thermometers():
                 return N
     result = N+(N//2)  # no adjacent segments with 2 thermometers
     for i in xrange(N):
-        extra, j = 0, i
+        chain, j = 0, i
         while j < i+N:
-            extra += 1
+            chain += 1
             j += greedy(K, N, X, j%N)[0]
-        result = min(result, N+extra)
+        result = min(result, N+chain)
     return result
 
 for case in xrange(input()):
