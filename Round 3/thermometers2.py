@@ -8,10 +8,9 @@
 #
 
 def check(D, z):
-    z /= 2
     for j in xrange(len(D)):
-        z = D[j]-z
-        if z < 0:
+        z = 2*D[j]-z
+        if z <= 0:
             return False
     return True
 
