@@ -29,10 +29,10 @@ def thermometers():
         z = reduce(lambda x, y: y-x, D)
         if not (N-1)%2:
             if 2*left < z < 2*right:
-                return N
+                return N  # a ring
         else:
             if not z:
-                return N
+                return N  # a ring
     result = N+(N//2)  # no adjacent segments with 2 thermometers
     for i in xrange(N):
         chain, j = 0, i
@@ -40,7 +40,7 @@ def thermometers():
             j += greedy(K, N, D, j%N)[0]
             chain += 1
         result = min(result, N+chain)
-    return result
+    return result  # chains
 
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, thermometers())

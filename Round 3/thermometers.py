@@ -33,10 +33,10 @@ def thermometers():
         assert(left < right)
         if not (N-1)%2:  # the last step is curr-v
             if 2*left < (curr-K) < 2*right:  # curr-v == v+K, => v = (curr-K)/2 and left < v < right
-                return N
+                return N  # a ring
         else:  # the last step is curr+v
             if not (curr-K):  # curr+v == v+K, => curr-K == 0 and left < right
-                return N
+                return N  # a ring
     result = N+(N//2)  # no adjacent segments with 2 thermometers
     for i in xrange(N):
         chain, j = 0, i
@@ -44,7 +44,7 @@ def thermometers():
             j += greedy(K, N, X, j%N)[0]
             chain += 1
         result = min(result, N+chain)
-    return result
+    return result  # chains
 
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, thermometers())
