@@ -11,19 +11,18 @@ def greedy(K, N, D, i):
     result, left, right = 0, 0, D[i%len(D)]
     for j in xrange(i+1, i+1+N):
         left, right = min(D[(j-1)%len(D)]-right, D[j%len(D)]), min(D[(j-1)%len(D)]-left, D[j%len(D)])
-        if left >= right:
+        if left >= right:  # empty interval
             break
         result += 1
     else:
-        for j in reversed(xrange(i, i+N)):
+        for j in reversed(xrange(i, i+N)):  # trace back to get the first interval
             left, right = D[j%len(D)]-right, D[j%len(D)]-left
     return result, left, right
 
 def thermometers():
     K, N = map(int, raw_input().strip().split())
     X, T = [map(int, raw_input().strip().split()) for _ in xrange(2)]
-    D = [(X[(i+1)]-X[i])%K for i in xrange(len(X)-1)]
-    D.append(K-sum(D))
+    D = [(X[(i+1)%len(X)]-X[i])%K for i in xrange(len(X))]
     result, left, right = greedy(K, N, D, 0)
     if result == N:
         assert(left < right)
