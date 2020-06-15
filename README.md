@@ -52,6 +52,6 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Naming Compromise](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003774db)| [Python](./Round%203/naming_compromise.py) | _O(C * J)_ | _O(C * J)_ | Easy | | DP, Edit Distance
-|B| [Thermometers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b)| _O(N^2)_ | _O(1)_ | | Hard || Greedy, Mirror
+|B| [Thermometers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b)| [Python](./Round%203/thermometers.py) |  _O(N^2)_ | _O(1)_ | Hard || Greedy, Mirror
 |C| [Pen Testing](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630)| | | | Hard ||
 |D| [Recalculating](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9)| | | | Hard ||
