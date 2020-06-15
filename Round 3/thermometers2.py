@@ -23,7 +23,7 @@ def thermometers():
     K, N = map(int, raw_input().strip().split())
     X, T = [map(int, raw_input().strip().split()) for _ in xrange(2)]
     D = [(X[(i+1)]-X[i])%K for i in xrange(len(X)-1)]
-    D.append(K-sum(D))  # handle case N = 1 (although there is not such test case as official said)
+    D.append(K-sum(D))  # handle case N = 1 (although there is no such test case as official said)
     result, left, right = greedy(K, N, D, 0)
     if result == N:
         assert(left < right)
