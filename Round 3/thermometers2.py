@@ -22,7 +22,8 @@ def greedy(K, N, D, i):
 def thermometers():
     K, N = map(int, raw_input().strip().split())
     X, T = [map(int, raw_input().strip().split()) for _ in xrange(2)]
-    D = [(X[(i+1)%len(X)]-X[i])%K for i in xrange(len(X))]
+    D = [(X[(i+1)]-X[i])%K for i in xrange(len(X)-1)]
+    D.append(K-sum(D))
     result, left, right = greedy(K, N, D, 0)
     if result == N:
         assert(left < right)
