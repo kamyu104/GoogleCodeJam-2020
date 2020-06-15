@@ -35,7 +35,7 @@ def thermometers():
         if not (N-1)%2:  # the last step is curr-v
             if 2*left < (curr-K) and (curr-K) < 2*right:  # curr-v == v+K, => v = (curr-K)/2 and left < v < right
                 return N
-        else:
+        else: # the last step is curr+v
             if not (curr-K):  # curr+v == v+K, => curr-K == 0 and left < right
                 return N
     result = 2*N
