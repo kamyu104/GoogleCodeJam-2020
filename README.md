@@ -1,4 +1,4 @@
-# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-19%20%2F%2022-ff69b4.svg)
+# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-20%20%2F%2022-ff69b4.svg)
 
 Python solutions of Google Code Jam 2020. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds).
 
@@ -52,6 +52,6 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Naming Compromise](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003774db)| [Python](./Round%203/naming_compromise.py) | _O(C * J)_ | _O(C * J)_ | Easy | | DP, Edit Distance
-|B| [Thermometers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b)| | | | Medium ||
+|B| [Thermometers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b)| _O(N^2)_ | _O(1)_ | | Hard || Greedy, Mirror
 |C| [Pen Testing](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630)| | | | Hard ||
 |D| [Recalculating](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9)| | | | Hard ||
