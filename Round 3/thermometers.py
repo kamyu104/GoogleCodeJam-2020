@@ -1,0 +1,51 @@
+# Copyright (c) 2020 kamyu. All rights reserved.
+#
+# Google Code Jam 2020 Round 3 - Problem B. Thermometers
+# https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b
+#
+# Time:  O(N^2)
+# Space: O(1)
+#
+
+def getX(X, K, N, i):
+    assert(-1 <= i <= 2*N)
+    return X[i%N]+(i//N)*K
+
+def greedy(K, N, X, i):
+    # init curr with 0, and assume starts at curr+v with v in range of (X[i], X[i+1])
+    result, curr, left, right = 0, 0, getX(X, K, N, i), getX(X, K, N, i+1)
+    for j in xrange(N):
+        k = i+1+j
+        curr = 2*getX(X, K, N, k) - curr
+        if not j%2: # X[k] < curr - v < X[k+1]
+            left = max(left, curr-getX(X, K, N, k+1))
+        else:  # X[k] < v + curr < X[k+1]
+            right = min(right, getX(X, K, N, k+1) - curr)
+        if left >= right:
+            break
+        result += 1
+    return result, curr, left, right
+
+def thermometers():
+    K, N = map(int, raw_input().strip().split())
+    X, T = [map(int, raw_input().strip().split()) for _ in xrange(2)]
+    result, curr, left, right = greedy(K, N, X, -1)
+    if result == N:
+        assert(left < right)
+        if not (N-1)%2:  # the last step is curr-v
+            if 2*left < (curr-K) and (curr-K) < 2*right:  # curr - v == v + K, => v = (curr - K) / 2 and left < v < right
+                return N
+        else:
+            if curr-K == 0:  # curr + v == v + K, => curr-K == 0 and left < right
+                return N
+    result = 2*N
+    for i in xrange(N):
+        count, j = N, i
+        while j < i+N:
+            count += 1
+            j += greedy(K, N, X, j%N)[0]
+        result = min(result, count)
+    return result
+
+for case in xrange(input()):
+    print 'Case #%d: %s' % (case+1, thermometers())
