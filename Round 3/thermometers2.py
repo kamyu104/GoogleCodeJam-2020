@@ -7,6 +7,14 @@
 # Space: O(1)
 #
 
+def check(D, z):
+    z /= 2
+    for j in xrange(len(D)):
+        z = D[j]-z
+        if z < 0:
+            return False
+    return True
+
 def greedy(K, N, D, i):
     result, left, right = 0, 0, D[i%len(D)]
     for j in xrange(i+1, i+1+N):
@@ -14,22 +22,18 @@ def greedy(K, N, D, i):
         if left >= right:  # empty interval
             break
         result += 1
-    else:
-        for j in reversed(xrange(i+1, i+1+N)):  # trace back to get the first interval
-            left, right = D[(j-1)%len(D)]-right, D[(j-1)%len(D)]-left
-    return result, left, right
+    return result
 
 def thermometers():
     K, N = map(int, raw_input().strip().split())
     X, T = [map(int, raw_input().strip().split()) for _ in xrange(2)]
     D = [(X[(i+1)]-X[i])%K for i in xrange(len(X)-1)]
     D.append(K-sum(D))  # handle case N = 0, 1 (although there is no such test case as official said)
-    result, left, right = greedy(K, N, D, 0)
+    result = greedy(K, N, D, 0)
     if result == N:
-        assert(left < right)
         z = reduce(lambda x, y: y-x, D)
         if not (N-1)%2:
-            if 2*left < z < 2*right:
+            if check(D, z):
                 return N  # a ring
         else:
             if not z:
@@ -38,7 +42,7 @@ def thermometers():
     for i in xrange(N):
         chain, j = 0, i
         while j < i+N:
-            j += greedy(K, N, D, j%N)[0]
+            j += greedy(K, N, D, j%N)
             chain += 1
         result = min(result, N+chain)
     return result  # chains
