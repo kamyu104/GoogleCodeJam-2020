@@ -15,8 +15,8 @@ def greedy(K, N, D, i):
             break
         result += 1
     else:
-        for j in reversed(xrange(i, i+N)):  # trace back to get the first interval
-            left, right = D[j%len(D)]-right, D[j%len(D)]-left
+        for j in reversed(xrange(i+1, i+1+N)):  # trace back to get the first interval
+            left, right = D[(j-1)%len(D)]-right, D[(j-1)%len(D)]-left
     return result, left, right
 
 def thermometers():
