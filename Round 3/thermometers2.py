@@ -10,7 +10,7 @@
 def check(D, z):
     for j in xrange(len(D)):
         z = 2*D[j]-z
-        if z < 0:  # z won't be zero
+        if z <= 0:
             return False
     return True
 
@@ -28,15 +28,13 @@ def thermometers():
     X, T = [map(int, raw_input().strip().split()) for _ in xrange(2)]
     D = [(X[(i+1)]-X[i])%K for i in xrange(len(X)-1)]
     D.append(K-sum(D))  # handle case N = 0, 1 (although there is no such test case as official said)
-    result = greedy(K, N, D, 0)
-    if result == N:
-        z = reduce(lambda x, y: y-x, D)
-        if not (N-1)%2:
-            if check(D, z):
-                return N  # a ring
-        else:
-            if not z:
-                return N  # a ring
+    z = reduce(lambda x, y: y-x, D)
+    if not (N-1)%2:
+        if check(D, z):
+            return N  # a ring
+    else:
+        if not z and greedy(K, N, D, 0) == N:
+            return N  # a ring
     result = N+(N//2)  # no adjacent segments with 2 thermometers
     for i in xrange(N):
         chain, j = 0, i
