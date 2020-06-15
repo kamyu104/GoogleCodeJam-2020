@@ -41,8 +41,8 @@ def thermometers():
     for i in xrange(N):
         chain, j = 0, i
         while j < i+N:
-            chain += 1
             j += greedy(K, N, X, j%N)[0]
+            chain += 1
         result = min(result, N+chain)
     return result
 
