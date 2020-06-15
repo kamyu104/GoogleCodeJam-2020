@@ -9,7 +9,7 @@
 
 def check(D, z):
     for j in xrange(len(D)):
-        z = 2*D[j]-z
+        z = 2*D[j]-z  # multiply D[j] by 2 to avoid float operation of z
         if z <= 0:
             return False
     return True
