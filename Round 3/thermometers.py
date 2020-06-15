@@ -40,11 +40,11 @@ def thermometers():
                 return N
     result = 2*N
     for i in xrange(N):
-        count, j = N, i
+        extra, j = 0, i
         while j < i+N:
-            count += 1
+            extra += 1
             j += greedy(K, N, X, j%N)[0]
-        result = min(result, count)
+        result = min(result, N+extra)
     return result
 
 for case in xrange(input()):
