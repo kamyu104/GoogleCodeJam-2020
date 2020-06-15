@@ -37,7 +37,7 @@ def thermometers():
         else:  # the last step is curr+v
             if not (curr-K):  # curr+v == v+K, => curr-K == 0 and left < right
                 return N
-    result = 2*N
+    result = N+(N//2)
     for i in xrange(N):
         extra, j = 0, i
         while j < i+N:
