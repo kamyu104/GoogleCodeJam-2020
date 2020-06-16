@@ -9,9 +9,9 @@
 
 def check(D, z):
     for j in xrange(len(D)):  # check if z/2 could be mirrored through all segments
-        z = 2*D[j]-z  # multiply D[j] by 2 to avoid float operation of z
-        if z <= 0:
+        if 2*D[j] <= z:  # multiply D[j] by 2 to avoid float operation of z
             return False
+        z = 2*D[j]-z
     return True
 
 def greedy(K, N, D, i):
