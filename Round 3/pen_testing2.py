@@ -6,7 +6,7 @@
 # Time:  O(T * N^2 + N * S), S is the number of dead and used states, pass in Python2 but sometimes TLE
 # Space: O(N * S)
 #
-# Usage: python interactive_runner.py python local_testing_tool.py 0 -- pypy pen_testing.py
+# Usage: python interactive_runner.py python local_testing_tool.py 0 -- python pen_testing.py
 #
 # Ultimate Solution - Success Rate: ~64.4%
 #
