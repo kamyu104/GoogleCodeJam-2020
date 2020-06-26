@@ -15,12 +15,12 @@ from sys import stdout
 from collections import defaultdict
 from operator import or_
 
-def prob(dead_mask, used_count):  # Time: O(N)
+def prob(dead_mask, alive_used_count):  # Time: O(N)
     arr = [i for i in xrange(N) if not (dead_mask & POW[i])]
     good, bad = 0, 0
     left, right = 0, len(arr)-1
     while left < right:
-        if arr[left]+arr[right]-used_count[-1]-used_count[-2] >= N:
+        if arr[left]+arr[right]-alive_used_count[-1]-alive_used_count[-2] >= N:
             good += right-left
             right -= 1
         else:
@@ -28,27 +28,32 @@ def prob(dead_mask, used_count):  # Time: O(N)
             left += 1
     return 1.0*good/(good+bad)
 
-def careful_writing_prob(dead_mask, used_count):  # Time: O(N)
+def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
     p = 0.0
     for x in xrange(N):
         if not (dead_mask & POW[x]):
             break
-    for i in xrange(len(used_count)):
-        p += prob(dead_mask | POW[x], (x+1,)*i + used_count[i+1:])
-    return p / len(used_count)
+    for i in xrange(len(alive_used_count)):
+        p += prob(dead_mask | POW[x], (x+1,)*i + alive_used_count[i+1:])
+    return p / len(alive_used_count)
 
-def memoization(dead_mask, used_count, lookup):  # Time: O(N * states)
-    if used_count not in lookup[dead_mask]:
-        curr_p = (RETURN, prob(dead_mask, used_count))
-        if len(used_count) > 2:
-            careful_writing_p = careful_writing_prob(dead_mask, used_count)
+def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
+    if alive_used_count not in lookup[dead_mask]:
+        curr_p = (RETURN, prob(dead_mask, alive_used_count))
+        if len(alive_used_count) > 2:
+            careful_writing_p = careful_writing_prob(dead_mask, alive_used_count)
             if careful_writing_p > curr_p[1]:
                 curr_p = (CAREFUL, careful_writing_p)
-        lookup[dead_mask][used_count] = curr_p
-    return lookup[dead_mask][used_count]
+        lookup[dead_mask][alive_used_count] = curr_p
+    return lookup[dead_mask][alive_used_count]
 
-def gen(used_count, option):
-    if option == CAREFUL:
+def gen(used_count=None, option=None):
+    if option is None:
+        pass
+    elif option == RETURN:
+        while True:
+            yield -1
+    elif option == CAREFUL:
         x = (-min(used_count)-1)+1
         for i in xrange(N):
             if used_count[i] < 0:
@@ -87,15 +92,10 @@ def answer(questions, used_counts):
 
 def pen_testing(lookup, options, used_counts, questions):
     for t in xrange(T):
-        if options[t] is not None:
-            questions[t] = next(options[t], None)
-            if questions[t] is not None:
-                continue
-        option = memoization(reduce(or_, (POW[-i-1] for i in used_counts[t] if i < 0), 0), tuple(i for i in used_counts[t] if i >= 0), lookup)[0]
-        if option == RETURN:
-            questions[t] = -1
+        questions[t] = next(options[t], None)
+        if questions[t] is not None:
             continue
-        options[t] = gen(used_counts[t], option)
+        options[t] = gen(used_counts[t], memoization(reduce(or_, (POW[-i-1] for i in used_counts[t] if i < 0), 0), tuple(i for i in used_counts[t] if i >= 0), lookup)[0])
         questions[t] = next(options[t])
 
 RETURN, CAREFUL = range(2)
@@ -104,7 +104,7 @@ POW = [1]
 for i in xrange(N-1):
     POW.append(POW[-1]*2)
 lookup = defaultdict(dict)
-options, used_counts, questions = [None for _ in xrange(T)], [[0]*N for _ in xrange(T)], [None for _ in xrange(T)]
+options, used_counts, questions = [gen() for _ in xrange(T)], [[0]*N for _ in xrange(T)], [None for _ in xrange(T)]
 while True:
     pen_testing(lookup, options, used_counts, questions)
     if answer(questions, used_counts):
