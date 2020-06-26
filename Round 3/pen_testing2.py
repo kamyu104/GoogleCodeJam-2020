@@ -33,7 +33,7 @@ def leftmost_used_up_prob(dead_mask, alive_used_count):  # Time: O(N)
     for i in xrange(N):
         if dead_mask & POW[i]:
             continue
-        p += prob(dead_mask | POW[i], alive_used_count[1:])
+        p += memoization(dead_mask | POW[i], alive_used_count[1:], lookup)[1]
     return p / len(alive_used_count)
 
 def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
@@ -42,7 +42,7 @@ def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
         if not (dead_mask & POW[x]):
             break
     for i in xrange(len(alive_used_count)):
-        p += prob(dead_mask | POW[x], (x+1,)*i + alive_used_count[i+1:])
+        p += memoization(dead_mask | POW[x], (x+1,)*i + alive_used_count[i+1:], lookup)[1]
     return p / len(alive_used_count)
 
 def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
@@ -69,7 +69,10 @@ def gen(used_count=None, option=None):
         while 0 <= used_count[i]:
             yield i
     elif option == CAREFUL:
-        x = (-min(used_count)-1)+1
+        dead_mask = reduce(or_, (POW[-i-1] for i in used_count if i < 0), 0)
+        for x in xrange(N):
+            if not (dead_mask & POW[x]):
+                break
         for i in xrange(N):
             if used_count[i] < 0:
                 continue
