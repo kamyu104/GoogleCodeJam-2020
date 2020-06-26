@@ -49,11 +49,11 @@ def memoization(dead_mask, used_count, lookup):  # Time: O(N * states)
 
 def gen(used_count, option):
     if option == 1:
-        x = -min(used_count)+1
+        x = (-min(used_count)-1)+1
         for i in xrange(N):
             if used_count[i] < 0:
                 continue
-            while 0 <= used_count[i] < x:
+            while 0 <= used_count[i] < x+1:
                 yield i
             if used_count[i] < 0:
                 break
