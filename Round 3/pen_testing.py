@@ -16,7 +16,7 @@ from collections import defaultdict
 from operator import or_
 
 def prob(dead_mask, alive_used_count):  # Time: O(N)
-    arr = [i for i in xrange(N) if not (dead_mask & POW[i])]
+    arr = tuple(i for i in xrange(N) if not (dead_mask & POW[i]))
     good, bad = 0, 0
     left, right = 0, len(arr)-1
     while left < right:
@@ -29,13 +29,9 @@ def prob(dead_mask, alive_used_count):  # Time: O(N)
     return 1.0*good/(good+bad)
 
 def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
-    p = 0.0
-    for x in xrange(N):
-        if not (dead_mask & POW[x]):
-            break
-    for i in xrange(len(alive_used_count)):
-        p += memoization(dead_mask | POW[x], (x+1,)*i + alive_used_count[i+1:], lookup)[1]
-    return p / len(alive_used_count)
+    x = next(i for i in xrange(N) if not (dead_mask & POW[i]))
+    return sum(memoization(dead_mask | POW[x], (x+1,)*i + alive_used_count[i+1:], lookup)[1]
+               for i in xrange(len(alive_used_count))) / len(alive_used_count)
 
 def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
     if alive_used_count not in lookup[dead_mask]:
@@ -55,9 +51,7 @@ def gen(used_count=None, option=None):
             yield -1
     elif option == CAREFUL:
         dead_mask = reduce(or_, (POW[-i-1] for i in used_count if i < 0), 0)
-        for x in xrange(N):
-            if not (dead_mask & POW[x]):
-                break
+        x = next(i for i in xrange(N) if not (dead_mask & POW[i]))
         for i in xrange(N):
             if used_count[i] < 0:
                 continue
