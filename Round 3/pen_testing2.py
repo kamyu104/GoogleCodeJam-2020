@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Round 3 - Problem C. Pen Testing
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630
 #
-# Time:  O(T * N^2 + N * S), S is the number of dead and used states, pass in PyPy2 but Python2
+# Time:  O(T * N^2 + N * S), S is the number of dead and used states, pass in Python2 but sometimes TLE
 # Space: O(N * S)
 #
 # Usage: python interactive_runner.py python local_testing_tool.py 0 -- pypy pen_testing.py

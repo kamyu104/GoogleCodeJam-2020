@@ -53,5 +53,5 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Naming Compromise](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003774db)| [Python](./Round%203/naming_compromise.py) | _O(C * J)_ | _O(C * J)_ | Easy | | DP, Edit Distance
 |B| [Thermometers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b)| [Python](./Round%203/thermometers.py) [Python](./Round%203/thermometers2.py) |  _O(N^2)_ | _O(1)_ | Hard || Greedy, Mirror
-|C| [Pen Testing](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630)| [Python](./Round%203/pen_testing.py) [PyPy](./Round%203/pen_testing2.py) | _O(T * N^2 + N * S)_ | _O(N * (T + S))_ | Hard || Memoization, Probability
+|C| [Pen Testing](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630)| [Python](./Round%203/pen_testing.py) [Python](./Round%203/pen_testing2.py) | _O(T * N^2 + N * S)_ | _O(N * (T + S))_ | Hard || Memoization, Probability
 |D| [Recalculating](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9)| | | | Hard ||
