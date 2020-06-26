@@ -39,16 +39,16 @@ def careful_writing_prob(dead_mask, used_count):  # Time: O(N)
 
 def memoization(dead_mask, used_count, lookup):  # Time: O(N * states)
     if used_count not in lookup[dead_mask]:
-        curr_p = (0, prob(dead_mask, used_count))
+        curr_p = (RETURN, prob(dead_mask, used_count))
         if len(used_count) > 2:
             careful_writing_p = careful_writing_prob(dead_mask, used_count)
             if careful_writing_p > curr_p[1]:
-                curr_p = (1, careful_writing_p)
+                curr_p = (CAREFUL, careful_writing_p)
         lookup[dead_mask][used_count] = curr_p
     return lookup[dead_mask][used_count]
 
 def gen(used_count, option):
-    if option == 1:
+    if option == CAREFUL:
         x = (-min(used_count)-1)+1
         for i in xrange(N):
             if used_count[i] < 0:
@@ -92,12 +92,13 @@ def pen_testing(lookup, options, used_counts, questions):
             if questions[t] is not None:
                 continue
         option = memoization(reduce(or_, (POW[-i-1] for i in used_counts[t] if i < 0), 0), tuple(i for i in used_counts[t] if i >= 0), lookup)[0]
-        if not option:
+        if option == RETURN:
             questions[t] = -1
             continue
         options[t] = gen(used_counts[t], option)
         questions[t] = next(options[t])
 
+RETURN, CAREFUL = range(2)
 T, N, C = map(int, raw_input().strip().split())
 POW = [1]
 for i in xrange(N-1):
