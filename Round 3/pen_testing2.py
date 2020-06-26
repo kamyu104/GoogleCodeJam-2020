@@ -47,15 +47,15 @@ def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
 
 def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
     if alive_used_count not in lookup[dead_mask]:
-        curr_p = (RETURN, prob(dead_mask, alive_used_count))
+        option_p = (RETURN, prob(dead_mask, alive_used_count))
         if len(alive_used_count) > 2:
             leftmost_used_up_p = leftmost_used_up_prob(dead_mask, alive_used_count)
-            if leftmost_used_up_p > curr_p[1]:
-                curr_p = (LEFTMOST, leftmost_used_up_p)
+            if leftmost_used_up_p > option_p[1]:
+                option_p = (LEFTMOST, leftmost_used_up_p)
             careful_writing_p = careful_writing_prob(dead_mask, alive_used_count)
-            if careful_writing_p > curr_p[1]:
-                curr_p = (CAREFUL, careful_writing_p)
-        lookup[dead_mask][alive_used_count] = curr_p
+            if careful_writing_p > option_p[1]:
+                option_p = (CAREFUL, careful_writing_p)
+        lookup[dead_mask][alive_used_count] = option_p
     return lookup[dead_mask][alive_used_count]
 
 def gen(used_count=None, option=None):
