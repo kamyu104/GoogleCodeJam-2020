@@ -11,7 +11,7 @@
 # Success Rate: ~64.2%
 #
 
-from sys import stdout, stderr
+from sys import stdout
 from collections import defaultdict
 from operator import or_
 
