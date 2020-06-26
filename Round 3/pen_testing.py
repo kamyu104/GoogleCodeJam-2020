@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630
 #
 # Time:  O(T * N^2 + N * S), S is the number of dead and used states
-# Space: O(N * S)
+# Space: O(N * (T + S))
 #
 # Usage: python interactive_runner.py python local_testing_tool.py 0 -- python pen_testing.py
 #
