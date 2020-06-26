@@ -106,7 +106,7 @@ def pen_testing(lookup, options, used_counts, questions):
             questions[t] = next(options[t], None)
             if questions[t] is not None:
                 continue
-        option, prob = memoization(reduce(or_, (1<<(-i-1) for i in used_counts[t] if i < 0), 0), tuple(i for i in used_counts[t] if i >= 0), lookup)
+        option = memoization(reduce(or_, (1<<(-i-1) for i in used_counts[t] if i < 0), 0), tuple(i for i in used_counts[t] if i >= 0), lookup)[0]
         if not option:
             questions[t] = -1
             continue
