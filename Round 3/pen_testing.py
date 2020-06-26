@@ -16,7 +16,7 @@ from collections import defaultdict
 from operator import or_
 
 def prob(dead_mask, used_count):  # Time: O(N)
-    arr = [i for i in xrange(N) if not (dead_mask & 1<<i)]
+    arr = [i for i in xrange(N) if not (dead_mask & POW[i])]
     good, bad = 0, 0
     left, right = 0, len(arr)-1
     while left < right:
@@ -31,10 +31,10 @@ def prob(dead_mask, used_count):  # Time: O(N)
 def careful_writing_prob(dead_mask, used_count):  # Time: O(N)
     p = 0.0
     for x in xrange(N):
-        if not (dead_mask & 1<<x):
+        if not (dead_mask & POW[x]):
             break
     for i in xrange(len(used_count)):
-        p += prob(dead_mask | 1<<x, (x+1,)*i + used_count[i+1:])
+        p += prob(dead_mask | POW[x], (x+1,)*i + used_count[i+1:])
     return p / len(used_count)
 
 def memoization(dead_mask, used_count, lookup):  # Time: O(N * states)
@@ -91,7 +91,7 @@ def pen_testing(lookup, options, used_counts, questions):
             questions[t] = next(options[t], None)
             if questions[t] is not None:
                 continue
-        option = memoization(reduce(or_, (1<<(-i-1) for i in used_counts[t] if i < 0), 0), tuple(i for i in used_counts[t] if i >= 0), lookup)[0]
+        option = memoization(reduce(or_, (POW[-i-1] for i in used_counts[t] if i < 0), 0), tuple(i for i in used_counts[t] if i >= 0), lookup)[0]
         if not option:
             questions[t] = -1
             continue
@@ -99,6 +99,9 @@ def pen_testing(lookup, options, used_counts, questions):
         questions[t] = next(options[t])
 
 T, N, C = map(int, raw_input().strip().split())
+POW = [1]
+for i in xrange(N-1):
+    POW.append(POW[-1]*2)
 lookup = defaultdict(dict)
 options, used_counts, questions = [None for _ in xrange(T)], [[0]*N for _ in xrange(T)], [None for _ in xrange(T)]
 while True:
