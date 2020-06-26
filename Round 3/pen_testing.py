@@ -55,7 +55,6 @@ def gen(used_count, option):
                 yield i
             if used_count[i] < 0:
                 break
-        return
 
 def query(questions, used_counts):
     print " ".join(map(lambda x: str(x+1), questions))
