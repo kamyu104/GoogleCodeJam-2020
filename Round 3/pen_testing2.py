@@ -3,10 +3,12 @@
 # Google Code Jam 2020 Round 3 - Problem C. Pen Testing
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630
 #
-# Time:  O(T * N^2 + N * S), S is the number of dead and used states
+# Time:  O(T * N^2 + N * S), S is the number of dead and used states, pass in PyPy2 but Python2
 # Space: O(N * S)
 #
 # Usage: python interactive_runner.py python local_testing_tool.py 0 -- pypy pen_testing.py
+#
+# Ultimate Solution - Success Rate: ~64.4%
 #
 
 from sys import stdout, stderr
@@ -26,6 +28,14 @@ def prob(dead_mask, used_count):  # Time: O(N)
             left += 1
     return 1.0*good/(good+bad)
 
+def leftmost_used_up_prob(dead_mask, used_count):  # Time: O(N)
+    p = 0.0
+    for i in xrange(N):
+        if dead_mask & 1<<i:
+            continue
+        p += prob(dead_mask | 1<<i, used_count[1:])
+    return p / len(used_count)
+
 def careful_writing_prob(dead_mask, used_count):  # Time: O(N)
     p = 0.0
     for x in xrange(N):
@@ -33,14 +43,6 @@ def careful_writing_prob(dead_mask, used_count):  # Time: O(N)
             break
     for i in xrange(len(used_count)):
         p += prob(dead_mask | 1<<x, (x+1,)*i + used_count[i+1:])
-    return p / len(used_count)
-
-def leftmost_used_up_prob(dead_mask, used_count):  # Time: O(N)
-    p = 0.0
-    for i in xrange(N):
-        if dead_mask & 1<<i:
-            continue
-        p += prob(dead_mask | 1<<i, used_count[1:])
     return p / len(used_count)
 
 def memoization(dead_mask, used_count, lookup):  # Time: O(N * states)
