@@ -42,7 +42,7 @@ def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
         # this block reduces the number of state computations from 1346148 to 832025
         min_count = min(next(i for i in xrange(N) if not (dead_mask & POW[i])), min(alive_used_count))
         if min_count:  # normalized to reduce duplicated computation, and memoize the aliased states to reduce the number of normalization
-            option_p = memoization(reduce(or_, (POW[i-min_count] for i in xrange(N) if (dead_mask & POW[i]) or i-min_count < 0)), tuple(c - min_count for c in alive_used_count), lookup)
+            option_p = memoization(reduce(or_, (POW[i-min_count] for i in xrange(N) if (dead_mask & POW[i]) or i-min_count < 0)), tuple(c-min_count for c in alive_used_count), lookup)
         else:
             option_p = (RETURN, prob(dead_mask, alive_used_count))
             if len(alive_used_count) > 2:
