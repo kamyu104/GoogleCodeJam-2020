@@ -99,7 +99,7 @@ def answer(questions, used_counts):
     stdout.flush()
     return True
 
-def pen_testing(lookup, gens, used_counts, questions):
+def decide(lookup, gens, used_counts, questions):
     for t in xrange(T):
         questions[t] = next(gens[t], None)
         if questions[t] is not None:
@@ -107,15 +107,18 @@ def pen_testing(lookup, gens, used_counts, questions):
         gens[t] = gen(used_counts[t], memoization(reduce(or_, (POW[-i-1] for i in used_counts[t] if i < 0), 0), tuple(i for i in used_counts[t] if i >= 0), lookup)[0])
         questions[t] = next(gens[t])
 
+def pen_testing():
+    lookup = defaultdict(dict)
+    gens, used_counts, questions = [gen() for _ in xrange(T)], [[0]*N for _ in xrange(T)], [None for _ in xrange(T)]
+    while True:
+        decide(lookup, gens, used_counts, questions)
+        if answer(questions, used_counts):
+            break
+        query(questions, used_counts)
+
 RETURN, LEFTMOST, CAREFUL = range(3)
 T, N, C = map(int, raw_input().strip().split())
 POW = [1]
 for i in xrange(N-1):
     POW.append(POW[-1]*2)
-lookup = defaultdict(dict)
-gens, used_counts, questions = [gen() for _ in xrange(T)], [[0]*N for _ in xrange(T)], [None for _ in xrange(T)]
-while True:
-    pen_testing(lookup, gens, used_counts, questions)
-    if answer(questions, used_counts):
-        break
-    query(questions, used_counts)
+pen_testing()
