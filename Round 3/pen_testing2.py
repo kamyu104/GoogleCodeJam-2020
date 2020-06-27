@@ -28,11 +28,11 @@ def prob(dead_mask, alive_used_count):  # Time: O(N)
             left += 1
     return 1.0*good/(good+bad)
 
-def leftmost_used_up_prob(dead_mask, alive_used_count):  # Time: O(N)
+def leftmost_used_up_prob(dead_mask, alive_used_count, lookup):  # Time: O(N)
     return sum(memoization(dead_mask | POW[i], alive_used_count[1:], lookup)[1]
                for i in xrange(N) if not (dead_mask & POW[i])) / len(alive_used_count)
 
-def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
+def careful_writing_prob(dead_mask, alive_used_count, lookup):  # Time: O(N)
     x = next(i for i in xrange(N) if not (dead_mask & POW[i]))
     return sum(memoization(dead_mask | POW[x], (x+1,)*i + alive_used_count[i+1:], lookup)[1]
                for i in xrange(len(alive_used_count))) / len(alive_used_count)
@@ -44,10 +44,10 @@ def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
             return memoization(reduce(or_, (POW[i-min_count] for i in xrange(N) if (dead_mask & POW[i]) or i-min_count < 0)), tuple(c-min_count for c in alive_used_count), lookup)
         option_p = (RETURN, prob(dead_mask, alive_used_count))
         if len(alive_used_count) > 2:
-            leftmost_used_up_p = leftmost_used_up_prob(dead_mask, alive_used_count)
+            leftmost_used_up_p = leftmost_used_up_prob(dead_mask, alive_used_count, lookup)
             if leftmost_used_up_p > option_p[1]:
                 option_p = (LEFTMOST, leftmost_used_up_p)
-            careful_writing_p = careful_writing_prob(dead_mask, alive_used_count)
+            careful_writing_p = careful_writing_prob(dead_mask, alive_used_count, lookup)
             if careful_writing_p > option_p[1]:
                 option_p = (CAREFUL, careful_writing_p)
         lookup[dead_mask][alive_used_count] = option_p

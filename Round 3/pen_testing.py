@@ -28,7 +28,7 @@ def prob(dead_mask, alive_used_count):  # Time: O(N)
             left += 1
     return 1.0*good/(good+bad)
 
-def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
+def careful_writing_prob(dead_mask, alive_used_count, lookup):  # Time: O(N)
     x = next(i for i in xrange(N) if not (dead_mask & POW[i]))
     return sum(memoization(dead_mask | POW[x], (x+1,)*i + alive_used_count[i+1:], lookup)[1]
                for i in xrange(len(alive_used_count))) / len(alive_used_count)
@@ -37,7 +37,7 @@ def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
     if alive_used_count not in lookup[dead_mask]:
         option_p = (RETURN, prob(dead_mask, alive_used_count))
         if len(alive_used_count) > 2:
-            careful_writing_p = careful_writing_prob(dead_mask, alive_used_count)
+            careful_writing_p = careful_writing_prob(dead_mask, alive_used_count, lookup)
             if careful_writing_p > option_p[1]:
                 option_p = (CAREFUL, careful_writing_p)
         lookup[dead_mask][alive_used_count] = option_p
