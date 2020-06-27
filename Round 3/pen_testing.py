@@ -8,7 +8,7 @@
 #
 # Usage: python interactive_runner.py python local_testing_tool.py 0 -- python pen_testing.py
 #
-# Success Rate: ~64.2% (52018697/81081000 = 0.6415645712312379)
+# Expected Success Rate: ~64.2% (52018697/81081000 = 0.6415645712312379)
 #
 
 from sys import stdout
