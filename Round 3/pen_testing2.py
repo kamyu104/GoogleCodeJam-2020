@@ -39,8 +39,8 @@ def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
 
 def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
     min_count = min(next(i for i in xrange(N) if not (dead_mask & POW[i])), min(alive_used_count))
-    if min_count:
-        dead_mask = reduce(or_, (POW[i-min_count] for i in xrange(N) if (dead_mask & POW[i]) or i-min_count < 0), 0)
+    if min_count:  # normalized to reduce duplicated states
+        dead_mask = reduce(or_, (POW[i-min_count] for i in xrange(N) if (dead_mask & POW[i]) or i-min_count < 0))
         alive_used_count = tuple(c - min_count for c in alive_used_count)
     if alive_used_count not in lookup[dead_mask]:
         option_p = (RETURN, prob(dead_mask, alive_used_count))
