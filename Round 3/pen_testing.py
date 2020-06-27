@@ -44,9 +44,7 @@ def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
     return lookup[dead_mask][alive_used_count]
 
 def gen(used_count=None, option=None):
-    if option is None:
-        pass
-    elif option == RETURN:
+    if option == RETURN:
         while True:
             yield -1
     elif option == CAREFUL:
