@@ -6,9 +6,9 @@
 # Time:  O(T * N^2), S is the number of dead and used states, pass in PyPy2 but Python2 due to no memoization
 # Space: O(N * T), use heuristic without memoization
 #
-# Usage: python interactive_runner.py python local_testing_tool.py 2 -- python pen_testing.py
+# Usage: python interactive_runner.py python local_testing_tool.py 2 -- python pen_testing_heuristic.py
 #
-# Expected Success Rate: ~64.2% (52018697/81081000 = 0.6415645712312379)
+# Success Rate: ~64.1% (a little bit less than Expected Success Rate)
 #
 
 from sys import stdout
