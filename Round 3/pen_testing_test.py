@@ -36,15 +36,17 @@ def careful_writing_prob(dead_mask, alive_used_count, lookup):  # Time: O(N)
 
 def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
     if alive_used_count not in lookup[dead_mask]:
-        min_count = min(next(i for i in xrange(N) if not (dead_mask & POW[i])), min(alive_used_count))
-        if min_count:  # normalized to reduce the number of duplicated states from 1346148 to 832025
-            return memoization(reduce(or_, (POW[i-min_count] for i in xrange(N) if (dead_mask & POW[i]) or i-min_count < 0)), tuple(c-min_count for c in alive_used_count), lookup)
+        if USE_LEFTMOST:
+            min_count = min(next(i for i in xrange(N) if not (dead_mask & POW[i])), min(alive_used_count))
+            if min_count:  # normalized to reduce the number of duplicated states from 1346148 to 832025
+                return memoization(reduce(or_, (POW[i-min_count] for i in xrange(N) if (dead_mask & POW[i]) or i-min_count < 0)), tuple(c-min_count for c in alive_used_count), lookup)
         ev = prob(dead_mask, alive_used_count)
         option_p = (RETURN, ev, ev)
         if len(alive_used_count) > 2:
-            leftmost_used_up_p = leftmost_used_up_prob(dead_mask, alive_used_count, lookup)
-            if leftmost_used_up_p[STRATEGY] > option_p[STRATEGY+1]:
-                option_p = (LEFTMOST, leftmost_used_up_p[0], leftmost_used_up_p[1])
+            if USE_LEFTMOST:
+                leftmost_used_up_p = leftmost_used_up_prob(dead_mask, alive_used_count, lookup)
+                if leftmost_used_up_p[STRATEGY] > option_p[STRATEGY+1]:
+                    option_p = (LEFTMOST, leftmost_used_up_p[0], leftmost_used_up_p[1])
             careful_writing_p = careful_writing_prob(dead_mask, alive_used_count, lookup)
             if careful_writing_p[STRATEGY] > option_p[STRATEGY+1]:
                 option_p = (CAREFUL, careful_writing_p[0], careful_writing_p[1])
@@ -58,6 +60,7 @@ def demask(mask):
             result.append(i)
     return result
 
+USE_LEFTMOST = True
 MEMOIZATION, HEURISTIC = range(2)
 STRATEGY = MEMOIZATION
 N = 15
@@ -73,7 +76,7 @@ alive = (7, 8, 9)
 alive_used_count = (1, 0, 0)
 print "alive:", alive, "alive_used_count:", alive_used_count
 print "return   - ev: %10s, prob: %10s" % ((prob(reduce(or_, (POW[i] for i in xrange(N) if i not in alive)), alive_used_count),)*2)
-print "leftmost - ev: %10s, prob: %10s" % leftmost_used_up_prob(reduce(or_, (POW[i] for i in xrange(N) if i not in alive)), alive_used_count, lookup)
+if USE_LEFTMOST: print "leftmost - ev: %10s, prob: %10s" % leftmost_used_up_prob(reduce(or_, (POW[i] for i in xrange(N) if i not in alive)), alive_used_count, lookup)
 print "careful  - ev: %10s, prob: %10s" % careful_writing_prob(reduce(or_, (POW[i] for i in xrange(N) if i not in alive)), alive_used_count, lookup)
 
 # find expected success rate
