@@ -12,7 +12,6 @@
 #
 
 from sys import stdout
-from collections import defaultdict
 from operator import or_
 
 def prob(dead_mask, alive_used_count):  # Time: O(N)
