@@ -53,7 +53,7 @@ def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
         lookup[dead_mask][alive_used_count] = option_p
     return lookup[dead_mask][alive_used_count]
 
-def demask(mask):
+def alives(mask):
     result = []
     for i in xrange(N):
         if not (mask & POW[i]):
@@ -85,4 +85,4 @@ print "key_count: %s, state_count: %s" % (len(lookup.keys()), sum(len(v) for v i
 
 # list each number of states
 # for k, v in lookup.iteritems():
-#     print demask(k), len(v)
+#     print alives(k), len(v)
