@@ -41,7 +41,7 @@ def heuristic(dead_mask, alive_used_count):  # Time: O(N * states)
     if len(alive_used_count) > 2:
         leftmost_used_up_p = leftmost_used_up_prob(dead_mask, alive_used_count)
         if leftmost_used_up_p >= option_p[1]:  # use equal priority: leftmost > return > careful, to make the best heuristic
-            option_p = (CAREFUL, leftmost_used_up_p)
+            option_p = (LEFTMOST, leftmost_used_up_p)
         careful_writing_p = careful_writing_prob(dead_mask, alive_used_count)
         if careful_writing_p > option_p[1]:
             option_p = (CAREFUL, careful_writing_p)
