@@ -8,7 +8,7 @@
 #
 # Usage: python interactive_runner.py python local_testing_tool.py 2 -- python pen_testing_heuristic.py
 #
-# Expected Success Rate: ~64.1% (8736823189/13621608000 = 0.6413944072535342)
+# Heuristic Careful-Writing Solution - Expected Success Rate: ~64.1% (8736823189/13621608000 = 0.6413944072535342)
 #
 
 from sys import stdout
