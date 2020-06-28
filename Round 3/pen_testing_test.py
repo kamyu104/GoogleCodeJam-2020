@@ -56,7 +56,7 @@ def memoization(dead_mask, alive_used_count, lookup):  # Time: O(N * states)
 def demask(mask):
     result = []
     for i in xrange(N):
-        if not(mask & POW[i]):
+        if not (mask & POW[i]):
             result.append(i)
     return result
 
