@@ -23,7 +23,7 @@ def prob(dead_mask, alive_used_count):  # Time: O(N)
         else:
             bad += right-left
             left += 1
-    return Fraction(good, (good+bad))
+    return Fraction(good, (good+bad))  # use fraction to get more accurate probability
 
 def leftmost_used_up_prob(dead_mask, alive_used_count, lookup):  # Time: O(N)
     return (sum(memoization(dead_mask | POW[i], alive_used_count[1:], lookup)[1] for i in xrange(N) if not (dead_mask & POW[i])) / len(alive_used_count),
