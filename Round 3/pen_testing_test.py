@@ -61,6 +61,8 @@ def alives(mask):
     return result
 
 USE_LEFTMOST = True
+# MEMOIZATION strategy is decided by the expected success rate of total substates,
+# HEURISTIC strategy is decided by the expected direct return success rate of only next states
 MEMOIZATION, HEURISTIC = range(2)
 STRATEGY = MEMOIZATION
 N = 15
