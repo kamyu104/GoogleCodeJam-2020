@@ -6,9 +6,9 @@
 # Time:  O(T * N^2), S is the number of dead and used states, pass in PyPy2 but Python2 due to no memoization
 # Space: O(N * T), use heuristic without memoization
 #
-# Usage: python interactive_runner.py python local_testing_tool.py 2 -- pypy pen_testing_heuristic.py
+# Usage: python interactive_runner.py python local_testing_tool.py 2 -- pypy pen_testing2_heuristic.py
 #
-# Heuristic Careful-Writing Solution - Expected Success Rate: ~64.1% (8736823189/13621608000 = 0.6413944072535342)
+# Heuristic Hybrid Solution - Expected Success Rate: ~64.2% (61179817/95256000 = 0.642267332242)
 #
 
 from sys import stdout
@@ -27,6 +27,10 @@ def prob(dead_mask, alive_used_count):  # Time: O(N)
             left += 1
     return 1.0*good/(good+bad)
 
+def leftmost_used_up_prob(dead_mask, alive_used_count):  # Time: O(N)
+    return sum(prob(dead_mask | POW[i], alive_used_count[1:])
+               for i in xrange(N) if not (dead_mask & POW[i])) / len(alive_used_count)
+
 def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
     x = next(i for i in xrange(N) if not (dead_mask & POW[i]))
     return sum(prob(dead_mask | POW[x], (x+1,)*i + alive_used_count[i+1:])
@@ -35,6 +39,9 @@ def careful_writing_prob(dead_mask, alive_used_count):  # Time: O(N)
 def heuristic(dead_mask, alive_used_count):  # Time: O(N * states)
     option_p = (RETURN, prob(dead_mask, alive_used_count))
     if len(alive_used_count) > 2:
+        leftmost_used_up_p = leftmost_used_up_prob(dead_mask, alive_used_count)
+        if leftmost_used_up_p >= option_p[1]:  # use equal priority: leftmost > return > careful, to make the best heuristic
+            option_p = (CAREFUL, leftmost_used_up_p)
         careful_writing_p = careful_writing_prob(dead_mask, alive_used_count)
         if careful_writing_p > option_p[1]:
             option_p = (CAREFUL, careful_writing_p)
@@ -44,6 +51,10 @@ def gen(used_count=None, option=None):
     if option == RETURN:
         while True:
             yield -1
+    elif option == LEFTMOST:
+        i = next(i for i in xrange(N) if used_count[i] >= 0)
+        while 0 <= used_count[i]:
+            yield i
     elif option == CAREFUL:
         dead_mask = reduce(or_, (POW[-i-1] for i in used_count if i < 0), 0)
         x = next(i for i in xrange(N) if not (dead_mask & POW[i]))
@@ -98,7 +109,7 @@ def pen_testing():
             break
         query(questions, used_counts)
 
-RETURN, CAREFUL = range(2)
+RETURN, LEFTMOST, CAREFUL = range(3)
 T, N, C = map(int, raw_input().strip().split())
 POW = [1]
 for i in xrange(N-1):
