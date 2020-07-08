@@ -19,27 +19,6 @@ using Points = vector<array<int64_t, 2>>;
 static const int64_t MOD = 1e9 + 7;
 static const int64_t P = 113;
 
-uint64_t pow(uint64_t a, uint64_t b, uint64_t m) {
-    a %= m;
-    uint64_t result = 1;
-    while (b) {
-        if (b & 1) {
-            result = (result * a) % m;
-        }
-        a = (a * a) % m;
-        b >>= 1;
-    }
-    return result;
-}
-
-static unordered_map<uint64_t, uint64_t> lookup;
-int64_t exp_(uint64_t x) {
-    if (!lookup.count(x)) {
-        lookup[x] = pow(P, x, MOD);
-    }
-    return lookup[x];
-}
-
 uint64_t gcd(uint64_t a, uint64_t b) {
     while (b != 0) {
         const auto tmp = b;
@@ -59,6 +38,10 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
     }
     vector<int64_t> xs(cbegin(x_set), cend(x_set)), ys(cbegin(y_set), cend(y_set));
     sort(begin(xs), end(xs)), sort(begin(ys), end(ys));
+    vector<int64_t> exp(1, 1);
+    while (exp.size() < 2 * points.size()) {
+        exp.emplace_back(exp.back() * P % MOD);
+    }
     Groups groups;
     uint64_t total = 0;
     for (int j = 0; j < ys.size() - 1; ++j) {
@@ -84,7 +67,7 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
                         auto b = dq.front();
                         auto x = ((points[b][0] - points[a][0]) % MOD + MOD) % MOD;
                         auto y = ((points[b][1] - points[a][1]) % MOD + MOD) % MOD;
-                        auto delta = ((x * P + y) * exp_(2 * (dq.size() - 1))) % MOD;
+                        auto delta = ((x * P + y) * exp[2 * (dq.size() - 1)]) % MOD;
                         rolling_hash = ((rolling_hash - delta) % MOD + MOD) % MOD;
                     }
                 }

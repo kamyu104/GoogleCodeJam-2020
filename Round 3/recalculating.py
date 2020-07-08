@@ -55,6 +55,9 @@ def group_rects(points, D):
         y_set.add(y-D)
         y_set.add(y+D)
     xs, ys = sorted(x_set), sorted(y_set)
+    exp = [1]
+    for _ in xrange(2*len(points)-1):
+        exp.append(exp[-1]*P%MOD)
     total = 0
     groups = defaultdict(list)
     for j in xrange(len(ys)-1):
@@ -77,7 +80,7 @@ def group_rects(points, D):
                         b = dq[0]
                         rolling_hash = (rolling_hash -
                                         ((points[b][0]-points[a][0])*P+
-                                         (points[b][1]-points[a][1]))*exp(2*(len(dq)-1)))%MOD
+                                         (points[b][1]-points[a][1]))*exp[2*(len(dq)-1)])%MOD
                 left += 1
             if not dq:
                 continue
@@ -138,12 +141,6 @@ def recalculating():
     g = gcd(unique, total)
     return "{} {}".format(unique//g, total//g)
 
-def exp(x):
-    if x not in LOOKUP:
-        LOOKUP[x] = pow(P, x, MOD)
-    return LOOKUP[x]
-
-LOOKUP = {}
 MOD = 10**9+7
 P = 113
 for case in xrange(input()):
