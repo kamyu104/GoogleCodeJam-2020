@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Round 3 - Problem D. Recalculating
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9
 #
-# Time:  O(N^2 * logN), even without MLE, it gets TLE if N = 1687 in both Python2 / PyPy2
+# Time:  O(N^2 * logN), even without MLE, it still faces TLE if N = 1687 in both Python2 / PyPy2
 # Space: O(N^2), it gets MLE if N = 1687, since memory usage of "(x0, y0, x1, y1) * (4*N^2)" is much greater than 1GB in both Python2 / PyPy2
 #
 
