@@ -77,9 +77,9 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
                 continue;
             }
             // the rectangle is fully covered by ordered repair centers in dq,
-            // normalized by shift to the first repair center
-            int64_t x0 = points[dq.front()][0] - (xs[i + 1] - D), y0 = points[dq.front()][1] - (ys[j + 1] - D);
-            int64_t x1 = points[dq.front()][0] - (xs[i] - D), y1 = points[dq.front()][1] - (ys[j] - D);
+            // normalized by being relative to the first repair center
+            int64_t x0 = xs[i] - points[dq.front()][0], y0 = ys[j] - points[dq.front()][1];
+            int64_t x1 = xs[i + 1] - points[dq.front()][0], y1 = ys[j + 1] - points[dq.front()][1];
             total += (x1 - x0) * (y1 - y0);
             groups[rolling_hash].emplace_back(x0, y0, x1, y1);
         }

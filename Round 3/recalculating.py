@@ -85,9 +85,9 @@ def group_rects(points, D):
             if not dq:
                 continue
             # the rectangle is fully covered by ordered repair centers in dq,
-            # normalized by shift to the first repair center
-            x0, y0 = points[dq[0]][0]-(xs[i+1]-D), points[dq[0]][1]-(ys[j+1]-D)
-            x1, y1 = points[dq[0]][0]-(xs[i]-D), points[dq[0]][1]-(ys[j]-D)
+            # normalized by being relative to the first repair center
+            x0, y0 = xs[i]-points[dq[0]][0], ys[j]-points[dq[0]][1]
+            x1, y1 = xs[i+1]-points[dq[0]][0], ys[j+1]-points[dq[0]][1]
             total += (x1-x0)*(y1-y0)
             groups[rolling_hash].append((x0, y0, x1, y1))
     return total, groups
