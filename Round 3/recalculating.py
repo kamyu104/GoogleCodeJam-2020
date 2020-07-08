@@ -57,7 +57,6 @@ def group_rects(points, D):
     xs, ys = sorted(x_set), sorted(y_set)
     total = 0
     groups = defaultdict(list)
-    debug = 0
     for j in xrange(len(ys)-1):
         rolling_hash, left, right = 0, 0, 0
         dq = deque()
@@ -82,16 +81,12 @@ def group_rects(points, D):
                 left += 1
             if not dq:
                 continue
-            # the rectangle is fully covered by ordered repairs centers in dq,
+            # the rectangle is fully covered by ordered repair centers in dq,
             # normalized by shift to the first repair center
             x0, y0 = points[dq[0]][0]-(xs[i+1]-D), points[dq[0]][1]-(ys[j+1]-D)
             x1, y1 = points[dq[0]][0]-(xs[i]-D), points[dq[0]][1]-(ys[j]-D)
             total += (x1-x0)*(y1-y0)
             groups[rolling_hash].append((x0, y0, x1, y1))
-            debug += 1
-            assert(len(dq) <= len(points))
-            assert(debug <= (2*len(points)-1)**2)
-            assert(len(groups) <= len(points)**2)
     return total, groups
 
 def calc_unique_area(groups):
