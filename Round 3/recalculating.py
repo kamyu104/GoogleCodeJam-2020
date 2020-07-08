@@ -131,7 +131,7 @@ def calc_unique_area(groups):
             unique += (intervals[i+1][0]-x0)*segment_tree.query()[1]
     return unique
 
-def recaculating():
+def recalculating():
     N, D = map(int, raw_input().strip().split())
     points = []
     for _ in xrange(N):
@@ -152,4 +152,4 @@ LOOKUP = {}
 MOD = 10**9+7
 P = 113
 for case in xrange(input()):
-    print 'Case #%d: %s' % (case+1, recaculating())
+    print 'Case #%d: %s' % (case+1, recalculating())
