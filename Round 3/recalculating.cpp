@@ -98,7 +98,7 @@ uint64_t calc_unique_area(const Groups& groups) {
             intervals.emplace_back(x0, y0, y1, +1);
             intervals.emplace_back(x1, y0, y1, -1);
         }
-        sort(begin(intervals), end(intervals));
+        sort(begin(intervals), end(intervals));  // at most O(N^2) intervals, total time: O(N^2 * logN)
         unordered_set<int64_t> y_set;
         for (const auto& interval : intervals) {
             int64_t x, y0, y1, v;
@@ -156,7 +156,7 @@ uint64_t calc_unique_area(const Groups& groups) {
         for (int i = 0; i < intervals.size() - 1; ++i) {
             int64_t x, y0, y1, v;
             tie(x, y0, y1, v) = intervals[i];
-            update(height_to_idx[y0], height_to_idx[y1] - 1, v);
+            update(height_to_idx[y0], height_to_idx[y1] - 1, v);  // at most O(N^2) intervals, total time: O(N^2 * logN)
             unique += (get<0>(intervals[i + 1]) - x) * tree[1][1];
         }
     }

@@ -119,8 +119,8 @@ def calc_unique_area(groups):
             intervals.append((x1, (y0, y1), -1))
             y_set.add(y0)
             y_set.add(y1)
-        intervals.sort(key=lambda x: x[0]) # at most O(N^2) intervals, total time: O(N^2 * logN)
-        ys = sorted(y_set)  # at most O(N^2) intervals, total time: O(N^2 * logN)
+        intervals.sort(key=lambda x: x[0])  # at most O(N^2) intervals, total time: O(N^2 * logN)
+        ys = sorted(y_set)
         y_to_idx = {y:i for i, y in enumerate(ys)}
         segment_tree = SegmentTree(len(ys)-1, build_fn=build,  update_fn=update, query_fn=partial(query, ys))
         for i in xrange(len(intervals)-1):
