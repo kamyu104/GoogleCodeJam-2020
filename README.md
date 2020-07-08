@@ -1,4 +1,4 @@
-# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-21%20%2F%2022-ff69b4.svg)
+# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-22%20%2F%2022-ff69b4.svg)
 
 Python solutions of Google Code Jam 2020. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds).
 
@@ -54,4 +54,4 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |A| [Naming Compromise](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003774db)| [Python](./Round%203/naming_compromise.py) | _O(C * J)_ | _O(C * J)_ | Easy | | DP, Edit Distance
 |B| [Thermometers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b)| [Python](./Round%203/thermometers.py) [Python](./Round%203/thermometers2.py) |  _O(N^2)_ | _O(1)_ | Hard || Greedy, Mirror
 |C| [Pen Testing](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630)| [PyPy](./Round%203/pen_testing_heuristic.py)<br>[Python](./Round%203/pen_testing.py)<br>[PyPy](./Round%203/pen_testing2_heuristic.py)<br>[Python](./Round%203/pen_testing2.py) | _O(T * N^2 + N * S)_ | _O(N * (T + S))_ | Hard || Heuristic, Memoization, Probability
-|D| [Recalculating](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9)| | | | Hard ||
+|D| [Recalculating](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9)| [*PyPy](./Round%203/recalculating.py) | _O(N^2 * logN)_ | _O(N^2)_ | Hard || Sliding Window, Rolling Hash, Rabin-Karp Algorithm, Line Sweep, Segment Tree
