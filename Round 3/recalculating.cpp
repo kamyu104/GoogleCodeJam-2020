@@ -69,9 +69,9 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
             for (; right < points.size() && points[right][0] <= xs[i] + D; ++right) {
                 if (ys[j + 1] - D <= points[right][1] &&  points[right][1] <= ys[j] + D) {
                     if (!dq.empty()) {
-                        auto a = dq.back();
-                        auto x = ((points[right][0] - points[a][0]) % MOD + MOD) % MOD;
-                        auto y = ((points[right][1] - points[a][1]) % MOD + MOD) % MOD;
+                        auto a = dq.back(), b = right;
+                        auto x = ((points[b][0] - points[a][0]) % MOD + MOD) % MOD;
+                        auto y = ((points[b][1] - points[a][1]) % MOD + MOD) % MOD;
                         rolling_hash = (rolling_hash * P * P + (x * P + y)) % MOD;
                     }
                     dq.emplace_back(right);

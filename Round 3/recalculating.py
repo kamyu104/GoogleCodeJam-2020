@@ -64,10 +64,10 @@ def group_rects(points, D):
             while right < len(points) and points[right][0] <= xs[i]+D:
                 if ys[j+1]-D <= points[right][1] <= ys[j]+D:
                     if dq:
-                        a = dq[-1]
+                        a, b = dq[-1], right
                         rolling_hash = (rolling_hash*P*P +
-                                        (points[right][0]-points[a][0])*P+
-                                        (points[right][1]-points[a][1]))%MOD
+                                        (points[b][0]-points[a][0])*P+
+                                        (points[b][1]-points[a][1]))%MOD
                     dq.append(right)
                 right += 1
             while left < len(points) and points[left][0] < xs[i+1]-D:
