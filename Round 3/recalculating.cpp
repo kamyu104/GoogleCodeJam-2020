@@ -39,8 +39,8 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
     vector<int64_t> xs(cbegin(x_set), cend(x_set)), ys(cbegin(y_set), cend(y_set));
     sort(begin(xs), end(xs)), sort(begin(ys), end(ys));
     vector<int64_t> exp(1, 1);
-    while (exp.size() < 2 * points.size()) {
-        exp.emplace_back(exp.back() * P % MOD);
+    while (exp.size() < points.size()) {
+        exp.emplace_back(exp.back() * P * P % MOD);
     }
     Groups groups;
     uint64_t total = 0;
@@ -55,7 +55,8 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
                         auto a = dq.back(), b = right;
                         auto x = ((points[b][0] - points[a][0]) % MOD + MOD) % MOD;
                         auto y = ((points[b][1] - points[a][1]) % MOD + MOD) % MOD;
-                        rolling_hash = (rolling_hash * P * P + (x * P + y)) % MOD;
+                        auto delta = (x * P + y) % MOD;
+                        rolling_hash = (rolling_hash * P * P + delta) % MOD;
                     }
                     dq.emplace_back(right);
                 }
@@ -67,7 +68,7 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
                         auto b = dq.front();
                         auto x = ((points[b][0] - points[a][0]) % MOD + MOD) % MOD;
                         auto y = ((points[b][1] - points[a][1]) % MOD + MOD) % MOD;
-                        auto delta = ((x * P + y) * exp[2 * (dq.size() - 1)]) % MOD;
+                        auto delta = ((x * P + y) * exp[dq.size() - 1]) % MOD;
                         rolling_hash = ((rolling_hash - delta) % MOD + MOD) % MOD;
                     }
                 }
