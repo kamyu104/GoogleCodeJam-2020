@@ -16,7 +16,7 @@ class SegmentTree(object):
         self.N = N
         self.update_fn = update_fn
         self.query_fn = query_fn
-        # [len_of_0_covered, len_of_1_covered, count_of_covered]
+        # node: [len_of_0_covered, len_of_1_covered, count_of_covered]
         self.tree = [[0, 0, 0] for _ in xrange(2*N)]
         for x in reversed(xrange(1, len(self.tree))):
             self.query_fn(self.tree, x)
