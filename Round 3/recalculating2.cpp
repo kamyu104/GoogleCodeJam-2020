@@ -107,7 +107,7 @@ class SegmentTree {
     const function<void(T *, int64_t)> update_fn_;
 };
 
-pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
+Groups group_rects(const Points& points, int64_t D) {
     unordered_set<int64_t> x_set, y_set;
     for (auto& p : points) {
         x_set.emplace(p[0] - D);
@@ -122,7 +122,6 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
         exp.emplace_back(exp.back() * P * P % MOD);
     }
     Groups groups;
-    uint64_t total = 0;
     for (int j = 0; j < ys.size() - 1; ++j) {
         int64_t rolling_hash = 0;
         deque<int> dq;
@@ -159,16 +158,15 @@ pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
             // normalized by being relative to the first repair center
             int64_t x0 = xs[i] - points[dq.front()][0], y0 = ys[j] - points[dq.front()][1];
             int64_t x1 = xs[i + 1] - points[dq.front()][0], y1 = ys[j + 1] - points[dq.front()][1];
-            total += (x1 - x0) * (y1 - y0);
             groups[rolling_hash].emplace_back(x0, y0, x1, y1);
         }
     }
-    return {total, groups};
+    return groups;
 }
 
-uint64_t calc_unique_area(const Groups& groups) {
+pair<uint64_t, uint64_t> calc_unique_area(const Groups& groups) {
     using Event = tuple<int64_t, int64_t, int64_t, int64_t>;
-    int64_t unique = 0;
+    int64_t unique = 0, total = 0;
     for (const auto& kvp : groups) {
         vector<Event> intervals;
         for (const auto& rect : kvp.second) {
@@ -191,24 +189,26 @@ uint64_t calc_unique_area(const Groups& groups) {
         for (int i = 0; i < ys.size(); ++i) {
             height_to_idx[ys[i]] = i;
         }
-        // Node: [count_of_covered, len_of_1_or_up_covered, len_of_2_or_up_covered, left, right]
-        using Node = array<int64_t, 5>;  // define customized operations of segment tree
+        // Node: [sum_len_of_covered, len_of_1_or_up_covered, len_of_2_or_up_covered, left, right, count_of_covered]
+        using Node = array<int64_t, 6>;  // define customized operations of segment tree
         const auto& query = [&ys](vector<Node> *tree, int x) {
             int N = tree->size() / 2;
             if (x >= N) {  // leaf node
                 (*tree)[x][3] = ys[(x - N)], (*tree)[x][4] = ys[(x - N) + 1];
+                (*tree)[x][0] = ((*tree)[x][4] - (*tree)[x][3]) * (*tree)[x][5];
                 for (int i = 1; i <= 2; ++i) {
-                    (*tree)[x][i] = (i - (*tree)[x][0] > 0) ? 0 : ys[(x - N) + 1] - ys[(x - N)];
+                    (*tree)[x][i] = (i - (*tree)[x][5] > 0) ? 0 : (*tree)[x][4] - (*tree)[x][3];
                 }
             } else {
                 (*tree)[x][3] = (*tree)[2 * x][3], (*tree)[x][4] = (*tree)[2 * x + 1][4];
+                (*tree)[x][0] = ((*tree)[x][4] - (*tree)[x][3]) * (*tree)[x][5] + (*tree)[2 * x][0] + (*tree)[2 * x + 1][0];
                 for (int i = 1; i <= 2; ++i) {
-                    (*tree)[x][i] = (i - (*tree)[x][0] > 0) ? (*tree)[2 * x][i - (*tree)[x][0]] + (*tree)[2 * x + 1][i - (*tree)[x][0]] : (*tree)[x][4] - (*tree)[x][3];
+                    (*tree)[x][i] = (i - (*tree)[x][5] > 0) ? (*tree)[2 * x][i - (*tree)[x][5]] + (*tree)[2 * x + 1][i - (*tree)[x][5]] : (*tree)[x][4] - (*tree)[x][3];
                 }
             }
         };
         const auto& update = [](Node *x, int64_t val) {
-            (*x)[0] += val;
+            (*x)[5] += val;
         };
         SegmentTree<Node> segment_tree(ys.size() - 1, query, update);  // init segment tree with customized operations
         for (int i = 0; i < intervals.size() - 1; ++i) {
@@ -216,9 +216,10 @@ uint64_t calc_unique_area(const Groups& groups) {
             tie(x, y0, y1, v) = intervals[i];
             segment_tree.update(height_to_idx[y0], height_to_idx[y1] - 1, v);  // at most O(N^2) intervals, total time: O(N^2 * logN)
             unique += (get<0>(intervals[i + 1]) - x) * (segment_tree.query()[1] - segment_tree.query()[2]);
+            total += (get<0>(intervals[i + 1]) - x) * segment_tree.query()[0];
         }
     }
-    return unique;
+    return {unique, total};
 }
 
 string recalculating() {
@@ -231,10 +232,9 @@ string recalculating() {
         points.push_back({x + y, x - y});
     }
     sort(begin(points), end(points));
-    uint64_t total;
-    Groups groups;
-    tie(total, groups) = group_rects(points, D);
-    const auto& unique = calc_unique_area(groups);
+    const auto& groups = group_rects(points, D);
+    uint64_t unique, total;
+    tie(unique, total) = calc_unique_area(groups);
     const auto& g = gcd(unique, total);
     return to_string(unique / g) + " " + to_string(total / g);
 }
