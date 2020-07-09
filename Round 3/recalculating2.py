@@ -16,8 +16,8 @@ class SegmentTree(object):
         self.N = N
         self.update_fn = update_fn
         self.query_fn = query_fn
-        # [count_of_covered, len_of_1_or_up_covered, len_of_2_or_up_covered, left, right]
-        self.tree = [[0, 0, 0, 0, 0] for _ in xrange(2*N)]
+        # [sum_len_of_covered, len_of_1_or_up_covered, len_of_2_or_up_covered, left, right, count_of_covered]
+        self.tree = [[0, 0, 0, 0, 0, 0] for _ in xrange(2*N)]
         for x in reversed(xrange(1, len(self.tree))):
             self.query_fn(self.tree, x)
 
@@ -59,7 +59,6 @@ def group_rects(points, D):
     exp = [1]
     for _ in xrange(len(points)-1):
         exp.append(exp[-1]*P*P%MOD)
-    total = 0
     groups = defaultdict(list)
     for j in xrange(len(ys)-1):
         rolling_hash, left, right = 0, 0, 0
@@ -89,26 +88,27 @@ def group_rects(points, D):
             # normalized by being relative to the first repair center
             x0, y0 = xs[i]-points[dq[0]][0], ys[j]-points[dq[0]][1]
             x1, y1 = xs[i+1]-points[dq[0]][0], ys[j+1]-points[dq[0]][1]
-            total += (x1-x0)*(y1-y0)
             groups[rolling_hash].append((x0, y0, x1, y1))
-    return total, groups
+    return groups
 
 def calc_unique_area(groups):
     def update(x, v):
-        x[0] += v
+        x[-1] += v
 
     def query(ys, tree, x):
         N = len(tree)//2
         if x >= N:  # leaf node
-            tree[x][3:] = ys[(x-N)], ys[(x-N)+1]
+            tree[x][3:5] = ys[(x-N)], ys[(x-N)+1]
+            tree[x][0] = (tree[x][4]-tree[x][3])*tree[x][-1]
             for i in xrange(1, 3):
-                tree[x][i] = 0 if i-tree[x][0] > 0 else ys[(x-N)+1]-ys[(x-N)]
+                tree[x][i] = 0 if i-tree[x][-1] > 0 else tree[x][4]-tree[x][3]
         else:
-            tree[x][3:] = tree[2*x][3], tree[2*x+1][4]
+            tree[x][3:5] = tree[2*x][3], tree[2*x+1][4]
+            tree[x][0] = (tree[x][4]-tree[x][3])*tree[x][-1] + tree[2*x][0]+tree[2*x+1][0]
             for i in xrange(1, 3):
-                tree[x][i] = tree[2*x][i-tree[x][0]]+tree[2*x+1][i-tree[x][0]] if i-tree[x][0] > 0 else tree[x][4]-tree[x][3]
+                tree[x][i] = tree[2*x][i-tree[x][-1]]+tree[2*x+1][i-tree[x][-1]] if i-tree[x][-1] > 0 else tree[x][4]-tree[x][3]
 
-    unique = 0
+    unique, total = 0, 0
     for rects in groups.itervalues():
         intervals, y_set = [], set()
         for x0, y0, x1, y1 in rects:
@@ -124,7 +124,8 @@ def calc_unique_area(groups):
             x0, (y0, y1), v = intervals[i]
             segment_tree.update(y_to_idx[y0], y_to_idx[y1]-1, v)  # at most O(N^2) intervals, total time: O(N^2 * logN)
             unique += (intervals[i+1][0]-x0)*(segment_tree.query()[1]-segment_tree.query()[2])
-    return unique
+            total += (intervals[i+1][0]-x0)*segment_tree.query()[0]
+    return unique, total
 
 def recalculating():
     N, D = map(int, raw_input().strip().split())
@@ -133,8 +134,8 @@ def recalculating():
         x, y = map(int, raw_input().strip().split())
         points.append((x+y, x-y))
     points.sort()
-    total, groups = group_rects(points, D)
-    unique = calc_unique_area(groups)
+    groups = group_rects(points, D)
+    unique, total = calc_unique_area(groups)
     g = gcd(unique, total)
     return "{} {}".format(unique//g, total//g)
 

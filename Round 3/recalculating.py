@@ -95,16 +95,16 @@ def group_rects(points, D):
 
 def calc_unique_area(groups):
     def update(x, v):
-        x[2] += v
+        x[-1] += v
 
     def query(ys, tree, x):
         N = len(tree)//2
         if x >= N:  # leaf node
             for i in xrange(2):
-                tree[x][i] = ys[(x-N)+1]-ys[(x-N)] if i-tree[x][2] == 0 else 0
+                tree[x][i] = ys[(x-N)+1]-ys[(x-N)] if i-tree[x][-1] == 0 else 0
         else:
             for i in xrange(2):
-                tree[x][i] = tree[2*x][i-tree[x][2]] + tree[2*x+1][i-tree[x][2]] if i-tree[x][2] >= 0 else 0
+                tree[x][i] = tree[2*x][i-tree[x][-1]] + tree[2*x+1][i-tree[x][-1]] if i-tree[x][-1] >= 0 else 0
 
     unique = 0
     for rects in groups.itervalues():
