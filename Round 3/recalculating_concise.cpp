@@ -62,27 +62,25 @@ class SegmentTree {
     explicit SegmentTree(
         int N,
         const function<void(vector<T> *, int)>& query_fn,
-        const function<void(T *, int64_t)>& apply_fn)
+        const function<void(T *, int64_t)>& update_fn)
       : N_(N),
         tree_(2 * N),
         query_fn_(query_fn),
-        apply_fn_(apply_fn) {
+        update_fn_(update_fn) {
         for (int i = tree_.size() - 1; i >= 1; --i) {
             query_fn_(&tree_, i);
         }
     }
 
-    void update(int L, int R, int h) {
+    void update(int L, int R, int val) {
         L += N_; R += N_;
         int L0 = L, R0 = R;
         for (; L <= R; L >>= 1, R >>= 1) {
             if ((L & 1) == 1) {
-                apply_fn_(&tree_[L], h);
-                query_fn_(&tree_, L++);
+                apply(L++, val);
             }
             if ((R & 1) == 0) {
-                apply_fn_(&tree_[R], h);
-                query_fn_(&tree_, R--);
+                apply(R--, val);
             }
         }
         pull(L0); pull(R0);
@@ -93,6 +91,11 @@ class SegmentTree {
     }
 
  private:
+    void apply(int x, int val) {
+        update_fn_(&tree_[x], val);
+        query_fn_(&tree_, x);
+    }
+
     void pull(int x) {
         while (x > 1) {
             x >>= 1;
@@ -103,7 +106,7 @@ class SegmentTree {
     int N_;
     vector<T> tree_;
     const function<void(vector<T> *, int)> query_fn_;
-    const function<void(T *, int64_t)> apply_fn_;
+    const function<void(T *, int64_t)> update_fn_;
 };
 
 pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
@@ -192,9 +195,6 @@ uint64_t calc_unique_area(const Groups& groups) {
         }
 
         using Node = array<int64_t, 3>;  // define customized operations of segment tree
-        const auto& update = [](Node *x, int64_t val) {
-            (*x)[2] += val;
-        };
         const auto& query = [&ys](vector<Node> *tree, int x) {
             int N = tree->size() / 2;
             if (x >= N) {  // leaf node
@@ -206,6 +206,9 @@ uint64_t calc_unique_area(const Groups& groups) {
                     (*tree)[x][i] = (i - (*tree)[x][2] >= 0) ? (*tree)[2 * x][i - (*tree)[x][2]] + (*tree)[2 * x + 1][i - (*tree)[x][2]] : 0;
                 }
             }
+        };
+        const auto& update = [](Node *x, int64_t val) {
+            (*x)[2] += val;
         };
         SegmentTree<Node> segment_tree(ys.size() - 1, query, update);  // init segment tree with customized operations
         for (int i = 0; i < intervals.size() - 1; ++i) {
