@@ -9,9 +9,35 @@
  *
  */
 
-#include<bits/stdc++.h>
+#include <iostream>
+#include <functional>
+#include <array>
+#include <string>
+#include <vector>
+#include <deque>
+#include <utility>
+#include <tuple>
+#include <unordered_set>
+#include <unordered_map>
+#include <algorithm>
 
-using namespace std;
+using std::ios_base;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::function;
+using std::array;
+using std::string;
+using std::to_string;
+using std::vector;
+using std::deque;
+using std::pair;
+using std::tuple;
+using std::tie;
+using std::get;
+using std::unordered_set;
+using std::unordered_map;
+using std::sort;
 
 using Groups = unordered_map<int64_t, vector<tuple<int64_t, int64_t, int64_t, int64_t>>>;
 using Points = vector<array<int64_t, 2>>;
@@ -114,7 +140,7 @@ uint64_t calc_unique_area(const Groups& groups) {
         }
         using Node = array<int64_t, 3>;
         vector<Node> tree(2 * (ys.size() - 1));
-        auto query = [&](int x) {
+        const auto& query = [&ys, &tree](int x) {
             int N = tree.size() / 2;
             if (x >= N) {  // leaf node
                 for (int i = 0; i < 2; ++i) {
@@ -126,12 +152,12 @@ uint64_t calc_unique_area(const Groups& groups) {
                 }
             }
         };
-        auto pull = [&](int x) {
+        const auto& pull = [&query](int x) {
             for (; x; x /= 2) {
                 query(x);
             }
         };
-        auto update = [&](int l, int r, int v) {
+        const auto& update = [&query, &pull, &tree](int l, int r, int v) {
             int N = tree.size() / 2;
             l += N;
             r += N;
