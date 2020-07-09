@@ -43,7 +43,7 @@ public:
         apply_fn_(apply_fn)
     {
         for (int i = tree_.size() - 1; i >= 1; --i) {
-            query_fn_(ys, &tree_, i);
+            query_fn_(ys_, &tree_, i);
         }
     }
 
