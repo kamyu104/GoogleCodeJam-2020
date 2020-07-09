@@ -12,11 +12,13 @@ from functools import partial
 from fractions import gcd
 
 class SegmentTree(object):
-    def __init__(self, N, build_fn, update_fn, query_fn):
+    def __init__(self, N, update_fn, query_fn):
         self.N = N
-        self.tree = build_fn(N)
         self.update_fn = update_fn
         self.query_fn = query_fn
+        self.tree = [[0, 0, 0] for _ in xrange(2*N)]
+        for x in reversed(xrange(1, len(self.tree))):
+            self.query_fn(self.tree, x)
 
     def __apply(self, x, val):
         self.update_fn(self.tree[x], val)
@@ -91,12 +93,6 @@ def group_rects(points, D):
     return total, groups
 
 def calc_unique_area(groups):
-    def build(N):
-        tree = [[0, 0, 0] for _ in xrange(2*N)]
-        for x in reversed(xrange(1, len(tree))):
-            query(ys, tree, x)
-        return tree
-
     def update(x, v):
         x[2] += v
 
@@ -120,7 +116,7 @@ def calc_unique_area(groups):
         intervals.sort(key=lambda x: x[0])  # at most O(N^2) intervals, total time: O(N^2 * logN)
         ys = sorted(y_set)
         y_to_idx = {y:i for i, y in enumerate(ys)}
-        segment_tree = SegmentTree(len(ys)-1, build_fn=build,  update_fn=update, query_fn=partial(query, ys))
+        segment_tree = SegmentTree(len(ys)-1, update_fn=update, query_fn=partial(query, ys))
         for i in xrange(len(intervals)-1):
             x0, (y0, y1), v = intervals[i]
             segment_tree.update(y_to_idx[y0], y_to_idx[y1]-1, v)  # at most O(N^2) intervals, total time: O(N^2 * logN)
