@@ -34,30 +34,30 @@ template <typename T>
 class SegmentTree {
 public:
     explicit SegmentTree(
-        const vector<int64_t>& ys,
-        const function<void(const vector<int64_t>&, vector<T> *, int)>& query_fn,
+        int N,
+        const function<void(vector<T> *, int)>& query_fn,
         const function<void(T *, int64_t)>& apply_fn)
-      : tree_(2 * (ys.size() - 1)),
-        ys_(ys),
+      : N_(N),
+        tree_(2 * N),
         query_fn_(query_fn),
         apply_fn_(apply_fn)
     {
         for (int i = tree_.size() - 1; i >= 1; --i) {
-            query_fn_(ys_, &tree_, i);
+            query_fn_(&tree_, i);
         }
     }
 
     void update(int L, int R, int h) {
-        L += tree_.size() / 2; R += tree_.size() / 2;
+        L += N_; R += N_;
         int L0 = L, R0 = R;
         for (; L <= R; L >>= 1, R >>= 1) {
             if ((L & 1) == 1) {
                 apply_fn_(&tree_[L], h);
-                query_fn_(ys_, &tree_, L++);
+                query_fn_(&tree_, L++);
             }
             if ((R & 1) == 0) {
                 apply_fn_(&tree_[R], h);
-                query_fn_(ys_, &tree_, R--);
+                query_fn_(&tree_, R--);
             }
         }
         pull(L0); pull(R0);
@@ -71,14 +71,14 @@ private:
     void pull(int x) {
         while (x > 1) {
             x >>= 1;
-            query_fn_(ys_, &tree_, x);
+            query_fn_(&tree_, x);
         }
     }
 
+    int N_;
     vector<T> tree_;
-    const vector<int64_t>& ys_;
-    const function<void(const vector<int64_t>&, vector<T> *, int)>& query_fn_;
-    const function<void(T *, int64_t)>& apply_fn_;
+    const function<void(vector<T> *, int)> query_fn_;
+    const function<void(T *, int64_t)> apply_fn_;
 };
 
 pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
@@ -170,7 +170,7 @@ uint64_t calc_unique_area(const Groups& groups) {
         const auto& update = [](Node *x, int64_t val) {
             (*x)[2] += val;
         };
-        const auto& query = [](const vector<int64_t>& ys, vector<Node> *tree, int x) {
+        const auto& query = [&](vector<Node> *tree, int x) {
             int N = tree->size() / 2;
             if (x >= N) {  // leaf node
                 for (int i = 0; i < 2; ++i) {
@@ -182,7 +182,7 @@ uint64_t calc_unique_area(const Groups& groups) {
                 }
             }
         };
-        SegmentTree<Node> segment_tree(ys, query, update);  // init segment tree with customized operations
+        SegmentTree<Node> segment_tree(ys.size() - 1, query, update);  // init segment tree with customized operations
         for (int i = 0; i < intervals.size() - 1; ++i) {
             int64_t x, y0, y1, v;
             tie(x, y0, y1, v) = intervals[i];
