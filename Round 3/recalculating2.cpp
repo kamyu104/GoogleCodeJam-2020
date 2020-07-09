@@ -38,8 +38,6 @@ using std::get;
 using std::unordered_set;
 using std::unordered_map;
 using std::sort;
-using std::min;
-using std::max;
 
 using Groups = unordered_map<int64_t, vector<tuple<int64_t, int64_t, int64_t, int64_t>>>;
 using Points = vector<array<int64_t, 2>>;
@@ -191,27 +189,26 @@ pair<uint64_t, uint64_t> calc_unique_area(const Groups& groups) {
         for (int i = 0; i < ys.size(); ++i) {
             height_to_idx[ys[i]] = i;
         }
-        // Node: [sum_len_of_covered, len_of_1_or_up_covered, len_of_2_or_up_covered, left, right, count_of_covered]
-        using Node = array<int64_t, 6>;  // define customized operations of segment tree
+        // Node: [sum_len_of_covered, len_of_1_or_up_covered, len_of_2_or_up_covered, len_of_interval, count_of_covered]
+        using Node = array<int64_t, 5>;  // define customized operations of segment tree
         const auto& query = [&ys](vector<Node> *tree, int x) {
             int N = tree->size() / 2;
             if (x >= N) {  // leaf node
-                (*tree)[x][3] = ys[(x - N)], (*tree)[x][4] = ys[(x - N) + 1];
-                (*tree)[x][0] = ((*tree)[x][4] - (*tree)[x][3]) * (*tree)[x][5];
+                (*tree)[x][3] = ys[(x - N) + 1] - ys[(x - N)];
+                (*tree)[x][0] = (*tree)[x][3] * (*tree)[x][4];
                 for (int i = 1; i <= 2; ++i) {
-                    (*tree)[x][i] = (i - (*tree)[x][5] > 0) ? 0 : (*tree)[x][4] - (*tree)[x][3];
+                    (*tree)[x][i] = (i - (*tree)[x][4] > 0) ? 0 : (*tree)[x][3];
                 }
             } else {
-                (*tree)[x][3] = min((*tree)[2 * x][3], (*tree)[2 * x + 1][3]);
-                (*tree)[x][4] = max((*tree)[2 * x + 1][4], (*tree)[2 * x + 1][4]);
-                (*tree)[x][0] = ((*tree)[x][4] - (*tree)[x][3]) * (*tree)[x][5] + (*tree)[2 * x][0] + (*tree)[2 * x + 1][0];
+                (*tree)[x][3] = (*tree)[2 * x][3] + (*tree)[2 * x + 1][3];
+                (*tree)[x][0] = (*tree)[x][3] * (*tree)[x][4] + (*tree)[2 * x][0] + (*tree)[2 * x + 1][0];
                 for (int i = 1; i <= 2; ++i) {
-                    (*tree)[x][i] = (i - (*tree)[x][5] > 0) ? (*tree)[2 * x][i - (*tree)[x][5]] + (*tree)[2 * x + 1][i - (*tree)[x][5]] : (*tree)[x][4] - (*tree)[x][3];
+                    (*tree)[x][i] = (i - (*tree)[x][4] > 0) ? (*tree)[2 * x][i - (*tree)[x][4]] + (*tree)[2 * x + 1][i - (*tree)[x][4]] : (*tree)[x][3];
                 }
             }
         };
         const auto& update = [](Node *x, int64_t val) {
-            (*x)[5] += val;
+            (*x)[4] += val;
         };
         SegmentTree<Node> segment_tree(ys.size() - 1, query, update);  // init segment tree with customized operations
         for (int i = 0; i < intervals.size() - 1; ++i) {

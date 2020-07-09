@@ -16,8 +16,8 @@ class SegmentTree(object):
         self.N = N
         self.update_fn = update_fn
         self.query_fn = query_fn
-        # [sum_len_of_covered, len_of_1_or_up_covered, len_of_2_or_up_covered, left, right, count_of_covered]
-        self.tree = [[0, 0, 0, 0, 0, 0] for _ in xrange(2*N)]
+        # [sum_len_of_covered, len_of_1_or_up_covered, len_of_2_or_up_covered, len_of_interval, count_of_covered]
+        self.tree = [[0, 0, 0, 0, 0] for _ in xrange(2*N)]
         for x in reversed(xrange(1, len(self.tree))):
             self.query_fn(self.tree, x)
 
@@ -98,15 +98,15 @@ def calc_unique_area(groups):
     def query(ys, tree, x):
         N = len(tree)//2
         if x >= N:  # leaf node
-            tree[x][3:5] = ys[(x-N)], ys[(x-N)+1]
-            tree[x][0] = (tree[x][4]-tree[x][3])*tree[x][-1]
+            tree[x][3] = ys[(x-N)+1]-ys[(x-N)]
+            tree[x][0] = tree[x][3]*tree[x][-1]
             for i in xrange(1, 3):
-                tree[x][i] = 0 if i-tree[x][-1] > 0 else tree[x][4]-tree[x][3]
+                tree[x][i] = 0 if i-tree[x][-1] > 0 else tree[x][3]
         else:
-            tree[x][3:5] = min(tree[2*x][3], tree[2*x+1][3]), max(tree[2*x][4], tree[2*x+1][4])
-            tree[x][0] = (tree[x][4]-tree[x][3])*tree[x][-1] + tree[2*x][0]+tree[2*x+1][0]
+            tree[x][3] = tree[2*x][3]+tree[2*x+1][3]
+            tree[x][0] = tree[x][3]*tree[x][-1] + tree[2*x][0]+tree[2*x+1][0]
             for i in xrange(1, 3):
-                tree[x][i] = tree[2*x][i-tree[x][-1]]+tree[2*x+1][i-tree[x][-1]] if i-tree[x][-1] > 0 else tree[x][4]-tree[x][3]
+                tree[x][i] = tree[2*x][i-tree[x][-1]]+tree[2*x+1][i-tree[x][-1]] if i-tree[x][-1] > 0 else tree[x][3]
 
     unique, total = 0, 0
     for rects in groups.itervalues():
