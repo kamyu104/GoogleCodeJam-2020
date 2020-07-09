@@ -170,7 +170,7 @@ uint64_t calc_unique_area(const Groups& groups) {
         const auto& update = [](Node *x, int64_t val) {
             (*x)[2] += val;
         };
-        const auto& query = [&](vector<Node> *tree, int x) {
+        const auto& query = [&ys](vector<Node> *tree, int x) {
             int N = tree->size() / 2;
             if (x >= N) {  // leaf node
                 for (int i = 0; i < 2; ++i) {
