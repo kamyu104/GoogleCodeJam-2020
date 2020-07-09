@@ -11,9 +11,35 @@
  *
  */
 
-#include<bits/stdc++.h>
+#include <iostream>
+#include <functional>
+#include <array>
+#include <string>
+#include <vector>
+#include <deque>
+#include <utility>
+#include <tuple>
+#include <unordered_set>
+#include <unordered_map>
+#include <algorithm>
 
-using namespace std;
+using std::ios_base;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::function;
+using std::array;
+using std::string;
+using std::to_string;
+using std::vector;
+using std::deque;
+using std::pair;
+using std::tuple;
+using std::tie;
+using std::get;
+using std::unordered_set;
+using std::unordered_map;
+using std::sort;
 
 using Groups = unordered_map<int64_t, vector<tuple<int64_t, int64_t, int64_t, int64_t>>>;
 using Points = vector<array<int64_t, 2>>;
@@ -32,7 +58,7 @@ uint64_t gcd(uint64_t a, uint64_t b) {
 
 template <typename T>
 class SegmentTree {
-public:
+ public:
     explicit SegmentTree(
         int N,
         const function<void(vector<T> *, int)>& query_fn,
@@ -40,8 +66,7 @@ public:
       : N_(N),
         tree_(2 * N),
         query_fn_(query_fn),
-        apply_fn_(apply_fn)
-    {
+        apply_fn_(apply_fn) {
         for (int i = tree_.size() - 1; i >= 1; --i) {
             query_fn_(&tree_, i);
         }
@@ -67,7 +92,7 @@ public:
         return tree_[1];
     }
 
-private:
+ private:
     void pull(int x) {
         while (x > 1) {
             x >>= 1;
