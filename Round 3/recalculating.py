@@ -20,8 +20,9 @@ class SegmentTree(object):
 
     def __apply(self, x, val):
         self.update_fn(self.tree[x], val)
+        self.query_fn(self.tree, x)
 
-    def update(self, L, R, h):  # Time: O(logN), Space: O(N) 
+    def update(self, L, R, val):  # Time: O(logN), Space: O(N) 
         def pull(x):
             while x > 1:
                 x //= 2
@@ -32,17 +33,14 @@ class SegmentTree(object):
         L0, R0 = L, R
         while L <= R:
             if L & 1:  # is right child
-                self.__apply(L, h)
-                self.query_fn(self.tree, L)
+                self.__apply(L, val)
                 L += 1
             if R & 1 == 0:  # is left child
-                self.__apply(R, h)
-                self.query_fn(self.tree, R)
+                self.__apply(R, val)
                 R -= 1
             L //= 2
             R //= 2
-        pull(L0)
-        pull(R0)
+        pull(L0), pull(R0)
     
     def query(self):
         return self.tree[1]
