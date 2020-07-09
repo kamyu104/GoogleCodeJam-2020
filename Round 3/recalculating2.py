@@ -101,11 +101,11 @@ def calc_unique_area(groups):
         if x >= N:  # leaf node
             tree[x][3:] = ys[(x-N)], ys[(x-N)+1]
             for i in xrange(1, 3):
-                tree[x][i] = ys[(x-N)+1]-ys[(x-N)] if i <= tree[x][0] else 0
+                tree[x][i] = 0 if i-tree[x][0] > 0 else ys[(x-N)+1]-ys[(x-N)]
         else:
             tree[x][3:] = tree[2*x][3], tree[2*x+1][4]
             for i in xrange(1, 3):
-                tree[x][i] = tree[x][4]-tree[x][3] if i <= tree[x][0] else tree[2*x][i-tree[x][0]]+tree[2*x+1][i-tree[x][0]]
+                tree[x][i] = tree[2*x][i-tree[x][0]]+tree[2*x+1][i-tree[x][0]] if i-tree[x][0] > 0 else tree[x][4]-tree[x][3]
 
     unique = 0
     for rects in groups.itervalues():
