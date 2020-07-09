@@ -54,6 +54,59 @@ uint64_t gcd(uint64_t a, uint64_t b) {
     return a;
 }
 
+template <typename T>
+class SegmentTree {
+ public:
+    explicit SegmentTree(
+        int N,
+        const function<void(vector<T> *, int)>& query_fn,
+        const function<void(T *, int64_t)>& update_fn)
+      : N_(N),
+        tree_(2 * N),
+        query_fn_(query_fn),
+        update_fn_(update_fn) {
+        for (int i = tree_.size() - 1; i >= 1; --i) {
+            query_fn_(&tree_, i);
+        }
+    }
+
+    void update(int L, int R, int val) {
+        L += N_; R += N_;
+        int L0 = L, R0 = R;
+        for (; L <= R; L >>= 1, R >>= 1) {
+            if ((L & 1) == 1) {
+                apply(L++, val);
+            }
+            if ((R & 1) == 0) {
+                apply(R--, val);
+            }
+        }
+        pull(L0); pull(R0);
+    }
+
+    T query() {
+        return tree_[1];
+    }
+
+ private:
+    void apply(int x, int val) {
+        update_fn_(&tree_[x], val);
+        query_fn_(&tree_, x);
+    }
+
+    void pull(int x) {
+        while (x > 1) {
+            x >>= 1;
+            query_fn_(&tree_, x);
+        }
+    }
+
+    int N_;
+    vector<T> tree_;
+    const function<void(vector<T> *, int)> query_fn_;
+    const function<void(T *, int64_t)> update_fn_;
+};
+
 pair<uint64_t, Groups> group_rects(const Points& points, int64_t D) {
     unordered_set<int64_t> x_set, y_set;
     for (auto& p : points) {
@@ -138,52 +191,29 @@ uint64_t calc_unique_area(const Groups& groups) {
         for (int i = 0; i < ys.size(); ++i) {
             height_to_idx[ys[i]] = i;
         }
-        using Node = array<int64_t, 3>;
-        vector<Node> tree(2 * (ys.size() - 1));
-        const auto& query = [&ys, &tree](int x) {
-            int N = tree.size() / 2;
+
+        using Node = array<int64_t, 3>;  // define customized operations of segment tree
+        const auto& query = [&ys](vector<Node> *tree, int x) {
+            int N = tree->size() / 2;
             if (x >= N) {  // leaf node
                 for (int i = 0; i < 2; ++i) {
-                    tree[x][i] = (i - tree[x][2] == 0) ? ys[(x - N) + 1] - ys[(x - N)] : 0;
+                    (*tree)[x][i] = (i - (*tree)[x][2] == 0) ? ys[(x - N) + 1] - ys[(x - N)] : 0;
                 }
             } else {
                 for (int i = 0; i < 2; ++i) {
-                    tree[x][i] = (i - tree[x][2] >= 0) ? tree[2 * x][i - tree[x][2]] + tree[2 * x + 1][i - tree[x][2]] : 0;
+                    (*tree)[x][i] = (i - (*tree)[x][2] >= 0) ? (*tree)[2 * x][i - (*tree)[x][2]] + (*tree)[2 * x + 1][i - (*tree)[x][2]] : 0;
                 }
             }
         };
-        const auto& pull = [&query](int x) {
-            for (; x; x /= 2) {
-                query(x);
-            }
+        const auto& update = [](Node *x, int64_t val) {
+            (*x)[2] += val;
         };
-        const auto& update = [&query, &pull, &tree](int l, int r, int v) {
-            int N = tree.size() / 2;
-            l += N;
-            r += N;
-            int l0 = l, r0 = r;
-            for (; l <= r; l /= 2, r /= 2) {
-                if (l & 1) {
-                    tree[l][2] += v;
-                    query(l);
-                    ++l;
-                }
-                if ((r & 1) == 0) {
-                    tree[r][2] += v;
-                    query(r);
-                    --r;
-                }
-            }
-            pull(l0), pull(r0);
-        };
-        for (int i = tree.size() - 1; i; --i) {
-            query(i);
-        }
+        SegmentTree<Node> segment_tree(ys.size() - 1, query, update);  // init segment tree with customized operations
         for (int i = 0; i < intervals.size() - 1; ++i) {
             int64_t x, y0, y1, v;
             tie(x, y0, y1, v) = intervals[i];
-            update(height_to_idx[y0], height_to_idx[y1] - 1, v);  // at most O(N^2) intervals, total time: O(N^2 * logN)
-            unique += (get<0>(intervals[i + 1]) - x) * tree[1][1];
+            segment_tree.update(height_to_idx[y0], height_to_idx[y1] - 1, v);  // at most O(N^2) intervals, total time: O(N^2 * logN)
+            unique += (get<0>(intervals[i + 1]) - x) * segment_tree.query()[1];
         }
     }
     return unique;
