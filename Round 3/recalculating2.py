@@ -103,7 +103,7 @@ def calc_unique_area(groups):
             for i in xrange(1, 3):
                 tree[x][i] = 0 if i-tree[x][-1] > 0 else tree[x][4]-tree[x][3]
         else:
-            tree[x][3:5] = tree[2*x][3], tree[2*x+1][4]
+            tree[x][3:5] = min(tree[2*x][3], tree[2*x+1][3]), max(tree[2*x][4], tree[2*x+1][4])
             tree[x][0] = (tree[x][4]-tree[x][3])*tree[x][-1] + tree[2*x][0]+tree[2*x+1][0]
             for i in xrange(1, 3):
                 tree[x][i] = tree[2*x][i-tree[x][-1]]+tree[2*x+1][i-tree[x][-1]] if i-tree[x][-1] > 0 else tree[x][4]-tree[x][3]

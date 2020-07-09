@@ -38,6 +38,8 @@ using std::get;
 using std::unordered_set;
 using std::unordered_map;
 using std::sort;
+using std::min;
+using std::max;
 
 using Groups = unordered_map<int64_t, vector<tuple<int64_t, int64_t, int64_t, int64_t>>>;
 using Points = vector<array<int64_t, 2>>;
@@ -200,7 +202,8 @@ pair<uint64_t, uint64_t> calc_unique_area(const Groups& groups) {
                     (*tree)[x][i] = (i - (*tree)[x][5] > 0) ? 0 : (*tree)[x][4] - (*tree)[x][3];
                 }
             } else {
-                (*tree)[x][3] = (*tree)[2 * x][3], (*tree)[x][4] = (*tree)[2 * x + 1][4];
+                (*tree)[x][3] = min((*tree)[2 * x][3], (*tree)[2 * x + 1][3]);
+                (*tree)[x][4] = max((*tree)[2 * x + 1][4], (*tree)[2 * x + 1][4]);
                 (*tree)[x][0] = ((*tree)[x][4] - (*tree)[x][3]) * (*tree)[x][5] + (*tree)[2 * x][0] + (*tree)[2 * x + 1][0];
                 for (int i = 1; i <= 2; ++i) {
                     (*tree)[x][i] = (i - (*tree)[x][5] > 0) ? (*tree)[2 * x][i - (*tree)[x][5]] + (*tree)[2 * x + 1][i - (*tree)[x][5]] : (*tree)[x][4] - (*tree)[x][3];
