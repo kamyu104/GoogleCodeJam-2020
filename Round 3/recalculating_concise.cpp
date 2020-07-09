@@ -1,3 +1,4 @@
+
 // Copyright (c) 2020 kamyu. All rights reserved.
 
 /*
@@ -63,7 +64,7 @@ public:
         pull(L0); pull(R0);
     }
 
-    const T& query() {
+    T query() {
         return tree_[1];
     }
 
