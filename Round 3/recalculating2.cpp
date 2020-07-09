@@ -201,11 +201,9 @@ uint64_t calc_unique_area(const Groups& groups) {
                     (*tree)[x][i] = (i - (*tree)[x][0] > 0) ? 0 : ys[(x - N) + 1] - ys[(x - N)];
                 }
             } else {
-                (*tree)[x][3] = (*tree)[2* x ][3], (*tree)[x][4] = (*tree)[2 * x + 1][4];
+                (*tree)[x][3] = (*tree)[2 * x][3], (*tree)[x][4] = (*tree)[2 * x + 1][4];
                 for (int i = 1; i <= 2; ++i) {
-                    (*tree)[x][i] = (i - (*tree)[x][0] > 0)
-                        ? (*tree)[2 * x][i - (*tree)[x][0]] + (*tree)[2 * x + 1][i - (*tree)[x][0]]
-                        : (*tree)[x][4] - (*tree)[x][3];
+                    (*tree)[x][i] = (i - (*tree)[x][0] > 0) ? (*tree)[2 * x][i - (*tree)[x][0]] + (*tree)[2 * x + 1][i - (*tree)[x][0]] : (*tree)[x][4] - (*tree)[x][3];
                 }
             }
         };
