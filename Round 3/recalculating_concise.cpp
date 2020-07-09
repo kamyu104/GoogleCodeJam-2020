@@ -1,4 +1,4 @@
-	// Copyright (c) 2020 kamyu. All rights reserved.
+// Copyright (c) 2020 kamyu. All rights reserved.
 
 /*
  * Google Code Jam 2020 Round 3 - Problem D. Recalculating
