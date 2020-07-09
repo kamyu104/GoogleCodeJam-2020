@@ -191,7 +191,7 @@ uint64_t calc_unique_area(const Groups& groups) {
         for (int i = 0; i < ys.size(); ++i) {
             height_to_idx[ys[i]] = i;
         }
-
+        // Node: [len_of_0_covered, len_of_1_covered, count_of_covered]
         using Node = array<int64_t, 3>;  // define customized operations of segment tree
         const auto& query = [&ys](vector<Node> *tree, int x) {
             int N = tree->size() / 2;
