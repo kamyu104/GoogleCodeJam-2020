@@ -134,8 +134,8 @@ def recalculating():
         x, y = map(int, raw_input().strip().split())
         points.append((x+y, x-y))
     points.sort()
-    groups = group_rects(points, D)
-    unique, total = calc_unique_area(groups)
+    groups = group_rects(points, D)  # Time: O(N^2)
+    unique, total = calc_unique_area(groups)  # Time: O(N^2 * logN)
     g = gcd(unique, total)
     return "{} {}".format(unique//g, total//g)
 

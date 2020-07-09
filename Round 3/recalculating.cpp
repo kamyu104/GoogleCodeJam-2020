@@ -231,8 +231,8 @@ string recalculating() {
     sort(begin(points), end(points));
     uint64_t total;
     Groups groups;
-    tie(total, groups) = group_rects(points, D);
-    const auto& unique = calc_unique_area(groups);
+    tie(total, groups) = group_rects(points, D);  // Time: O(N^2)
+    const auto& unique = calc_unique_area(groups);  // Time: O(N^2 * logN)
     const auto& g = gcd(unique, total);
     return to_string(unique / g) + " " + to_string(total / g);
 }

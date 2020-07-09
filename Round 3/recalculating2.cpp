@@ -232,9 +232,9 @@ string recalculating() {
         points.push_back({x + y, x - y});
     }
     sort(begin(points), end(points));
-    const auto& groups = group_rects(points, D);
+    const auto& groups = group_rects(points, D);  // Time: O(N^2)
     uint64_t unique, total;
-    tie(unique, total) = calc_unique_area(groups);
+    tie(unique, total) = calc_unique_area(groups);  // Time: O(N^2 * logN)
     const auto& g = gcd(unique, total);
     return to_string(unique / g) + " " + to_string(total / g);
 }
