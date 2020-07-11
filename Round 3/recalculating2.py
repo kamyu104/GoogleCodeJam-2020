@@ -91,7 +91,7 @@ def group_rects(points, D):
             groups[rolling_hash].append((x0, y0, x1, y1))
     return groups
 
-def calc_unique_area(groups):
+def calc_areas(groups):
     def update(x, v):
         x[-1] += v
 
@@ -135,7 +135,7 @@ def recalculating():
         points.append((x+y, x-y))
     points.sort()
     groups = group_rects(points, D)  # Time: O(N^2)
-    unique, total = calc_unique_area(groups)  # Time: O(N^2 * logN)
+    unique, total = calc_areas(groups)  # Time: O(N^2 * logN)
     g = gcd(unique, total)
     return "{} {}".format(unique//g, total//g)
 

@@ -164,7 +164,7 @@ Groups group_rects(const Points& points, int64_t D) {
     return groups;
 }
 
-pair<uint64_t, uint64_t> calc_unique_area(const Groups& groups) {
+pair<uint64_t, uint64_t> calc_areas(const Groups& groups) {
     using Event = tuple<int64_t, int64_t, int64_t, int64_t>;
     int64_t unique = 0, total = 0;
     for (const auto& kvp : groups) {
@@ -234,7 +234,7 @@ string recalculating() {
     sort(begin(points), end(points));
     const auto& groups = group_rects(points, D);  // Time: O(N^2)
     uint64_t unique, total;
-    tie(unique, total) = calc_unique_area(groups);  // Time: O(N^2 * logN)
+    tie(unique, total) = calc_areas(groups);  // Time: O(N^2 * logN)
     const auto& g = gcd(unique, total);
     return to_string(unique / g) + " " + to_string(total / g);
 }
