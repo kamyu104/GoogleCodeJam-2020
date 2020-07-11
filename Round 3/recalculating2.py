@@ -6,6 +6,8 @@
 # Time:  O(N^2 * logN), even without MLE, it still faces TLE if N = 1687 in both Python2 / PyPy2, but this solution did pass in C++
 # Space: O(N^2), it gets MLE if N = 1687, since memory usage of "(x0, y0, x1, y1) * (4*N^2)" is much greater than 1GB in both Python2 / PyPy2
 #
+# slower but more general in calculation of rect area
+#
 
 from collections import defaultdict, deque
 from functools import partial

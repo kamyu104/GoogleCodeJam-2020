@@ -7,6 +7,8 @@
  * Time:  O(N^2 * logN)
  * Space: O(N^2)
  *
+ * slower but more general in calculation of rect area
+ *
  */
 
 #include <iostream>
