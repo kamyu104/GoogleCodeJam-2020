@@ -58,6 +58,8 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |D| [Recalculating](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9)| [*PyPy](./Round%203/recalculating.py)<br>[C++](./Round%203/recalculating.cpp)<br>[*PyPy](./Round%203/recalculating2.py)<br>[C++](./Round%203/recalculating2.cpp) | _O(N^2 * logN)_ | _O(N^2)_ | Hard || Coordinate Rotation, Sliding Window, Rolling Hash, Rabin-Karp Algorithm, Line Sweep, Coordinate Compression, Segment Tree
 
 ## Virtual World Finals
+You can relive the magic of the 2020 Code Jam Virtual World Finals by watching the [Live Stream Recording](https://codingcompetitionsonair.withgoogle.com/events/code-jam-2020-world-finals?fbclid=IwAR2eaJii-Qe-tLyG170fCN715qXhtWYdgmqOALF6Z4WqQw48oMtZ305zvfA) of the competition, problem explanations, interviews with Google and Code Jam engineers, and announcement of winners.
+
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Pack the Slopes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4f31)||||||
