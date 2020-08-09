@@ -9,6 +9,7 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 * [Round 1C](https://github.com/kamyu104/GoogleCodeJam-2020#round-1c)
 * [Round 2](https://github.com/kamyu104/GoogleCodeJam-2020#round-2)
 * [Round 3](https://github.com/kamyu104/GoogleCodeJam-2020#round-3)
+* [Virtual World Finals](https://github.com/kamyu104/GoogleCodeJam-2020#virtual-world-finals)
    
 ## Qualification Round
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
@@ -55,3 +56,12 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |B| [Thermometers](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/000000000037776b)| [Python](./Round%203/thermometers.py) [Python](./Round%203/thermometers2.py) |  _O(N^2)_ | _O(1)_ | Hard || Greedy, Mirror
 |C| [Pen Testing](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/0000000000377630)| [PyPy](./Round%203/pen_testing_heuristic.py)<br>[Python](./Round%203/pen_testing.py)<br>[PyPy](./Round%203/pen_testing2_heuristic.py)<br>[Python](./Round%203/pen_testing2.py) | _O(T * N^2 + N * S)_ | _O(N * (T + S))_ | Hard || Heuristic, Memoization, Probability
 |D| [Recalculating](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff7e/00000000003775e9)| [*PyPy](./Round%203/recalculating.py)<br>[C++](./Round%203/recalculating.cpp)<br>[*PyPy](./Round%203/recalculating2.py)<br>[C++](./Round%203/recalculating2.cpp) | _O(N^2 * logN)_ | _O(N^2)_ | Hard || Coordinate Rotation, Sliding Window, Rolling Hash, Rabin-Karp Algorithm, Line Sweep, Coordinate Compression, Segment Tree
+
+## Virtual World Finals
+| # | Title | Solution | Time | Space | Difficulty | Tag | Note |
+|---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
+|A| [Pack the Slopes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4f31)||||||
+|B| [Adjacent and Consecutive](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce)||||||
+|C| [Hexacoin Jam](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5)||||||
+|D| [Musical Cords](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b)|||| Very Hard ||
+|E| [Replace All](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc4)||||||
