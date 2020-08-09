@@ -63,5 +63,5 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |A| [Pack the Slopes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4f31)||||||
 |B| [Adjacent and Consecutive](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce)||||||
 |C| [Hexacoin Jam](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5)||||||
-|D| [Musical Cords](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b)|||| Very Hard ||
+|D| [Musical Cords](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b)|||| Very Hard || Trigonometric Functions, Two Pointers, Sort, Heap
 |E| [Replace All](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc4)||||||
