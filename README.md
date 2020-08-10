@@ -65,5 +65,5 @@ You can relive the magic of the 2020 Code Jam Virtual World Finals by watching t
 |A| [Pack the Slopes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4f31)||||||
 |B| [Adjacent and Consecutive](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce)||||||
 |C| [Hexacoin Jam](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5)||||||
-|D| [Musical Cords](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b)|||| Very Hard || Geometry, Trigonometric Functions, Two Pointers,  Quick Select, Sort
+|D| [Musical Cords](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b)|| _O(KlogK + N * K)_ | _O(N)_ | Very Hard || Geometry, Trigonometric Functions, Two Pointers,  Quick Select, Sort
 |E| [Replace All](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc4)||||||
