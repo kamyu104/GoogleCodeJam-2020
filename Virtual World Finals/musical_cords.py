@@ -91,7 +91,7 @@ def musical_cords():
     value_pairs = [(v, k) for k, v in pairs.iteritems()]
     nth_element(value_pairs, K, compare=lambda a, b: a > b)  # Time: O(N) on average
     possible_pairs = defaultdict(int)
-    for _, pairs in value_pairs[:K]:
+    for _, pairs in value_pairs[:K]:  # Time: O(N * K)
         for i in pairs:
             for j in xrange(N):
                 if j != i:
