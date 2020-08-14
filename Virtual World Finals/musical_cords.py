@@ -81,18 +81,10 @@ def musical_cords():
         for i in xrange(left, right):
             if max_pair[i%N] == -1 or f(R, D, L, i%N, j%N) > f(R, D, L, i%N, max_pair[i%N]):
                 max_pair[i%N] = j%N
-    pairs = {}
-    for i, j in enumerate(max_pair):  # Time: O(N)
-        if j != -1:
-            pairs[unordered_pair(i, j)] = f(R, D, L, i, j)+L[i]
-    value_pairs = [(v, k) for k, v in pairs.iteritems()]
+    pairs = {unordered_pair(i, j):f(R, D, L, i, j)+L[i] for i, j in enumerate(max_pair) if j != -1}  # Time: O(N)
+    value_pairs = [(v, pair) for pair, v in pairs.iteritems()]
     nth_element(value_pairs, K, compare=lambda a, b: a > b)  # Time: O(N) on average
-    possible_pairs = {}
-    for _, pairs in value_pairs[:K]:  # Time: O(N * K)
-        for i in pairs:
-            for j in xrange(N):
-                if j != i:
-                    possible_pairs[unordered_pair(i, j)] = f(R, D, L, i, j)+L[i]
+    possible_pairs = {unordered_pair(i, j):f(R, D, L, i, j)+L[i] for _, pair in value_pairs[:K] for i in pair for j in xrange(N) if j != i}  # Time: O(N * K)
     result = possible_pairs.values()
     nth_element(result, K, compare=lambda a, b: a > b)  # Time: O(N * K) on average
     return " ".join(map(lambda x: "%.10f"%x, sorted(result[:K], reverse=True)))  # Time: O(KlogK)
