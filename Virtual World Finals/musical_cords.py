@@ -63,8 +63,7 @@ def musical_cords():
     intervals = [[0, 0, 0]]
     for i in xrange(1, 2*N):  # Total Time: O(NlogN)
         left = i
-        while intervals and \
-              is_overllaped(N, D, i, intervals[-1][0]) and \
+        while intervals and is_overllaped(N, D, i, intervals[-1][0]) and \
               is_above(N, R, D, L, i, intervals[-1][2], intervals[-1][0]):
             left = intervals[-1][0]  # expand left of the current interval
             intervals.pop()  # remove fully covered and smaller
