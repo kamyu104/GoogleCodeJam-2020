@@ -9,7 +9,6 @@
 
 from math import sin, pi
 from functools import partial
-from collections import defaultdict
 from random import randint
 
 def nth_element(nums, n, compare=lambda a, b: a < b):
@@ -85,15 +84,15 @@ def musical_cords():
     pairs = {}
     for i, j in enumerate(max_pair):  # Time: O(N)
         if j != -1:
-            pairs[hash(i, j)] = f(R, D, L, i, j)+L[i]  # same pair would be with the same max value 
+            pairs[hash(i, j)] = f(R, D, L, i, j)+L[i]
     value_pairs = [(v, k) for k, v in pairs.iteritems()]
     nth_element(value_pairs, K, compare=lambda a, b: a > b)  # Time: O(N) on average
-    possible_pairs = defaultdict(int)
+    possible_pairs = {}
     for _, pairs in value_pairs[:K]:  # Time: O(N * K)
         for i in pairs:
             for j in xrange(N):
                 if j != i:
-                    possible_pairs[hash(i, j)] = max(possible_pairs[hash(i, j)], f(R, D, L, i, j)+L[i])
+                    possible_pairs[hash(i, j)] = f(R, D, L, i, j)+L[i]
     result = possible_pairs.values()
     nth_element(result, K, compare=lambda a, b: a > b)  # Time: O(N * K) on average
     return " ".join(map(lambda x: "%.10f"%x, sorted(result[:K], reverse=True)))
