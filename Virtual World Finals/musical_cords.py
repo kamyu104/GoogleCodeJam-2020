@@ -96,7 +96,7 @@ def musical_cords():
                     possible_pairs[unordered_pair(i, j)] = f(R, D, L, i, j)+L[i]
     result = possible_pairs.values()
     nth_element(result, K, compare=lambda a, b: a > b)  # Time: O(N * K) on average
-    return " ".join(map(lambda x: "%.10f"%x, sorted(result[:K], reverse=True)))
+    return " ".join(map(lambda x: "%.10f"%x, sorted(result[:K], reverse=True)))  # Time: O(KlogK)
 
 NANODEGREE_180 = 180*10**9
 NANODEGREE_360 = 360*10**9
