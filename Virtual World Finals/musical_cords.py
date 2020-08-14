@@ -42,7 +42,7 @@ def binary_search(left, right, check_fn):
             left = mid+1
     return left
 
-def hash(i, j):
+def unordered_pair(i, j):
     return (i, j) if i < j else (j, i)
 
 def f(R, D, L, i, j):
@@ -84,7 +84,7 @@ def musical_cords():
     pairs = {}
     for i, j in enumerate(max_pair):  # Time: O(N)
         if j != -1:
-            pairs[hash(i, j)] = f(R, D, L, i, j)+L[i]
+            pairs[unordered_pair(i, j)] = f(R, D, L, i, j)+L[i]
     value_pairs = [(v, k) for k, v in pairs.iteritems()]
     nth_element(value_pairs, K, compare=lambda a, b: a > b)  # Time: O(N) on average
     possible_pairs = {}
@@ -92,7 +92,7 @@ def musical_cords():
         for i in pairs:
             for j in xrange(N):
                 if j != i:
-                    possible_pairs[hash(i, j)] = f(R, D, L, i, j)+L[i]
+                    possible_pairs[unordered_pair(i, j)] = f(R, D, L, i, j)+L[i]
     result = possible_pairs.values()
     nth_element(result, K, compare=lambda a, b: a > b)  # Time: O(N * K) on average
     return " ".join(map(lambda x: "%.10f"%x, sorted(result[:K], reverse=True)))
