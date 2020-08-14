@@ -63,12 +63,12 @@ def musical_cords():
     intervals = [[0, 0, 0]]
     for i in xrange(1, 2*N):  # Total Time: O(NlogN)
         left = i
-        while intervals and i-intervals[-1][0] < N and 0 < (D[i%N]-D[intervals[-1][0]%N])%NANODEGREE_360 <= NANODEGREE_180 and \
+        while intervals and is_overllaped(N, D, i, intervals[-1][0]) and \
               f(R, D, L, intervals[-1][0]%N, i%N) >= f(R, D, L, intervals[-1][0]%N, intervals[-1][2]%N) and \
               f(R, D, L, intervals[-1][1]%N, i%N) >= f(R, D, L, intervals[-1][1]%N, intervals[-1][2]%N):
             left = intervals[-1][0]  # expand left of the current interval
             intervals.pop()  # remove fully covered and smaller
-        if intervals and 0 < (D[i%N]-D[intervals[-1][1]%N])%NANODEGREE_360 <= NANODEGREE_180:  # overlapped
+        if intervals and is_overllaped(N, D, i, intervals[-1][1]):  # overlapped
             left = binary_search(intervals[-1][0], intervals[-1][1], partial(is_overllaped, N, D, i))  # Time: O(logN)
             intersect = binary_search(left, intervals[-1][1], partial(is_intersected, N, R, D, L, intervals[-1][2], i))  # Time: O(logN)
             if left <= intersect <= intervals[-1][1]:  # shorten the previous interval
