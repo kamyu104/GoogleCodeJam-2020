@@ -77,6 +77,7 @@ def musical_cords():
             else:  # shorten the current interval
                 left = intervals[-1][1]
         intervals.append([left, i, i])
+
     max_pair = [-1]*N
     for left, right, j in intervals:  # Time: O(N)
         for i in xrange(left, right):
