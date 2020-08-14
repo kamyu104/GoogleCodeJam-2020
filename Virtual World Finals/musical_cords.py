@@ -47,9 +47,7 @@ def hash(i, j):
     return (i, j) if i < j else (j, i)
 
 def f(R, D, L, i, j):
-    d = ((D[j]-D[i])%NANODEGREE_360)
-    d = min(d, NANODEGREE_360-d)
-    return 2*R*sin(d*pi/NANODEGREE_360)+L[j]
+    return 2*R*sin(((D[j]-D[i])%NANODEGREE_360)*pi/NANODEGREE_360)+L[j]
 
 def musical_cords():
     def is_overllaped(N, D, i, x):
