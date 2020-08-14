@@ -20,7 +20,6 @@ def nth_element(nums, n, compare=lambda a, b: a < b):
             if compare(nums[i], nums[right]):
                 nums[i], nums[new_pivot_idx] = nums[new_pivot_idx], nums[i]
                 new_pivot_idx += 1
-
         nums[right], nums[new_pivot_idx] = nums[new_pivot_idx], nums[right]
         return new_pivot_idx
 
