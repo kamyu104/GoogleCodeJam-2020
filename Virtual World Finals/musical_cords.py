@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Virtual World Finals - Problem D. Musical Cords
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b
 #
-# Time:  O(NlogN + N * K) on average
+# Time:  O(NlogN + N * K) on average, pass in PyPy2 but Python2
 # Space: O(N)
 #
 
