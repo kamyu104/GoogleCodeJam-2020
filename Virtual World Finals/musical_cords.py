@@ -48,13 +48,13 @@ def unordered_pair(i, j):
 def f(R, D, L, i, j):
     return 2*R*sin(((D[j]-D[i])%NANODEGREE_360)*pi/NANODEGREE_360)+L[j]
 
+def is_overllaped(N, D, i, x):
+    return 0 < (D[i%N]-D[x%N])%NANODEGREE_360 <= NANODEGREE_180
+
+def is_above(N, R, D, L, curr, prev, x):
+    return f(R, D, L, x%N, curr%N) >= f(R, D, L, x%N, prev%N)
+
 def musical_cords():
-    def is_overllaped(N, D, i, x):
-        return 0 < (D[i%N]-D[x%N])%NANODEGREE_360 <= NANODEGREE_180
-
-    def is_above(N, R, D, L, curr, prev, x):
-        return f(R, D, L, x%N, curr%N) >= f(R, D, L, x%N, prev%N)
-
     N, R, K = map(int, raw_input().strip().split())
     D, L = [0]*N, [0]*N
     for i in xrange(N):
