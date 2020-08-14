@@ -35,9 +35,7 @@ def nth_element(nums, n, compare=lambda a, b: a < b):
             left = new_pivot_idx + 1
 
 def hash(i, j):
-    if i > j:
-        return (j, i)
-    return (i, j)
+    return (i, j) if i < j else (j, i)
 
 def f(R, D, L, i, j):
     d = ((D[j]-D[i])%NANODEGREE_360)
@@ -54,11 +52,11 @@ def binary_search(left, right, check_fn):
     return left
 
 def musical_cords():
-    def check_fn(N, R, D, L, prev, curr, x):
-        return f(R, D, L, x%N, curr%N) >= f(R, D, L, x%N, prev%N)
-
-    def check2_fn(N, D, i, x):
+    def is_overllaped(N, D, i, x):
         return 0 < (D[i%N]-D[x%N])%NANODEGREE_360 <= NANODEGREE_180
+
+    def is_intersected(N, R, D, L, prev, curr, x):
+        return f(R, D, L, x%N, curr%N) >= f(R, D, L, x%N, prev%N)
 
     N, R, K = map(int, raw_input().strip().split())
     D, L = [0]*N, [0]*N
@@ -66,33 +64,32 @@ def musical_cords():
         D[i], L[i] = map(int, raw_input().strip().split())
     
     intervals = [[0, 0, 0]]
-    for i in xrange(1, 2*N):
+    for i in xrange(1, 2*N):  # Total Time: O(NlogN)
         left = i
         while intervals and i-intervals[-1][0] < N and 0 < (D[i%N]-D[intervals[-1][0]%N])%NANODEGREE_360 <= NANODEGREE_180 and \
               f(R, D, L, intervals[-1][0]%N, i%N) >= f(R, D, L, intervals[-1][0]%N, intervals[-1][2]%N) and \
               f(R, D, L, intervals[-1][1]%N, i%N) >= f(R, D, L, intervals[-1][1]%N, intervals[-1][2]%N):
-            left = intervals[-1][0]
+            left = intervals[-1][0]  # expand left of the current interval
             intervals.pop()  # remove fully covered and smaller
         if intervals and 0 < (D[i%N]-D[intervals[-1][1]%N])%NANODEGREE_360 <= NANODEGREE_180:  # overlapped
-            left = binary_search(intervals[-1][0], intervals[-1][1], partial(check2_fn, N, D, i))
-            assert(intervals[-1][0] <= left <= intervals[-1][1])
-            intersect = binary_search(left, intervals[-1][1], partial(check_fn, N, R, D, L, intervals[-1][2], i))
+            left = binary_search(intervals[-1][0], intervals[-1][1], partial(is_overllaped, N, D, i))  # Time: O(logN)
+            intersect = binary_search(left, intervals[-1][1], partial(is_intersected, N, R, D, L, intervals[-1][2], i))  # Time: O(logN)
             if left <= intersect <= intervals[-1][1]:  # shorten the previous interval
                 intervals[-1][1] = left = intersect
             else:  # shorten the current interval
                 left = intervals[-1][1]
         intervals.append([left, i, i])
     max_pair = [-1]*N
-    for left, right, j in intervals:
+    for left, right, j in intervals:  # Time: O(N)
         for i in xrange(left, right):
             if max_pair[i%N] == -1 or f(R, D, L, i%N, j%N) > f(R, D, L, i%N, max_pair[i%N]):
                 max_pair[i%N] = j%N
     pairs = defaultdict(int)
-    for i, j in enumerate(max_pair):
+    for i, j in enumerate(max_pair):  # Time: O(N)
         if j != -1:
             pairs[hash(i, j)] = max(pairs[hash(i, j)], f(R, D, L, i, j)+L[i])
     value_pairs = [(v, k) for k, v in pairs.iteritems()]
-    nth_element(value_pairs, K, compare=lambda a, b: a > b)
+    nth_element(value_pairs, K, compare=lambda a, b: a > b)  # Time: O(N) on average
     possible_pairs = defaultdict(int)
     for _, pairs in value_pairs[:K]:
         for i in pairs:
@@ -100,7 +97,7 @@ def musical_cords():
                 if j != i:
                     possible_pairs[hash(i, j)] = max(possible_pairs[hash(i, j)], f(R, D, L, i, j)+L[i])
     result = possible_pairs.values()
-    nth_element(result, K, compare=lambda a, b: a > b)
+    nth_element(result, K, compare=lambda a, b: a > b)  # Time: O(N * K) on average
     return " ".join(map(lambda x: "%.10f"%x, sorted(result[:K], reverse=True)))
 
 NANODEGREE_180 = 180*10**9
