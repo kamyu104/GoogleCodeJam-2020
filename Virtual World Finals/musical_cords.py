@@ -73,13 +73,13 @@ def musical_cords():
               f(R, D, L, intervals[-1][1]%N, i%N) >= f(R, D, L, intervals[-1][1]%N, intervals[-1][2]%N):
             left = intervals[-1][0]
             intervals.pop()  # remove fully covered and smaller
-        if intervals and 0 < (D[i%N]-D[intervals[-1][1]%N])%NANODEGREE_360 <= NANODEGREE_180:  # overlapped, shortened the previous interval
+        if intervals and 0 < (D[i%N]-D[intervals[-1][1]%N])%NANODEGREE_360 <= NANODEGREE_180:  # overlapped
             left = binary_search(intervals[-1][0], intervals[-1][1], partial(check2_fn, N, D, i))
             assert(intervals[-1][0] <= left <= intervals[-1][1])
             intersect = binary_search(left, intervals[-1][1], partial(check_fn, N, R, D, L, intervals[-1][2], i))
-            if left <= intersect <= intervals[-1][1]:
+            if left <= intersect <= intervals[-1][1]:  # shorten the previous interval
                 intervals[-1][1] = left = intersect
-            else:
+            else:  # shorten the current interval
                 left = intervals[-1][1]
         intervals.append([left, i, i])
     max_pair = [-1]*N
