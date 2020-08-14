@@ -34,14 +34,6 @@ def nth_element(nums, n, compare=lambda a, b: a < b):
         else:  # new_pivot_idx < n
             left = new_pivot_idx + 1
 
-def hash(i, j):
-    return (i, j) if i < j else (j, i)
-
-def f(R, D, L, i, j):
-    d = ((D[j]-D[i])%NANODEGREE_360)
-    d = min(d, NANODEGREE_360-d)
-    return 2*R*sin(d*pi/NANODEGREE_360)+L[j]
-
 def binary_search(left, right, check_fn): 
     while left <= right:
         mid = left + (right-left)//2
@@ -50,6 +42,14 @@ def binary_search(left, right, check_fn):
         else:
             left = mid+1
     return left
+
+def hash(i, j):
+    return (i, j) if i < j else (j, i)
+
+def f(R, D, L, i, j):
+    d = ((D[j]-D[i])%NANODEGREE_360)
+    d = min(d, NANODEGREE_360-d)
+    return 2*R*sin(d*pi/NANODEGREE_360)+L[j]
 
 def musical_cords():
     def is_overllaped(N, D, i, x):
