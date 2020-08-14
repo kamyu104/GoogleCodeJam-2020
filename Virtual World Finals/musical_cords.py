@@ -52,7 +52,7 @@ def musical_cords():
     def is_overllaped(N, D, i, x):
         return 0 < (D[i%N]-D[x%N])%NANODEGREE_360 <= NANODEGREE_180
 
-    def is_intersected(N, R, D, L, prev, curr, x):
+    def is_above(N, R, D, L, curr, prev, x):
         return f(R, D, L, x%N, curr%N) >= f(R, D, L, x%N, prev%N)
 
     N, R, K = map(int, raw_input().strip().split())
@@ -63,14 +63,15 @@ def musical_cords():
     intervals = [[0, 0, 0]]
     for i in xrange(1, 2*N):  # Total Time: O(NlogN)
         left = i
-        while intervals and is_overllaped(N, D, i, intervals[-1][0]) and \
-              f(R, D, L, intervals[-1][0]%N, i%N) >= f(R, D, L, intervals[-1][0]%N, intervals[-1][2]%N) and \
-              f(R, D, L, intervals[-1][1]%N, i%N) >= f(R, D, L, intervals[-1][1]%N, intervals[-1][2]%N):
+        while intervals and \
+              is_overllaped(N, D, i, intervals[-1][0]) and \
+              is_above(N, R, D, L, i, intervals[-1][2], intervals[-1][0]) and \
+              is_above(N, R, D, L, i, intervals[-1][2], intervals[-1][1]):
             left = intervals[-1][0]  # expand left of the current interval
             intervals.pop()  # remove fully covered and smaller
         if intervals and is_overllaped(N, D, i, intervals[-1][1]):  # overlapped
             left = binary_search(intervals[-1][0], intervals[-1][1], partial(is_overllaped, N, D, i))  # Time: O(logN)
-            intersect = binary_search(left, intervals[-1][1], partial(is_intersected, N, R, D, L, intervals[-1][2], i))  # Time: O(logN)
+            intersect = binary_search(left, intervals[-1][1], partial(is_above, N, R, D, L, i, intervals[-1][2]))  # Time: O(logN)
             if left <= intersect <= intervals[-1][1]:  # shorten the previous interval
                 intervals[-1][1] = left = intersect
             else:  # shorten the current interval
