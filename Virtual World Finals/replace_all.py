@@ -151,12 +151,13 @@ def replace_all():
 
     sources, sinks = [], [i for i in xrange(ALPHABET_SIZE) if not has_alpha[i]]
     for i in xrange(ALPHABET_SIZE):
-        if not any(adj[i][j] for j in xrange(ALPHABET_SIZE) if i != j):
-            continue  # zero out-degree
         if any(adj[i][j] and adj[j][i] for j in xrange(i)):
-            continue  # not the representative scc root (the smallest idx in a scc)
+            continue  # not a representative node of scc (root, the smallest idx in a scc)
         if any(not has_alpha[j] for j in xrange(i, ALPHABET_SIZE) if adj[i][j] and adj[j][i]):
             continue  # not all nodes in scc are in S
+        if not any(adj[i][j] for j in xrange(ALPHABET_SIZE) if i != j):
+            continue  # zero out-degree
+        # found a scc where all nodes are in S and the root is with out-degree at least 1
         sources.append(i)
         sinks.append(i)
     E = defaultdict(list)
