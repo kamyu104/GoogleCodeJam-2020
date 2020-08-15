@@ -167,7 +167,9 @@ def query_min_result_from_i_to_root(hld, segment_tree, i):
     min_v = INF
     while i >= 0:  # Time: O((logN)^2), O(logN) queries with O(logN) costs
         j = hld.chain(i)  # find head of chain
-        min_v = min(min_v, segment_tree.query(hld.left(j), hld.left(i)))
+        v = segment_tree.query(hld.left(j), hld.left(i))
+        if v < min_v:
+            min_v = v
         i = hld.parent(j)  # move to parent chain
     return min_v
 
