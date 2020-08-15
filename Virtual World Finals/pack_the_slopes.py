@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Virtual World Finals - Problem A. Replace All
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b
 #
-# Time:  O(N * (logN)^2)
+# Time:  O(N * (logN)^2), pass in PyPy2 but Python2
 # Space: O(N)
 #
 
