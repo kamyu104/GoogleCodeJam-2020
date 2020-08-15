@@ -92,8 +92,7 @@ class HLD(object):  # Heavy-Light Decomposition
         self.__children = adj
         self.__parent = [-1]*len(adj)  # Space: O(N)
         self.__size = [-1]*len(adj)
-        self.__left = [-1]*len(adj)
-        self.__right = [-1]*len(adj)
+        self.__seq = [-1]*len(adj)
         self.__chain = [-1]*len(adj)
 
         for parent, children in enumerate(adj):
@@ -126,7 +125,6 @@ class HLD(object):  # Heavy-Light Decomposition
 
     def __decompose(self, i):  # Time: O(N)
         def divide(i):
-            stk.append(partial(conquer, i))
             for j in reversed(xrange(len(children[i]))):
                 c = children[i][j]
                 stk.append(partial(divide, c))
@@ -140,10 +138,7 @@ class HLD(object):  # Heavy-Light Decomposition
         def preprocess(i, j, c):
             chain[c] = c if j > 0 else chain[i]  # create a new chain if not heavy
 
-        def conquer(i):
-            right[i] = idx[0]
-
-        stk, children, idx, chain, left, right = [], self.__children, self.__idx, self.__chain, self.__left, self.__right
+        stk, children, idx, chain, left = [], self.__children, self.__idx, self.__chain, self.__seq
         stk.append(partial(divide, i))
         while stk:
             stk.pop()()
@@ -154,11 +149,8 @@ class HLD(object):  # Heavy-Light Decomposition
     def parent(self, i):
         return self.__parent[i]
 
-    def left(self, i):
-        return self.__left[i]
-
-    def right(self, i):
-        return self.__right[i]
+    def seq(self, i):
+        return self.__seq[i]
 
     def chain(self, i):
         return self.__chain[i]
@@ -167,7 +159,7 @@ def query_min_result_from_i_to_root(hld, segment_tree, i):
     min_v = INF
     while i >= 0:  # Time: O((logN)^2), O(logN) queries with O(logN) costs
         j = hld.chain(i)  # find head of chain
-        v = segment_tree.query(hld.left(j), hld.left(i))
+        v = segment_tree.query(hld.seq(j), hld.seq(i))
         if v < min_v:
             min_v = v
         i = hld.parent(j)  # move to parent chain
@@ -176,7 +168,7 @@ def query_min_result_from_i_to_root(hld, segment_tree, i):
 def add_value_from_i_to_root(hld, segment_tree, i, v):
     while i >= 0:  # Time: O((logN)^2), O(logN) queries with O(logN) costs
         j = hld.chain(i)  # find head of chain
-        segment_tree.update(hld.left(j), hld.left(i), v)
+        segment_tree.update(hld.seq(j), hld.seq(i), v)
         i = hld.parent(j)  # move to parent chain
 
 def dfs(adj, root, C):
@@ -201,7 +193,7 @@ def pack_the_slopes():
 
     dfs(adj, 0, C)  # Time: O(N)
     hld = HLD(0, adj)  # Time: O(N)
-    lookup = {hld.left(i):S[i] for i in xrange(N)}
+    lookup = {hld.seq(i):S[i] for i in xrange(N)}
     segment_tree = SegmentTree(N, build_fn=lambda x, y: [lookup[i-x] if i >= x else y for i in xrange(2*x)], default_val=INF)
     count, cost = 0, 0
     for i in sorted(range(1, N), key=lambda x: C[x]):  # Total Time: O(N * (logN)^2), sort and greedily send to each target i
