@@ -54,6 +54,9 @@ def is_overllaped(N, D, i, x):
 def is_above(N, R, D, L, curr, prev, x):
     return f(R, D, L, x%N, curr%N) >= f(R, D, L, x%N, prev%N)
 
+def check(N, R, D, L, curr, prev, x):
+    return is_overllaped(N, D, curr, x) and is_above(N, R, D, L, curr, prev, x)
+
 def musical_cords():
     N, R, K = map(int, raw_input().strip().split())
     D, L = [0]*N, [0]*N
@@ -68,9 +71,8 @@ def musical_cords():
             left = intervals[-1][0]  # expand left of the current interval
             intervals.pop()  # remove fully covered and smaller
         if intervals and is_overllaped(N, D, i, intervals[-1][1]):  # overlapped
-            left = binary_search(intervals[-1][0], intervals[-1][1], partial(is_overllaped, N, D, i))  # Time: O(logN)
-            intersect = binary_search(left, intervals[-1][1], partial(is_above, N, R, D, L, i, intervals[-1][2]))  # Time: O(logN)
-            if left <= intersect <= intervals[-1][1]:  # shorten both intervals
+            intersect = binary_search(intervals[-1][0], intervals[-1][1], partial(check, N, R, D, L, i, intervals[-1][2]))  # Time: O(logN)
+            if intersect <= intervals[-1][1]:  # shorten both intervals
                 intervals[-1][1] = left = intersect
             else:  # only shorten the current interval
                 left = intervals[-1][1]
