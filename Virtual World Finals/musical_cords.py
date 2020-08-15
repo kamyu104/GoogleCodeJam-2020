@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b
 #
 # Time:  O(NlogN + N * K) on average, pass in PyPy2 but Python2
-# Space: O(N)
+# Space: O(N * K)
 #
 
 from math import sin, pi
