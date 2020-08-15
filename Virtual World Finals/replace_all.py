@@ -133,7 +133,7 @@ def floydWarshall(adj):  # Time:  O(N^3)
 
 def char_to_num(c):
     if c.isdigit():
-        return int(c)
+        return (ord(c)-ord('0'))
     if c.islower():
         return (ord(c)-ord('a')) + 10
     if c.isupper():
