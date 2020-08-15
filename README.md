@@ -66,4 +66,4 @@ You can relive the magic of the 2020 Code Jam Virtual World Finals by watching t
 |B| [Adjacent and Consecutive](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce)|||| Hard ||
 |C| [Hexacoin Jam](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5)|||| Hard ||
 |D| [Musical Cords](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b)| [PyPy](./Virtual%20World%20Finals/musical_cords.py) | _O(NlogN + N * K)_ on average | _O(N * K)_ | Very Hard || Geometry, Trigonometric Functions, Two Pointers, Binary Search, Quick Select, Sort
-|E| [Replace All](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc4)| [Python](./Virtual%20World%20Finals/replace_al.py) | _O(A^3)_ | _O(A^2)_ | Medium || Strongly Connected Component, Bipartite Matching
+|E| [Replace All](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc4)| [Python](./Virtual%20World%20Finals/replace_al.py) | _O(A^3)_ | _O(A^2)_ | Medium || SCC, Bipartite Matching

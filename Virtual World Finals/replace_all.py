@@ -154,7 +154,6 @@ def replace_all():
             continue  # not a root
         if any(not has_alpha[j] for j in xrange(i, ALPHABET_SIZE) if adj[i][j] and adj[j][i]):
             continue  # not filled
-        assert(has_alpha[i])
         if not any(adj[i][j] for j in xrange(ALPHABET_SIZE) if i != j):
             continue  # no edge
         sources.append(i)
