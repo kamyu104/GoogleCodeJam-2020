@@ -74,7 +74,7 @@ def musical_cords():
             intersect = binary_search(intervals[-1][0], intervals[-1][1], partial(check, N, R, D, L, i, intervals[-1][2]))  # Time: O(logN)
             if intersect <= intervals[-1][1]:  # adjust both intervals
                 intervals[-1][1] = left = intersect
-            else:  # only shorten the current interval
+            else:  # only adjust the current interval
                 left = intervals[-1][1]
         intervals.append([left, i, i])
 
