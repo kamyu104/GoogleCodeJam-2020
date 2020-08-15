@@ -154,9 +154,9 @@ def replace_all():
         if not any(adj[i][j] for j in xrange(ALPHABET_SIZE) if i != j):
             continue  # zero out-degree
         if any(adj[i][j] and adj[j][i] for j in xrange(i)):
-            continue  # not a root
+            continue  # not the representative scc root (the smallest idx in a scc)
         if any(not has_alpha[j] for j in xrange(i, ALPHABET_SIZE) if adj[i][j] and adj[j][i]):
-            continue  # not filled
+            continue  # not all nodes in scc are in S
         sources.append(i)
         sinks.append(i)
     E = defaultdict(list)
