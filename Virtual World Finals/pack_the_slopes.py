@@ -24,6 +24,8 @@ class SegmentTree(object):  # 0-based index
         self.default_val = default_val
         self.tree = build_fn(N, default_val)
         self.lazy = [None]*N
+        for i in reversed(xrange(1, N)):
+            self.tree[i] = query_fn(self.tree[2*i], self.tree[2*i+1])
 
     def __apply(self, x, val):
         self.tree[x] = self.update_fn(self.tree[x], val)
@@ -176,7 +178,7 @@ def add_value_from_i_to_root(hld, segment_tree, i, v):
         i = hld.parent(j)  # move to parent chain
 
 def dfs(adj, root, C):
-    stk = [(root)]
+    stk = [root]
     while stk:
         node = stk.pop()
         for child in reversed(adj[node]):
@@ -195,17 +197,16 @@ def pack_the_slopes():
        S[V] = S_V
        C[V] = C_V
 
-    dfs(adj, 0, C)
-    hld = HLD(0, adj)
-    segment_tree = SegmentTree(N, build_fn=lambda x, y: [0 if i >= x else y for i in xrange(2*x)], default_val=INF)
-    for i in xrange(N):
-        segment_tree.update(hld.left(i), hld.left(i), S[i])
+    dfs(adj, 0, C)  # Time: O(N)
+    hld = HLD(0, adj)  # Time: O(N)
+    lookup = {hld.left(i):S[i] for i in xrange(N)}
+    segment_tree = SegmentTree(N, build_fn=lambda x, y: [lookup[i-x] if i >= x else y for i in xrange(2*x)], default_val=INF)
     count, cost = 0, 0
     for i in sorted(range(1, N), key=lambda x: C[x]):  # greedily send to target i
-        v = query_min_result_from_i_to_root(hld, segment_tree, i)
+        v = query_min_result_from_i_to_root(hld, segment_tree, i)  # Time: O(N * (logN)^2)
         count += v
         cost += v * C[i]
-        add_value_from_i_to_root(hld, segment_tree, i, -v)
+        add_value_from_i_to_root(hld, segment_tree, i, -v)  # Time: O(N * (logN)^2)
     return "%s %s" % (count, cost)
 
 MAX_S = 10**5
