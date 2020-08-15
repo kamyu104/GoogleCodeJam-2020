@@ -140,21 +140,21 @@ def char_to_num(c):
 
 def replace_all():
     S, N = raw_input().strip().split()
-    alpha = [0]*ALPHABET_SIZE
+    has_alpha = [0]*ALPHABET_SIZE
     for c in S:
-        alpha[char_to_num(c)] = 1
+        has_alpha[char_to_num(c)] = 1
     adj = [[int(i == j) for j in xrange(ALPHABET_SIZE)] for i in xrange(ALPHABET_SIZE)]
     for A, B in raw_input().strip().split():
         adj[char_to_num(A)][char_to_num(B)] = 1
     floydWarshall(adj)
 
-    sources, sinks = [], [i for i in xrange(ALPHABET_SIZE) if not alpha[i]]
+    sources, sinks = [], [i for i in xrange(ALPHABET_SIZE) if not has_alpha[i]]
     for i in xrange(ALPHABET_SIZE):
         if any(adj[i][j] and adj[j][i] for j in xrange(i)):
             continue  # not a root
-        if any(not alpha[j] for j in xrange(i, ALPHABET_SIZE) if adj[i][j] and adj[j][i]):
+        if any(not has_alpha[j] for j in xrange(i, ALPHABET_SIZE) if adj[i][j] and adj[j][i]):
             continue  # not filled
-        assert(alpha[i])
+        assert(has_alpha[i])
         if not any(adj[i][j] for j in xrange(ALPHABET_SIZE) if i != j):
             continue  # no edge
         sources.append(i)
@@ -164,7 +164,7 @@ def replace_all():
         for j in xrange(len(sinks)):
             if sources[i] != sinks[j] and adj[sources[i]][sinks[j]]:
                 E[j].append(i)
-    return sum(alpha)-(len(sources)-len(bipartiteMatch(E)[0]))
+    return sum(has_alpha)-(len(sources)-len(bipartiteMatch(E)[0]))
 
 ALPHABET_SIZE = 62
 for case in xrange(input()):
