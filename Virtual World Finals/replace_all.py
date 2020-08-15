@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b
 #
 # Time:  O(A^3)
-# Space: O(A)
+# Space: O(A^2)
 #
 
 from collections import defaultdict
@@ -146,7 +146,7 @@ def replace_all():
     adj = [[int(i == j) for j in xrange(ALPHABET_SIZE)] for i in xrange(ALPHABET_SIZE)]
     for A, B in raw_input().strip().split():
         adj[char_to_num(A)][char_to_num(B)] = 1
-    floydWarshall(adj)
+    floydWarshall(adj)  # Time: O(A^3)
 
     sources, sinks = [], [i for i in xrange(ALPHABET_SIZE) if not has_alpha[i]]
     for i in xrange(ALPHABET_SIZE):
@@ -163,7 +163,7 @@ def replace_all():
         for j in xrange(len(sinks)):
             if sources[i] != sinks[j] and adj[sources[i]][sinks[j]]:
                 E[j].append(i)
-    return sum(has_alpha)-(len(sources)-len(bipartiteMatch(E)[0]))
+    return sum(has_alpha)-(len(sources)-len(bipartiteMatch(E)[0]))  # Time: O(A^2 * sqrt(A))
 
 ALPHABET_SIZE = 62
 for case in xrange(input()):
