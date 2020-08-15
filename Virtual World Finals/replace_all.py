@@ -135,8 +135,9 @@ def char_to_num(c):
     if c.isdigit():
         return int(c)
     if c.islower():
-        return (ord(c)-ord('a')) + 10 
-    return (ord(c)-ord('A')) + 36
+        return (ord(c)-ord('a')) + 10
+    if c.isupper():
+        return (ord(c)-ord('A')) + 36
 
 def replace_all():
     S, N = raw_input().strip().split()
