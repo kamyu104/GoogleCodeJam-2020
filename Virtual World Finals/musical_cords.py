@@ -72,7 +72,7 @@ def musical_cords():
             intervals.pop()  # remove fully covered and smaller
         if intervals and is_overllaped(N, D, i, intervals[-1][1]):  # overlapped
             intersect = binary_search(intervals[-1][0], intervals[-1][1], partial(check, N, R, D, L, i, intervals[-1][2]))  # Time: O(logN)
-            if intersect <= intervals[-1][1]:  # shorten both intervals
+            if intersect <= intervals[-1][1]:  # adjust both intervals
                 intervals[-1][1] = left = intersect
             else:  # only shorten the current interval
                 left = intervals[-1][1]
