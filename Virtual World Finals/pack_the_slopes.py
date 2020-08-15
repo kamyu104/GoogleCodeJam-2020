@@ -102,47 +102,47 @@ class HLD(object):  # Heavy-Light Decomposition
         self.__decompose(root)
 
     def __find_heavy_light(self, i):  # Time: O(N)
-        def divide(stk, children, size, i):
+        def divide(i):
             for j in reversed(xrange(len(children[i]))):
                 c = children[i][j]
-                stk.append(partial(postprocess, children, size, i, j, c))
-                stk.append(partial(divide, stk, children, size, c))
-            stk.append(partial(init, size, i))
+                stk.append(partial(postprocess, i, j, c))
+                stk.append(partial(divide, c))
+            stk.append(partial(init, i))
 
-        def init(size, i):
+        def init(i):
             size[i] = 1
 
-        def postprocess(children, size, i, j, c):
+        def postprocess(i, j, c):
             size[i] += size[c]
             if size[c] > size[children[i][0]]:
                 children[i][0], children[i][j] = children[i][j], children[i][0]  # put heavy idx in children[i][0]
 
-        stk = []
-        stk.append(partial(divide, stk, self.__children, self.__size, i))
+        stk, children, size = [], self.__children, self.__size
+        stk.append(partial(divide, i))
         while stk:
             stk.pop()()
 
     def __decompose(self, i):  # Time: O(N)
-        def divide(stk, children, idx, chain, left, right, i):
-            stk.append(partial(conquer, idx, right, i))
+        def divide(i):
+            stk.append(partial(conquer, i))
             for j in reversed(xrange(len(children[i]))):
                 c = children[i][j]
-                stk.append(partial(divide, stk, children, idx, chain, left, right, c))
-                stk.append(partial(preprocess, chain, i, j, c))
-            stk.append(partial(init, idx, left, i))
+                stk.append(partial(divide, c))
+                stk.append(partial(preprocess, i, j, c))
+            stk.append(partial(init, i))
 
-        def init(idx, left, i):
+        def init(i):
             left[i] = idx[0]
             idx[0] += 1
 
-        def preprocess(chain, i, j, c):
+        def preprocess(i, j, c):
             chain[c] = c if j > 0 else chain[i]  # create a new chain if not heavy
 
-        def conquer(idx, right, i):
+        def conquer(i):
             right[i] = idx[0]
 
-        stk = []
-        stk.append(partial(divide, stk, self.__children, self.__idx, self.__chain, self.__left, self.__right, i))
+        stk, children, idx, chain, left, right = [], self.__children, self.__idx, self.__chain, self.__left, self.__right
+        stk.append(partial(divide, i))
         while stk:
             stk.pop()()
 
@@ -162,7 +162,7 @@ class HLD(object):  # Heavy-Light Decomposition
         return self.__chain[i]
 
 def query_min_result_from_i_to_root(hld, segment_tree, i):
-    min_v = float("inf")
+    min_v = INF
     while i >= 0:  # Time: O((logN)^2), O(logN) queries with O(logN) costs
         j = hld.chain(i)  # find head of chain
         min_v = min(min_v, segment_tree.query(hld.left(j), hld.left(i)))
@@ -186,7 +186,7 @@ def dfs(adj, root, C):
 def pack_the_slopes():
     N = input()
     adj = [[] for _ in xrange(N)]
-    S, C = [float("inf")]*N, [0]*N
+    S, C = [INF]*N, [0]*N
     for _ in xrange(N-1):
        U, V, S_V, C_V = map(int, raw_input().strip().split())
        U -= 1
@@ -197,7 +197,7 @@ def pack_the_slopes():
 
     dfs(adj, 0, C)
     hld = HLD(0, adj)
-    segment_tree = SegmentTree(N, build_fn=lambda x, y: [0 if i >= x else y for i in xrange(2*x)])
+    segment_tree = SegmentTree(N, build_fn=lambda x, y: [0 if i >= x else y for i in xrange(2*x)], default_val=INF)
     for i in xrange(N):
         segment_tree.update(hld.left(i), hld.left(i), S[i])
     count, cost = 0, 0
@@ -208,5 +208,8 @@ def pack_the_slopes():
         add_value_from_i_to_root(hld, segment_tree, i, -v)
     return "%s %s" % (count, cost)
 
+MAX_S = 10**5
+MAX_N = 10**5
+INF = MAX_S*(MAX_N-1)
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, pack_the_slopes())
