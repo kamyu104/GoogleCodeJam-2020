@@ -33,7 +33,7 @@ def nth_element(nums, n, compare=lambda a, b: a < b):
         else:  # new_pivot_idx < n
             left = new_pivot_idx + 1
 
-def binary_search(left, right, check_fn): 
+def binary_search(left, right, check_fn):
     while left <= right:
         mid = left + (right-left)//2
         if check_fn(mid):
@@ -62,7 +62,7 @@ def musical_cords():
     D, L = [0]*N, [0]*N
     for i in xrange(N):
         D[i], L[i] = map(int, raw_input().strip().split())
-    
+
     intervals = [[0, 0, 0]]
     for i in xrange(1, 2*N):  # Total Time: O(NlogN)
         left = i
