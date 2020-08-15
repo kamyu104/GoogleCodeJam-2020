@@ -157,7 +157,8 @@ def replace_all():
             continue  # not all nodes in scc are in S
         if not any(adj[i][j] for j in xrange(ALPHABET_SIZE) if i != j):
             continue  # zero out-degree
-        # found a scc where all nodes are in S and the root is with out-degree at least 1
+        # found a scc where all nodes are in S and the root is with out-degree at least 1,
+        # take the root as both a source and a sink
         sources.append(i)
         sinks.append(i)
     E = defaultdict(list)
