@@ -202,11 +202,11 @@ def pack_the_slopes():
     lookup = {hld.left(i):S[i] for i in xrange(N)}
     segment_tree = SegmentTree(N, build_fn=lambda x, y: [lookup[i-x] if i >= x else y for i in xrange(2*x)], default_val=INF)
     count, cost = 0, 0
-    for i in sorted(range(1, N), key=lambda x: C[x]):  # greedily send to target i
-        v = query_min_result_from_i_to_root(hld, segment_tree, i)  # Time: O(N * (logN)^2)
+    for i in sorted(range(1, N), key=lambda x: C[x]):  # Total Time: O(N * (logN)^2), sort and greedily send to each target i
+        v = query_min_result_from_i_to_root(hld, segment_tree, i)  # Time: O((logN)^2)
         count += v
         cost += v * C[i]
-        add_value_from_i_to_root(hld, segment_tree, i, -v)  # Time: O(N * (logN)^2)
+        add_value_from_i_to_root(hld, segment_tree, i, -v)  # Time: O((logN)^2)
     return "%s %s" % (count, cost)
 
 MAX_S = 10**5
