@@ -166,7 +166,7 @@ def query_min_value_from_i_to_root(hld, segment_tree, i):
     return min_v
 
 def add_value_from_i_to_root(hld, segment_tree, i, v):
-    while i >= 0:  # Time: O((logN)^2), O(logN) queries with O(logN) costs
+    while i >= 0:  # Time: O((logN)^2), O(logN) updates with O(logN) costs
         j = hld.chain(i)  # find head of chain
         segment_tree.update(hld.seq(j), hld.seq(i), v)
         i = hld.parent(j)  # move to parent chain
