@@ -155,7 +155,7 @@ class HLD(object):  # Heavy-Light Decomposition
     def chain(self, i):
         return self.__chain[i]
 
-def query_min_result_from_i_to_root(hld, segment_tree, i):
+def query_min_value_from_i_to_root(hld, segment_tree, i):
     min_v = INF
     while i >= 0:  # Time: O((logN)^2), O(logN) queries with O(logN) costs
         j = hld.chain(i)  # find head of chain
@@ -195,7 +195,7 @@ def pack_the_slopes():
     segment_tree = SegmentTree(N, build_fn=lambda x, y: [lookup[i-x] if i >= x else y for i in xrange(2*x)], default_val=INF)
     count, cost = 0, 0
     for i in sorted(range(1, N), key=lambda x: C[x]):  # Total Time: O(N * (logN)^2), sort and greedily send to each target i
-        v = query_min_result_from_i_to_root(hld, segment_tree, i)  # Time: O((logN)^2)
+        v = query_min_value_from_i_to_root(hld, segment_tree, i)  # Time: O((logN)^2)
         count += v
         cost += v * C[i]
         add_value_from_i_to_root(hld, segment_tree, i, -v)  # Time: O((logN)^2)
