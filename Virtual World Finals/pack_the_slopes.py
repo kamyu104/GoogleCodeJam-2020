@@ -185,11 +185,9 @@ def pack_the_slopes():
     S, C = [INF]*N, [0]*N
     for _ in xrange(N-1):
        U, V, S_V, C_V = map(int, raw_input().strip().split())
-       U -= 1
-       V -= 1
+       U, V = U-1, V-1
        adj[U].append(V)
-       S[V] = S_V
-       C[V] = C_V
+       S[V], C[V] = S_V, C_V
 
     dfs(adj, 0, C)  # Time: O(N)
     hld = HLD(0, adj)  # Time: O(N)
