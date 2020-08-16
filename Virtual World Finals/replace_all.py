@@ -1,7 +1,7 @@
 # Copyright (c) 2020 kamyu. All rights reserved.
 #
 # Google Code Jam 2020 Virtual World Finals - Problem E. Replace All
-# https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b
+# https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc4
 #
 # Time:  O(A^3)
 # Space: O(A^2)
