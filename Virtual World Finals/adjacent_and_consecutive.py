@@ -9,6 +9,12 @@
 
 from collections import defaultdict, Counter
 
+def clone(source):
+    result = defaultdict(set)
+    for k, v in source.iteritems():
+        result[k] = set(v)
+    return result
+
 def compress(arr):  # O(N)
     c, counter = 0, Counter()
     for x in arr:
@@ -42,12 +48,6 @@ def is_A_winning(tiles, cells, neededs):  # Time: O(N)
     if count_3_or_up(Lc):
         return True
     return is_A_winning_state(Lt, Lc)
-
-def clone(source):
-    result = defaultdict(set)
-    for k, v in source.iteritems():
-        result[k] = set(v)
-    return result
 
 def is_B_winning(tiles, cells, needs, neededs):  # Time: O(N^3)
     result = True
