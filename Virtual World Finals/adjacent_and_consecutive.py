@@ -7,7 +7,7 @@
 # Space: O(N)
 #
 
-from collections import defaultdict, Counter
+from collections import Counter
 
 def can_win_immediately(tiles, cells):  # Time: O(N)
     for c in xrange(len(cells)):
