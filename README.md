@@ -63,7 +63,7 @@ You can relive the magic of the 2020 Code Jam Virtual World Finals by watching t
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Pack the Slopes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4f31)| [PyPy](./Virtual%20World%20Finals/pack_the_slopes.py) | _O(N * (logN)^2)_ | _O(N)_ | Medium || Greedy, Heavy-Light Decomposition, Stack, Recursion, Segment Tree (Lazy Propagation), RMQ
-|B| [Adjacent and Consecutive](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce)| [Python](./Virtual%20World%20Finals/adjacent_and_consecutive.py) | _O(N^4)_ | _O(N)_ | Hard || Math
+|B| [Adjacent and Consecutive](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce)| [Python](./Virtual%20World%20Finals/adjacent_and_consecutive.py) | _O(N^4)_ | _O(N)_ | Hard || State Compression, Math
 |C| [Hexacoin Jam](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5)|||| Hard ||
 |D| [Musical Cords](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b)| [PyPy](./Virtual%20World%20Finals/musical_cords.py) | _O(NlogN + N * K)_ on average | _O(N * K)_ | Very Hard || Geometry, Trigonometric Functions, Two Pointers, Binary Search, Quick Select, Sort
 |E| [Replace All](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc4)| [Python](./Virtual%20World%20Finals/replace_all.py) | _O(A^3)_ | _O(A^2)_ | Medium || Floyd-Warshall Algorithm, SCC, Bipartite Matching
