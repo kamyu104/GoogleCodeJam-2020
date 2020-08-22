@@ -25,15 +25,15 @@ def compress(arr):  # O(N)
 def count_3_or_up(counter):
     return len(counter)-int(1 in counter)-int(2 in counter)
 
-def is_A_winning_state(Lt, Lc, Z_delta=0):
+def is_A_winning_state(Lt, Lc):
     K = sum(k*v for k, v in Lc.iteritems())  # k is either 1 or 2
     if K == 2:
         return Lc[2] == Lt[2] == 1
     Z = sum((k//2)*v for k, v in Lt.iteritems())
-    Z = max(Z+Z_delta, 0)
+    Z = max(Z, 0)
     return K%2 == 1 and 2*(Lc[2]+Z) > K
 
-def is_A_winning(tiles, cells, neededs):
+def is_A_winning(tiles, cells, neededs):  # Time: O(N)
     if neededs:
         return True
     Lt, Lc = compress(cells), compress(tiles)
@@ -49,7 +49,7 @@ def clone(source):
         result[k] = set(v)
     return result
 
-def is_B_winning(tiles, cells, needs, neededs):
+def is_B_winning(tiles, cells, needs, neededs):  # Time: O(N^3)
     result = True
     for i in xrange(len(tiles)):
         if tiles[i] != -2:
