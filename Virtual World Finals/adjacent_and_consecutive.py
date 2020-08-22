@@ -56,7 +56,7 @@ def is_A_winning(tiles, cells):  # Time: O(N)
     return is_A_winning_state(Lt, Lc)
 
 def is_B_winning(tiles, cells):  # Time: O(N^3)
-    result = True
+    can_B_win = True
     for i in xrange(len(tiles)):
         if tiles[i] != -2:
             continue
@@ -65,11 +65,11 @@ def is_B_winning(tiles, cells):  # Time: O(N^3)
                 continue
             tiles[i], cells[j] = j, i
             A_already_won = (j-1 >= 0 and abs(i-cells[j-1]) == 1) or (j+1 < len(cells) and abs(i-cells[j+1]) == 1)
-            result = not A_already_won and not is_A_winning(tiles, cells)
+            can_B_win = not A_already_won and not is_A_winning(tiles, cells)
             tiles[i], cells[j] = -2, -2
-            if result:
+            if can_B_win:
                 return True
-    return result
+    return can_B_win
 
 def adjacent_and_consecutive():
     N = input()
