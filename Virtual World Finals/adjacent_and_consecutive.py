@@ -1,7 +1,7 @@
 # Copyright (c) 2020 kamyu. All rights reserved.
 #
 # Google Code Jam 2020 Virtual World Finals - Problem B. Adjacent and Consecutive
-# https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce#problem
+# https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce
 #
 # Time:  O(N^4)
 # Space: O(N)
