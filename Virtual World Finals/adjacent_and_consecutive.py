@@ -9,7 +9,7 @@
 
 from collections import defaultdict, Counter
 
-def compress(arr):  # O(N), compress current state, which could be improved by map or skiplist to O(logN)
+def compress(arr):  # O(N)
     c, counter = 0, Counter()
     for x in arr:
         if x != -2:
