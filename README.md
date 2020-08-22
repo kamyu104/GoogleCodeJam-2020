@@ -1,4 +1,4 @@
-# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-25%20%2F%2027-ff69b4.svg)
+# [GoogleCodeJam 2020](https://codingcompetitions.withgoogle.com/codejam/archive/2020) ![Language](https://img.shields.io/badge/language-Python-orange.svg) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) ![Progress](https://img.shields.io/badge/progress-26%20%2F%2027-ff69b4.svg)
 
 Python solutions of Google Code Jam 2020. Solution begins with `*` means it will get TLE in the largest data set (total computation amount > `10^8`, which is not friendly for Python to solve in 5 ~ 15 seconds). A problem was marked as `Very Hard` means that it was an unsolved one during the contest and may not be that difficult.
 
@@ -63,7 +63,7 @@ You can relive the magic of the 2020 Code Jam Virtual World Finals by watching t
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
 |A| [Pack the Slopes](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4f31)| [PyPy](./Virtual%20World%20Finals/pack_the_slopes.py) | _O(N * (logN)^2)_ | _O(N)_ | Medium || Greedy, Heavy-Light Decomposition, Stack, Recursion, Segment Tree (Lazy Propagation), RMQ
-|B| [Adjacent and Consecutive](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce)|||| Hard ||
+|B| [Adjacent and Consecutive](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce)| [Python](./Virtual%20World%20Finals/adjacent_and_consecutive.py) | _O(N^4)_ | _O(N)_ | Hard || Math
 |C| [Hexacoin Jam](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5)|||| Hard ||
 |D| [Musical Cords](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b532b)| [PyPy](./Virtual%20World%20Finals/musical_cords.py) | _O(NlogN + N * K)_ on average | _O(N * K)_ | Very Hard || Geometry, Trigonometric Functions, Two Pointers, Binary Search, Quick Select, Sort
 |E| [Replace All](https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc4)| [Python](./Virtual%20World%20Finals/replace_all.py) | _O(A^3)_ | _O(A^2)_ | Medium || Floyd-Warshall Algorithm, SCC, Bipartite Matching
