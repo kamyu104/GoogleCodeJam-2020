@@ -35,7 +35,7 @@ def compress(arr):  # Time: O(N)
         counter[c] += 1
     return counter
 
-def count_3_or_up(counter):  # Time: O(1)
+def count_of_3_or_up(counter):  # Time: O(1)
     return len(counter)-int(1 in counter)-int(2 in counter)
 
 def is_A_winning_state(Lt, Lc):  # Time: O(N)
@@ -49,9 +49,9 @@ def is_A_winning(tiles, cells):  # Time: O(N)
     if can_win_immediately(tiles, cells):  # can win in 1 moves
         return True
     Lt, Lc = compress(cells), compress(tiles)
-    if count_3_or_up(Lt) < count_3_or_up(Lc):
+    if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
         Lt, Lc = Lc, Lt
-    if count_3_or_up(Lc):  # can win in 2 moves
+    if count_of_3_or_up(Lc):  # can win in 2 moves
         return True
     return is_A_winning_state(Lt, Lc)
 
