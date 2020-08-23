@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Virtual World Finals - Problem C. Hexacoin
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5
 #
-# Time:  O(B^(D + 1) * D + N^2 * D), TLE in test set 3
+# Time:  O(B^(D + 1) * D + N^2 * D), PyPy2 TLE in test set 3
 # Space: O(B^(D + 1))
 #
 
@@ -18,7 +18,7 @@ def find_structures(D, U):  # Time: O(B^(D + 1) * D)
     B_POW_D = B**D
     for x in xrange(min(U, B_POW_D)):  # O(B^D) times
         y = U-x
-        x_hex, y_hex = to_hex(x, D), to_hex(y, D+int(y >= B_POW_D))
+        x_hex, y_hex = to_hex(x, D), to_hex(y, D)[:D]
         norm, hash_value = {'*':0}, 0
         for d, h in enumerate(x_hex+y_hex):  # O(B * D) times
             h = int(h, B)
