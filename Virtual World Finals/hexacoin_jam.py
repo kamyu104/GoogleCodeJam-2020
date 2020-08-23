@@ -77,6 +77,6 @@ B = 16
 FACTORIAL = [1]*(B+1)
 for i in xrange(1, len(FACTORIAL)):
     FACTORIAL[i] = i*FACTORIAL[i-1]
-BASE = B+1  # one is reserved for '*', others are 16 hexs
+BASE = B+1  # one is reserved for '*', others are for 16 hexs
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, hexacoin_jam())
