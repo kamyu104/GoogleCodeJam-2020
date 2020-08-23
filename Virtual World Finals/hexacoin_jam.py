@@ -25,15 +25,15 @@ def find_structures(D, U):  # Time: O(B^(D + 1) * D)
         y = U-x
         x_hex, y_hex = to_hex(x, D), to_hex(y, D)
         norm, hash_value = {'*':0}, 0
-        for d, h in enumerate(x_hex):  # O(B * D) times
+        for d, h in enumerate(x_hex):  # O(D) times
             if h not in norm:
                 norm[h] = len(norm)
             hash_value = hash_value*(B+1) + norm[h]
         if y >= B_POW_D:  # all "*" in the y part
             lookup[hash_value] += 1
             continue
-        for d, h in enumerate(y_hex):  # O(B * D) times
-            for smaller_h in xrange(h):  # at most D-1 "*" in the suffix
+        for d, h in enumerate(y_hex):  # O(D) times
+            for smaller_h in xrange(h):  # O(B) times, at most D-1 "*" in the suffix
                 delta = norm[smaller_h] if smaller_h in norm else len(norm)
                 lookup[hash_value*(B+1) + delta] += 1
             if h not in norm:
