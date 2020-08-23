@@ -4,7 +4,7 @@
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5
 #
 # Time:  O(B^(D + 1) * D + N^2 * D), pass in PyPy2 but Python2
-# Space: O(B^(D + 1))
+# Space: O(B^(D + 1) * D)
 #
 
 from collections import defaultdict
