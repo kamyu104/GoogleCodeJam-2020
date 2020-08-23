@@ -69,7 +69,7 @@ def hexacoin_jam():
     S, E = map(lambda x: int(x, B), raw_input().strip().split())
     L = map(lambda x: map(lambda y: int(y, B), x), raw_input().strip().split())
     count = (f(N, D, L, E+1)-f(N, D, L, S)) + (f(N, D, L, B**D+E+1)-f(N, D, L, B**D+S))
-    total = FACTORIAL[16]*N*(N-1)//2
+    total = FACTORIAL[B]*N*(N-1)//2
     g = gcd(count, total)
     return "{} {}".format(count//g, total//g)
 
