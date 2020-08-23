@@ -95,36 +95,36 @@ def B_try_to_avoid_and_win(tiles, cells):  # Time: O(N)
     return not is_A_winning_state(Lt, Lc)
 
 def find_break_cell(stats):  # Time: O(N)
-    max_l, to_del = 0, None
+    max_l, ts = 0, None
     for l, stat in stats.iteritems():
         for k, v in stat.iteritems():
             if len(v) == 1:
                 if l > max_l:
-                    max_l, to_del = l, k
+                    max_l, ts = l, k
     if max_l:
-        j = stats[max_l][to_del][0]
-        del stats[max_l][to_del]
+        j = stats[max_l][ts][0]
+        del stats[max_l][ts]
         if not stats[max_l]:
             del stats[max_l]
-        return to_del, j
-    return to_del, -2
+        return ts, j
+    return ts, -2
 
 def is_B_winning(tiles, cells):  # Time: O(N^2)
     stats = stats_of_win_immediately(tiles, cells)
     if stats:  # try to avoid A win immediately
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
-            i, s = next(stats[1].iteritems())
-            i = next(iter(i))
-            candidates = [c for c, x in enumerate(cells) if x == -2 and c not in s]
+            ts, cs = next(stats[1].iteritems())
+            i = next(iter(ts))
+            candidates = [c for c, x in enumerate(cells) if x == -2 and c not in cs]
             for j in candidates:  # try to put i to the places other than s
                 tiles[i], cells[j] = j, i
                 can_B_win = not is_A_winning(tiles, cells)
                 tiles[i], cells[j] = -2, -2
                 if can_B_win:
                     return can_B_win
-            if len(s) == 1:
-                candidates = [j for j, x in enumerate(tiles) if x == -2 and j != i]
-                j = next(iter(s))
+            if len(cs) == 1:
+                candidates = [t for t, x in enumerate(tiles) if x == -2 and t != i]
+                j = next(iter(cs))
                 for i in candidates:  # try to put any other than i to the places s (only j)
                     tiles[i], cells[j] = j, i
                     can_B_win = not is_A_winning(tiles, cells)
@@ -132,11 +132,11 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                     if can_B_win:
                         return can_B_win
             return False
-        candidates, j = find_break_cell(stats)
+        ts, j = find_break_cell(stats)
         if j == -2:
             return False
         if not stats:
-            candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in candidates]
+            candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
             for i in candidates:  # try to put any other than i to the places s (only j)
                 tiles[i], cells[j] = j, i
                 can_B_win = not is_A_winning(tiles, cells)
