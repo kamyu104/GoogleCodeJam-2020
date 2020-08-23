@@ -85,12 +85,12 @@ def B_try_to_avoid_and_win(tiles, cells):
             Lc[2] += 2
             return not is_A_winning_state(Lt, Lc, -1)
         return False
-    if not Lc[1]:
-        Lc[2] -= 1
-        Lc[1] += 1
-        return not is_A_winning_state(Lt, Lc, 0)
-    Lc[1] -= 1
-    return not is_A_winning_state(Lt, Lc, -1)
+    if Lc[1]:
+        Lc[1] -= 1
+        return not is_A_winning_state(Lt, Lc, -1)
+    Lc[2] -= 1
+    Lc[1] += 1
+    return not is_A_winning_state(Lt, Lc, 0)
 
 def find_break_cell(stats):
     max_l, to_del = 0, None
