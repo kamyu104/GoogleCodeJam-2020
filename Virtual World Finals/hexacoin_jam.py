@@ -1,6 +1,6 @@
 # Copyright (c) 2020 kamyu. All rights reserved.
 #
-# Google Code Jam 2020 Virtual World Finals - Problem C. Hexacoin
+# Google Code Jam 2020 Virtual World Finals - Problem C. Hexacoin Jam
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b4bc5
 #
 # Time:  O(B^(D + 1) * D + N^2 * D), pass in PyPy2 but Python2
@@ -66,7 +66,7 @@ def f(N, D, L, U):
     lookup = find_structures(D, U)
     return match_structures_and_count(N, L, lookup)
 
-def hexacoin():
+def hexacoin_jam():
     N, D = map(int, raw_input().strip().split())
     S, E = map(lambda x: int(x, B), raw_input().strip().split())
     L = raw_input().strip().split()
@@ -80,4 +80,4 @@ FACTORIAL = [1]*(B+1)
 for i in xrange(1, len(FACTORIAL)):
     FACTORIAL[i] = i*FACTORIAL[i-1]
 for case in xrange(input()):
-    print 'Case #%d: %s' % (case+1, hexacoin())
+    print 'Case #%d: %s' % (case+1, hexacoin_jam())
