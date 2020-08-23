@@ -40,9 +40,9 @@ def count_of_3_or_up(counter):  # Time: O(1)
 
 def is_A_winning_state(Lt, Lc):  # Time: O(N)
     K = sum(k*v for k, v in Lc.iteritems())  # k is either 1 or 2
-    if K == 2:
-        return Lc[2] == Lt[2] == 1
     Z = sum((k//2)*v for k, v in Lt.iteritems())
+    if K == 2:
+        return Lc[2] == Z == 1
     return K%2 == 1 and 2*(Lc[2]+Z) > K
 
 def is_A_winning(tiles, cells):  # Time: O(N)
