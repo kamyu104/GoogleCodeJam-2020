@@ -145,13 +145,23 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                     return can_B_win
             return False
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
-            ts = next(stats[1].iterkeys())
-            i = next(iter(ts))
+            new_ts, new_cs = next(stats[1].iteritems())
+            i = next(iter(new_ts))
             tiles[i], cells[j] = j, i
             A_already_won = (j-1 >= 0 and abs(i-cells[j-1]) == 1) or (j+1 < len(cells) and abs(i-cells[j+1]) == 1)
             can_B_win = not A_already_won and not is_A_winning(tiles, cells)
             tiles[i], cells[j] = -2, -2
-            return can_B_win
+            if can_B_win:
+                return can_B_win
+            if len(ts) == 1:
+                i, j = next(iter(ts)), next(iter(new_cs))
+                tiles[i], cells[j] = j, i
+                A_already_won = (j-1 >= 0 and abs(i-cells[j-1]) == 1) or (j+1 < len(cells) and abs(i-cells[j+1]) == 1)
+                can_B_win = not A_already_won and not is_A_winning(tiles, cells)
+                tiles[i], cells[j] = -2, -2
+                if can_B_win:
+                    return can_B_win
+            return False
         return False
     return B_try_to_avoid_and_win(tiles, cells)
 
