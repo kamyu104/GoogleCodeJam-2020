@@ -43,7 +43,7 @@ def find_structures(D, U):  # Time: O(B^(D + 1) * D)
 
 def match_structures_and_count(N, L, lookup):  # Time: O(N^2 * D)
     count = 0
-    for i in xrange(N):  # O(N) times
+    for i in xrange(N-1):  # O(N) times
         for j in xrange(i+1, N):  # O(N) times
             norm, hash_value = {'*':0}, 0
             for d, h in enumerate(L[i]):  # O(D) times
