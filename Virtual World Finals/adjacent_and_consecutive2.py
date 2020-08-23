@@ -123,7 +123,7 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                 if can_B_win:
                     return can_B_win
             if len(cs) == 1:
-                candidates = [t for t, x in enumerate(tiles) if x == -2 and t != i]
+                candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
                 j = next(iter(cs))
                 for i in candidates:  # try to put any other than i to the places s (only j)
                     tiles[i], cells[j] = j, i
