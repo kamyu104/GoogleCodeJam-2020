@@ -60,7 +60,7 @@ def is_A_winning(tiles, cells):  # Time: O(N)
         return True
     return is_A_winning_state(Lt, Lc)
 
-def B_try_to_avoid_and_win(tiles, cells):
+def B_try_to_avoid_and_win(tiles, cells):  # Time: O(N)
     Lt, Lc = compress_state(tiles), compress_state(cells)
     if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
         Lc, Lt = Lt, Lc
@@ -94,7 +94,7 @@ def B_try_to_avoid_and_win(tiles, cells):
     Lc[1] += 1
     return not is_A_winning_state(Lt, Lc)
 
-def find_break_cell(stats):
+def find_break_cell(stats):  # Time: O(N)
     max_l, to_del = 0, None
     for l, stat in stats.iteritems():
         for k, v in stat.iteritems():
@@ -109,7 +109,7 @@ def find_break_cell(stats):
         return to_del, j
     return to_del, -2
 
-def is_B_winning(tiles, cells):  # Time: O(N^3)
+def is_B_winning(tiles, cells):  # Time: O(N^2)
     stats = stats_of_win_immediately(tiles, cells)
     if stats:  # try to avoid A win immediately
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
