@@ -81,7 +81,7 @@ def B_try_to_avoid_and_win(tiles, cells):
             Lc[1] += 1
             Lc[2] += 1
             return not is_A_winning_state(Lt, Lc, -1)
-        if max_key == 5:  # 5 => (2, 2), Lc_2 cannot be changed
+        if max_key == 5:  # 5 => (2, 2)
             Lc[2] += 2
             return not is_A_winning_state(Lt, Lc, -1)
         return False
