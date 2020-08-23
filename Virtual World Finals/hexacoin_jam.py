@@ -28,17 +28,17 @@ def find_structures(D, U):  # Time: O(B^(D + 1) * D)
         for h in x_hexs:  # O(D) times
             if h not in norm:
                 norm[h] = len(norm)
-            hash_value = hash_value*(B+1) + norm[h]
+            hash_value = hash_value*BASE + norm[h]
         if y >= B_POW_D:  # all "*" in the y part
             lookup[hash_value] += 1
             continue
         for h in y_hexs:  # O(D) times
             for smaller_h in xrange(h):  # O(B) times, at most D-1 "*" in the suffix
                 delta = norm[smaller_h] if smaller_h in norm else len(norm)
-                lookup[hash_value*(B+1) + delta] += 1
+                lookup[hash_value*BASE + delta] += 1
             if h not in norm:
                 norm[h] = len(norm)
-            hash_value = hash_value*(B+1) + norm[h]
+            hash_value = hash_value*BASE + norm[h]
     return lookup
 
 def match_structures_and_count(N, L, lookup):  # Time: O(N^2 * D)
@@ -49,15 +49,15 @@ def match_structures_and_count(N, L, lookup):  # Time: O(N^2 * D)
             for h in L[i]:  # O(D) times
                 if h not in norm:
                     norm[h] = len(norm)
-                hash_value = hash_value*(B+1) + norm[h]
+                hash_value = hash_value*BASE + norm[h]
             if hash_value in lookup:  # all "*" in the y part
-                count += lookup[hash_value] * FACTORIAL[(B+1)-len(norm)]
+                count += lookup[hash_value] * FACTORIAL[BASE-len(norm)]
             for h in L[j]:  # O(D) times
                 if h not in norm:
                     norm[h] = len(norm)
-                hash_value = hash_value*(B+1) + norm[h]
+                hash_value = hash_value*BASE + norm[h]
                 if hash_value in lookup:
-                    count += lookup[hash_value] * FACTORIAL[(B+1)-len(norm)]
+                    count += lookup[hash_value] * FACTORIAL[BASE-len(norm)]
     return count
 
 def f(N, D, L, U):
@@ -77,5 +77,6 @@ B = 16
 FACTORIAL = [1]*(B+1)
 for i in xrange(1, len(FACTORIAL)):
     FACTORIAL[i] = i*FACTORIAL[i-1]
+BASE = B+1  # one is reserved for '*', others are 16 hexs
 for case in xrange(input()):
     print 'Case #%d: %s' % (case+1, hexacoin_jam())
