@@ -94,7 +94,7 @@ def B_try_to_avoid_and_win(tiles, cells):  # Time: O(N)
     Lc[1] += 1
     return not is_A_winning_state(Lt, Lc)
 
-def find_break_cell(stats):  # Time: O(N)
+def find_cell_to_fill(stats):  # Time: O(N)
     max_l, ts = 0, None
     for l, stat in stats.iteritems():
         for k, v in stat.iteritems():
@@ -132,7 +132,7 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                     if can_B_win:
                         return can_B_win
             return False
-        ts, j = find_break_cell(stats)
+        ts, j = find_cell_to_fill(stats)
         if j == -2:
             return False
         if not stats:
