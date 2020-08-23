@@ -10,7 +10,7 @@
 from collections import defaultdict
 from fractions import gcd
 
-def to_hex(x, D):  # Time: O(D)
+def to_hexs(x, D):  # Time: O(D)
     result = []
     while len(result) != D:
         result.append(x%B)
@@ -23,16 +23,16 @@ def find_structures(D, U):  # Time: O(B^(D + 1) * D)
     B_POW_D = B**D
     for x in xrange(min(U, B_POW_D)):  # O(B^D) times
         y = U-x
-        x_hex, y_hex = to_hex(x, D), to_hex(y, D)
+        x_hexs, y_hexs = to_hexs(x, D), to_hexs(y, D)
         norm, hash_value = {'*':0}, 0
-        for d, h in enumerate(x_hex):  # O(D) times
+        for h in x_hexs:  # O(D) times
             if h not in norm:
                 norm[h] = len(norm)
             hash_value = hash_value*(B+1) + norm[h]
         if y >= B_POW_D:  # all "*" in the y part
             lookup[hash_value] += 1
             continue
-        for d, h in enumerate(y_hex):  # O(D) times
+        for h in y_hexs:  # O(D) times
             for smaller_h in xrange(h):  # O(B) times, at most D-1 "*" in the suffix
                 delta = norm[smaller_h] if smaller_h in norm else len(norm)
                 lookup[hash_value*(B+1) + delta] += 1
@@ -46,13 +46,13 @@ def match_structures_and_count(N, L, lookup):  # Time: O(N^2 * D)
     for i in xrange(N-1):  # O(N) times
         for j in xrange(i+1, N):  # O(N) times
             norm, hash_value = {'*':0}, 0
-            for d, h in enumerate(L[i]):  # O(D) times
+            for h in L[i]:  # O(D) times
                 if h not in norm:
                     norm[h] = len(norm)
                 hash_value = hash_value*(B+1) + norm[h]
             if hash_value in lookup:  # all "*" in the y part
                 count += lookup[hash_value] * FACTORIAL[(B+1)-len(norm)]
-            for d, h in enumerate(L[j]):  # O(D) times
+            for h in L[j]:  # O(D) times
                 if h not in norm:
                     norm[h] = len(norm)
                 hash_value = hash_value*(B+1) + norm[h]
