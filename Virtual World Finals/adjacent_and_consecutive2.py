@@ -71,19 +71,19 @@ def B_try_to_avoid_and_win(tiles, cells):
         return False
     if count_of_3_or_up(Lc) == 1:
         max_key = max(Lc.iterkeys())
-        if Lc[max_key] > 1:
+        if Lc[max_key] > 1 or Lt[1] == 0:
             return False
         del Lc[max_key]
-        if max_key == 3:  # 3 => (0, 2) or (1, 1), check (1, 1) is enough
+        if max_key == 3:  # split 3 into (0, 2) or (1, 1), and put the pivot i into one of Lt_1, using (1, 1) is enough
             Lc[1] += 2
-            return not is_A_winning_state(Lt, Lc, -1)  # reduce the number of 2 in Lt_prime as possible
-        if max_key == 4:  # 4 => (1, 2)
+            return not is_A_winning_state(Lt, Lc)
+        if max_key == 4:  # split 4 into (1, 2), and put the pivot i into one of Lt_1
             Lc[1] += 1
             Lc[2] += 1
-            return not is_A_winning_state(Lt, Lc, -1)  # reduce the number of 2 in Lt_prime as possible
-        if max_key == 5:  # 5 => (2, 2)
+            return not is_A_winning_state(Lt, Lc)
+        if max_key == 5:  # split 5 into (2, 2), and put the pivot i into one of Lt_1
             Lc[2] += 2
-            return not is_A_winning_state(Lt, Lc, -1)  # reduce the number of 2 in Lt_prime as possible
+            return not is_A_winning_state(Lt, Lc)
         return False
     if Lc[1]:
         Lc[1] -= 1
@@ -92,7 +92,7 @@ def B_try_to_avoid_and_win(tiles, cells):
         return False
     Lc[2] -= 1
     Lc[1] += 1
-    return not is_A_winning_state(Lt, Lc, 0)  # reduce the number of 1 in Lt_prime (at least one)
+    return not is_A_winning_state(Lt, Lc)
 
 def find_break_cell(stats):
     max_l, to_del = 0, None
