@@ -47,12 +47,14 @@ def match_structures_and_count(N, L, lookup):  # Time: O(N^2 * D)
         for j in xrange(i+1, N):  # O(N) times
             norm, hash_value = {'*':0}, 0
             for d, h in enumerate(L[i]):  # O(D) times
+                h = int(h, B)
                 if h not in norm:
                     norm[h] = len(norm)
                 hash_value = hash_value*(B+1) + norm[h]
             if hash_value in lookup:  # all "*" in the y part
                 count += lookup[hash_value] * FACTORIAL[(B+1)-len(norm)]
             for d, h in enumerate(L[j]):  # O(D) times
+                h = int(h, B)
                 if h not in norm:
                     norm[h] = len(norm)
                 hash_value = hash_value*(B+1) + norm[h]
@@ -67,7 +69,7 @@ def f(N, D, L, U):
 def hexacoin_jam():
     N, D = map(int, raw_input().strip().split())
     S, E = map(lambda x: int(x, B), raw_input().strip().split())
-    L = map(lambda x: map(lambda y: int(y, B), x), raw_input().strip().split())
+    L = raw_input().strip().split()
     count = (f(N, D, L, E+1)-f(N, D, L, S)) + (f(N, D, L, B**D+E+1)-f(N, D, L, B**D+S))
     total = FACTORIAL[B]*N*(N-1)//2
     g = gcd(count, total)
