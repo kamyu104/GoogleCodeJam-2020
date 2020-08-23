@@ -145,8 +145,8 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                     return can_B_win
             return False
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
-            i, s = next(stats[1].iteritems())
-            i = next(iter(i))
+            ts, cs = next(stats[1].iteritems())
+            i = next(iter(ts))
             tiles[i], cells[j] = j, i
             A_already_won = (j-1 >= 0 and abs(i-cells[j-1]) == 1) or (j+1 < len(cells) and abs(i-cells[j+1]) == 1)
             can_B_win = not A_already_won and not is_A_winning(tiles, cells)
