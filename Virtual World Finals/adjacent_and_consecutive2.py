@@ -76,21 +76,23 @@ def B_try_to_avoid_and_win(tiles, cells):
         del Lc[max_key]
         if max_key == 3:  # 3 => (0, 2) or (1, 1), check (1, 1) is enough
             Lc[1] += 2
-            return not is_A_winning_state(Lt, Lc, -1)
+            return not is_A_winning_state(Lt, Lc, -1)  # reduce the number of 2 in Lt_prime as possible
         if max_key == 4:  # 4 => (1, 2)
             Lc[1] += 1
             Lc[2] += 1
-            return not is_A_winning_state(Lt, Lc, -1)
+            return not is_A_winning_state(Lt, Lc, -1)  # reduce the number of 2 in Lt_prime as possible
         if max_key == 5:  # 5 => (2, 2)
             Lc[2] += 2
-            return not is_A_winning_state(Lt, Lc, -1)
+            return not is_A_winning_state(Lt, Lc, -1)  # reduce the number of 2 in Lt_prime as possible
         return False
     if Lc[1]:
         Lc[1] -= 1
-        return not is_A_winning_state(Lt, Lc, -1)
+        return not is_A_winning_state(Lt, Lc, -1)  # reduce the number of 2 in Lt_prime as possible
+    if sum((k%2)*v for k, v in Lt.iteritems()) == 0:  # Lc and Lt_prime are all 2s
+        return False
     Lc[2] -= 1
     Lc[1] += 1
-    return not is_A_winning_state(Lt, Lc, 0)
+    return not is_A_winning_state(Lt, Lc, 0)  # reduce the number of 1 in Lt_prime (at least one)
 
 def find_break_cell(stats):
     max_l, to_del = 0, None
