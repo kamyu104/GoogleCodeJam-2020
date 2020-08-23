@@ -47,14 +47,12 @@ def match_structures_and_count(N, L, lookup):  # Time: O(N^2 * D)
         for j in xrange(i+1, N):  # O(N) times
             norm, hash_value = {'*':0}, 0
             for d, h in enumerate(L[i]):  # O(D) times
-                h = int(h, B)
                 if h not in norm:
                     norm[h] = len(norm)
                 hash_value = hash_value*(B+1) + norm[h]
             if hash_value in lookup:  # all "*" in the y part
                 count += lookup[hash_value] * FACTORIAL[(B+1)-len(norm)]
             for d, h in enumerate(L[j]):  # O(D) times
-                h = int(h, B)
                 if h not in norm:
                     norm[h] = len(norm)
                 hash_value = hash_value*(B+1) + norm[h]
