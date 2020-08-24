@@ -82,7 +82,7 @@ def B_try_to_avoid_and_win(tiles, cells):  # Time: O(N)
     K = sum(k*v for k, v in Lc.iteritems())
     if K == 0:
         return True
-    if count_of_3_or_up(Lc) > 1 or (count_of_3_or_up(Lc) == count_of_3_or_up(Lt) == 1):
+    if count_of_3_or_up(Lc) > 1:
         return False
     if count_of_3_or_up(Lc) == 1:
         max_key = max(Lc.iterkeys())
