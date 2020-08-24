@@ -117,6 +117,9 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
             i = next(iter(ts))
             candidates = [c for c, x in enumerate(cells) if x == -2 and c not in cs]
             for j in candidates:  # try to put i to the places other than s
+                if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
+                    ((i-1 >= 0 and tiles[i-1] == -2) or i+1 < len(tiles) and tiles[i+1] == -2)):
+                    continue
                 tiles[i], cells[j] = j, i
                 can_B_win = not is_A_winning(tiles, cells)
                 tiles[i], cells[j] = -2, -2
@@ -126,6 +129,9 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                 candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
                 j = next(iter(cs))
                 for i in candidates:  # try to put any other than i to the places s (only j)
+                    if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
+                        ((i-1 >= 0 and tiles[i-1] == -2) or i+1 < len(tiles) and tiles[i+1] == -2)):
+                        continue
                     tiles[i], cells[j] = j, i
                     can_B_win = not is_A_winning(tiles, cells)
                     tiles[i], cells[j] = -2, -2
@@ -138,6 +144,9 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
         if not stats:
             candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
             for i in candidates:  # try to put any other than i to the places s (only j)
+                if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
+                    ((i-1 >= 0 and tiles[i-1] == -2) or i+1 < len(tiles) and tiles[i+1] == -2)):
+                    continue
                 tiles[i], cells[j] = j, i
                 can_B_win = not is_A_winning(tiles, cells)
                 tiles[i], cells[j] = -2, -2
