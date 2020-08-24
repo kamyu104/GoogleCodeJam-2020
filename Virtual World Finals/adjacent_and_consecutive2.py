@@ -143,6 +143,7 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                 tiles[i], cells[j] = -2, -2
                 if can_B_win:
                     return can_B_win
+            assert(len(ts) != 1)  # this case is excluded by the previous checks
             return False
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
             new_ts, new_cs = next(stats[1].iteritems())
