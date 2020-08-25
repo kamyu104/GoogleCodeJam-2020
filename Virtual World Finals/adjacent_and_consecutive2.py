@@ -203,7 +203,8 @@ def is_B_winning(tiles, cells):  # Time: O(N)
                     cs, new_cs = new_cs, cs 
                 i, j = next(iter(new_ts)), next(iter(cs))
                 tiles[i], cells[j] = j, i
-                can_B_win = (i not in ts) and not is_A_winning(tiles, cells)
+                A_already_won = (j-1 >= 0 and abs(i-cells[j-1]) == 1) or (j+1 < len(cells) and abs(i-cells[j+1]) == 1)
+                can_B_win = not A_already_won and (i not in ts) and not is_A_winning(tiles, cells)
                 tiles[i], cells[j] = -2, -2
                 if can_B_win:
                     return can_B_win
