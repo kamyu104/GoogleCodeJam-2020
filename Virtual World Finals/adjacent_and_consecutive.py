@@ -48,7 +48,7 @@ def is_A_winning_state(Lt, Lc):  # Time: O(N)
 def is_A_winning(tiles, cells):  # Time: O(N)
     if can_win_immediately(tiles, cells):  # can win in 1 moves
         return True
-    Lt, Lc = compress_state(cells), compress_state(tiles)
+    Lt, Lc = compress_state(tiles), compress_state(cells)
     if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
         Lt, Lc = Lc, Lt
     if count_of_3_or_up(Lc):  # can win in 2 moves
