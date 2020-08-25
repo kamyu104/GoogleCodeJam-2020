@@ -188,16 +188,21 @@ def adjacent_and_consecutive():
     N = input()
     result, tiles, cells, prev = [0, 0], [-2]*N, [-2]*N, True
     A_already_won = False  # A can win in 0 moves
+    Lt, Lt_lookup = compress_state(tiles)
+    Lc, Lc_lookup = compress_state(cells)
+    K = N
+    Lt_Z = sum((k//2)*v for k, v in Lt.iteritems())
+    Lc_Z = sum((k//2)*v for k, v in Lc.iteritems())
     for i in xrange(N):
         M, C = map(int, raw_input().strip().split())
         M, C = M-1, C-1
+        Lt_Z += update_L(Lt, Lt_lookup[M], 1)
+        Lc_Z += update_L(Lc, Lc_lookup[C], 1)
         tiles[M], cells[C] = C, M
         stats = stats_of_win_immediately(tiles, cells)
-        Lt, Lt_lookup = compress_state(tiles)
-        Lc, Lc_lookup = compress_state(cells)
-        K = sum(k*v for k, v in Lc.iteritems())
-        Lt_Z = sum((k//2)*v for k, v in Lt.iteritems())
-        Lc_Z = sum((k//2)*v for k, v in Lc.iteritems())
+        _, Lt_lookup = compress_state(tiles)
+        _, Lc_lookup = compress_state(cells)
+        K -= 1
         if not A_already_won:
             A_already_won = (C-1 >= 0 and abs(M-cells[C-1]) == 1) or (C+1 < len(cells) and abs(M-cells[C+1]) == 1)
         if i%2 == 0:
