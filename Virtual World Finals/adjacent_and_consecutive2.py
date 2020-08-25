@@ -99,7 +99,7 @@ def find_cell_to_fill(active_cells):  # Time: O(1)
             del stats[max_l]
     return stats, ts, cs
 
-def B_try_to_avoid_and_win(tiles, cells, Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
+def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
     if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
         Lt, Lc = Lc, Lt
         Lt_Z, Lc_Z = Lc_Z, Lt_Z
@@ -195,7 +195,7 @@ def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_lookup, Lt_Z, 
                     return can_B_win
             return False
         return False
-    return B_try_to_avoid_and_win(tiles, cells, Lt, Lt_Z, Lc, Lc_Z, K)
+    return B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K)
 
 def adjacent_and_consecutive():
     N = input()
