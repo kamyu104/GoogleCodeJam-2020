@@ -139,6 +139,9 @@ def update_L(L, count, v):  # Time: O(1)
     return -(count[1]//2)+(count[0]-1)//2+(count[1]-count[0])//2
 
 def is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j):  # Time: O(1)
+    if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
+        ((i-1 >= 0 and tiles[i-1] == -2) or (i+1 < len(tiles) and tiles[i+1] == -2))):
+        return False  # A would win immediately
     tiles[i], cells[j] = j, i
     Lt_delta = update_L(Lt, Lt_lookup[i], 1)
     Lc_delta = update_L(Lc, Lc_lookup[j], 1)
@@ -163,9 +166,6 @@ def is_B_winning(tiles, cells):  # Time: O(N)
             i = next(iter(ts))
             candidates = [c for c, x in enumerate(cells) if x == -2 and c not in cs]
             for j in candidates:  # try to put i to the places other than s
-                if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
-                    ((i-1 >= 0 and tiles[i-1] == -2) or (i+1 < len(tiles) and tiles[i+1] == -2))):
-                    continue
                 can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                 if can_B_win:
                     return can_B_win
@@ -173,9 +173,6 @@ def is_B_winning(tiles, cells):  # Time: O(N)
                 candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
                 j = next(iter(cs))
                 for i in candidates:  # try to put any other than i to the places s (only j)
-                    if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
-                        ((i-1 >= 0 and tiles[i-1] == -2) or (i+1 < len(tiles) and tiles[i+1] == -2))):
-                        continue
                     can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                     if can_B_win:
                         return can_B_win
@@ -188,9 +185,6 @@ def is_B_winning(tiles, cells):  # Time: O(N)
             assert(len(cs) == 1)
             j = next(iter(cs))
             for i in candidates:  # try to put any other than i to the places s (only j)
-                if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
-                    ((i-1 >= 0 and tiles[i-1] == -2) or (i+1 < len(tiles) and tiles[i+1] == -2))):
-                    continue
                 can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                 if can_B_win:
                     return can_B_win
@@ -203,10 +197,7 @@ def is_B_winning(tiles, cells):  # Time: O(N)
                     ts, new_ts = new_ts, ts
                     cs, new_cs = new_cs, cs 
                 i, j = next(iter(new_ts)), next(iter(cs))
-                if i in ts or len(cs) > 1:  # B cannot win
-                    continue
-                if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
-                    ((i-1 >= 0 and tiles[i-1] == -2) or (i+1 < len(tiles) and tiles[i+1] == -2))):
+                if i in ts or len(cs) > 1:  # A would already win or win immediately
                     continue
                 can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                 if can_B_win:
