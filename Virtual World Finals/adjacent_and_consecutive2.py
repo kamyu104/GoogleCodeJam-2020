@@ -124,7 +124,7 @@ def B_try_to_avoid_and_win(tiles, cells):  # Time: O(N)
     Lc[1] += 1
     return not is_A_winning_state(Lt, Lc)
 
-def update_L(L, count, v):
+def update_L(L, count, v):  # Time: O(1)
     L[count[1]] -= v
     if not L[count[1]]:
         del L[count[1]]
