@@ -105,7 +105,6 @@ def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
         Lt_Z, Lc_Z = Lc_Z, Lt_Z
     if K == 0:
         return True
-    K -= 1
     if count_of_3_or_up(Lc) > 1:
         return False
     if count_of_3_or_up(Lc) == 1:
@@ -113,18 +112,18 @@ def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
         if Lc[max_key] > 1 or 1 not in Lt:
             return False
         if max_key == 3:  # split 3 into (0, 2) or (1, 1), and put the pivot i into one of Lt_1, using (1, 1) is enough
-            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+0, K)
+            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+0, K-1)
         if max_key == 4:  # split 4 into (1, 2), and put the pivot i into one of Lt_1
-            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+1, K)
+            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+1, K-1)
         if max_key == 5:  # split 5 into (2, 2), and put the pivot i into one of Lt_1
-            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+2, K)
+            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+2, K-1)
         return False
     if 1 in Lc:
         Lt_Z = max(Lt_Z-1, 0)  # reduce the number of 2 in Lt_prime as possible
-        return not is_A_winning_state(Lt_Z, Lc_Z, K)
-    if sum((k%2)*v for k, v in Lt.iteritems()) == 0:  # Lc and Lt_prime are all 2s
+        return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
+    if K == 2*Lt_Z:  # Lc and Lt_prime are all 2s
         return False
-    return not is_A_winning_state(Lt_Z, Lc_Z-1, K)
+    return not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
 
 def update_L(L, count, v):  # Time: O(1)
     L[count[1]] -= v
