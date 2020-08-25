@@ -27,17 +27,31 @@ def stats_of_win_immediately(tiles, cells):  # Time: O(N)
     return stats
 
 def compress_state(arr):  # Time: O(N)
-    c, counter = 0, Counter()
-    for x in arr:
+    c, counter, counts, rank = 0, Counter(), [], {}
+    for i, x in enumerate(arr):
         if x != -2:
             if c:
                 counter[c] += 1
+                counts.append(c)
             c = 0
             continue
         c += 1
+        rank[i] = c
     if c:
         counter[c] += 1
-    return counter
+        counts.append(c)
+    curr, switch = -1, True
+    lookup = {}
+    for i, x in enumerate(arr):
+        if x != -2:
+            if not switch:
+                switch = True
+            continue
+        if switch:
+            switch = False
+            curr += 1
+        lookup[i] = (rank[i], counts[curr])
+    return counter, lookup
 
 def count_of_3_or_up(counter):  # Time: O(1)
     return len(counter)-int(1 in counter)-int(2 in counter)
@@ -53,7 +67,8 @@ def is_A_winning_state(Lt, Lc, Z_delta=0):  # Time: O(N)
 def is_A_winning(tiles, cells):  # Time: O(N)
     if stats_of_win_immediately(tiles, cells):  # can win in 1 moves
         return True
-    Lt, Lc = compress_state(cells), compress_state(tiles)
+    Lt, _ = compress_state(tiles)
+    Lc, _ = compress_state(cells)
     if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
         Lt, Lc = Lc, Lt
     if count_of_3_or_up(Lc):  # can win in 2 moves
@@ -61,22 +76,22 @@ def is_A_winning(tiles, cells):  # Time: O(N)
     return is_A_winning_state(Lt, Lc)
 
 def find_cell_to_fill(stats):  # Time: O(N)
-    max_l, ts = 0, None
+    max_l, ts, cs = 0, frozenset(), set()
     for l, stat in stats.iteritems():
         for k, v in stat.iteritems():
             if len(v) == 1:
                 if l > max_l:
                     max_l, ts = l, k
     if max_l:
-        j = stats[max_l][ts][0]
+        cs = stats[max_l][ts]
         del stats[max_l][ts]
         if not stats[max_l]:
             del stats[max_l]
-        return ts, j
-    return ts, -2
+    return ts, cs
 
 def B_try_to_avoid_and_win(tiles, cells):  # Time: O(N)
-    Lt, Lc = compress_state(tiles), compress_state(cells)
+    Lt, _ = compress_state(tiles)
+    Lc, _ = compress_state(cells)
     if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
         Lc, Lt = Lt, Lc
     K = sum(k*v for k, v in Lc.iteritems())
@@ -85,7 +100,7 @@ def B_try_to_avoid_and_win(tiles, cells):  # Time: O(N)
     if count_of_3_or_up(Lc) > 1:
         return False
     if count_of_3_or_up(Lc) == 1:
-        max_key = max(Lc.iterkeys())
+        max_key = max(k for k, v in Lc.iteritems() if v != 0)
         if Lc[max_key] > 1 or Lt[1] == 0:
             return False
         del Lc[max_key]
@@ -109,9 +124,40 @@ def B_try_to_avoid_and_win(tiles, cells):  # Time: O(N)
     Lc[1] += 1
     return not is_A_winning_state(Lt, Lc)
 
-def is_B_winning(tiles, cells):  # Time: O(N^2)
+def update_L(L, count, v):
+    L[count[1]] -= v
+    if not L[count[1]]:
+        del L[count[1]]
+    if count[0]-1:
+        L[count[0]-1] += v
+        if not L[count[0]-1]:
+            del L[count[0]-1]
+    if count[1]-count[0]:
+        L[count[1]-count[0]] += v
+        if not L[count[1]-count[0]]:
+            del L[count[1]-count[0]]
+    return -(count[1]//2)+(count[0]-1)//2+(count[1]-count[0])//2
+
+def is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j):  # Time: O(1)
+    tiles[i], cells[j] = j, i
+    Lt_delta = update_L(Lt, Lt_lookup[i], 1)
+    Lc_delta = update_L(Lc, Lc_lookup[j], 1)
+    can_B_win =  not ((count_of_3_or_up(Lt) >= 1 and count_of_3_or_up(Lc) >= 1) or
+                      (K == 2 and (Lt_Z+Lt_delta) == (Lc_Z+Lc_delta) == 1) or
+                      (K%2 and 2*((Lt_Z+Lt_delta) + (Lc_Z+Lc_delta)) > K))
+    tiles[i], cells[j] = -2, -2
+    Lt_delta = update_L(Lt, Lt_lookup[i], -1)
+    Lc_delta = update_L(Lc, Lc_lookup[j], -1)
+    return can_B_win
+
+def is_B_winning(tiles, cells):  # Time: O(N)
     stats = stats_of_win_immediately(tiles, cells)
     if stats:  # try to avoid A win immediately
+        Lt, Lt_lookup = compress_state(tiles)
+        Lc, Lc_lookup = compress_state(cells)
+        K = sum(k*v for k, v in Lc.iteritems())-1
+        Lt_Z = sum((k//2)*v for k, v in Lt.iteritems())
+        Lc_Z = sum((k//2)*v for k, v in Lc.iteritems())
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
             ts, cs = next(stats[1].iteritems())
             i = next(iter(ts))
@@ -120,9 +166,7 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                 if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
                     ((i-1 >= 0 and tiles[i-1] == -2) or i+1 < len(tiles) and tiles[i+1] == -2)):
                     continue
-                tiles[i], cells[j] = j, i
-                can_B_win = not is_A_winning(tiles, cells)
-                tiles[i], cells[j] = -2, -2
+                can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                 if can_B_win:
                     return can_B_win
             if len(cs) == 1:
@@ -132,35 +176,30 @@ def is_B_winning(tiles, cells):  # Time: O(N^2)
                     if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
                         ((i-1 >= 0 and tiles[i-1] == -2) or i+1 < len(tiles) and tiles[i+1] == -2)):
                         continue
-                    tiles[i], cells[j] = j, i
-                    can_B_win = not is_A_winning(tiles, cells)
-                    tiles[i], cells[j] = -2, -2
+                    can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                     if can_B_win:
                         return can_B_win
             return False
-        ts, j = find_cell_to_fill(stats)
-        if j == -2:
+        ts, cs = find_cell_to_fill(stats)
+        if not cs:
             return False
         if not stats:
             candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
+            j = next(iter(cs))
             for i in candidates:  # try to put any other than i to the places s (only j)
                 if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
                     ((i-1 >= 0 and tiles[i-1] == -2) or i+1 < len(tiles) and tiles[i+1] == -2)):
                     continue
-                tiles[i], cells[j] = j, i
-                can_B_win = not is_A_winning(tiles, cells)
-                tiles[i], cells[j] = -2, -2
+                can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                 if can_B_win:
                     return can_B_win
             assert(len(ts) != 1)  # this case is excluded by the previous checks
             return False
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
             new_ts, new_cs = next(stats[1].iteritems())
-            i = next(iter(new_ts))
-            if i in ts:
-                return False
+            i, j = next(iter(new_ts)), next(iter(cs))
             tiles[i], cells[j] = j, i
-            can_B_win = not is_A_winning(tiles, cells)
+            can_B_win = (i not in ts) and not is_A_winning(tiles, cells)
             tiles[i], cells[j] = -2, -2
             if can_B_win:
                 return can_B_win
