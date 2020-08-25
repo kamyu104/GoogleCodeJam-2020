@@ -120,11 +120,13 @@ def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
         return False
     if 2*Lt_Z == 2*Lc_Z == K:  # both Lt and Lc prime are all 2s
         return False
-    if 2*Lt_Z != K:  # exists 1
+    if 1 in Lt:  # exists 1
+        assert(Lt[1] != 0)
         can_B_win = not is_A_winning_state(Lt_Z, max(Lc_Z-1, 0), K-1)  # reduce the number of 2 in Lc_prime as possible
         if can_B_win:
             return True
-    if 2*Lc_Z != K:  # exists 1
+    if 1 in Lc:  # exists 1
+        assert(Lc[1] != 0)
         can_B_win = not is_A_winning_state(max(Lt_Z-1, 0), Lc_Z, K-1)  # reduce the number of 2 in Lt_prime as possible
         if can_B_win:
             return True
