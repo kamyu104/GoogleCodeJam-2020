@@ -207,8 +207,6 @@ def is_B_winning(tiles, cells):  # Time: O(N)
                 tiles[i], cells[j] = -2, -2
                 if can_B_win:
                     return can_B_win
-                if can_B_win:
-                    return can_B_win
             return False
         return False
     return B_try_to_avoid_and_win(tiles, cells)
