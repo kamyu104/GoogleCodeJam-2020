@@ -197,19 +197,15 @@ def is_B_winning(tiles, cells):  # Time: O(N)
             return False
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
             new_ts, new_cs = next(stats[1].iteritems())
-            i, j = next(iter(new_ts)), next(iter(cs))
-            tiles[i], cells[j] = j, i
-            can_B_win = (i not in ts) and not is_A_winning(tiles, cells)
-            tiles[i], cells[j] = -2, -2
-            if can_B_win:
-                return can_B_win
-            if len(ts) == 1:
-                i, j = next(iter(ts)), next(iter(new_cs))
+            for _ in xrange(2 if len(ts) == 1 else 1):
+                i, j = next(iter(new_ts)), next(iter(cs))
                 tiles[i], cells[j] = j, i
-                can_B_win = not is_A_winning(tiles, cells)
+                can_B_win = (i not in ts) and not is_A_winning(tiles, cells)
                 tiles[i], cells[j] = -2, -2
                 if can_B_win:
                     return can_B_win
+                ts, new_ts = new_ts, ts
+                cs, new_cs = new_cs, cs
             return False
         return False
     return B_try_to_avoid_and_win(tiles, cells)
