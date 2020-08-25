@@ -118,12 +118,17 @@ def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
         if max_key == 5:  # split 5 into (2, 2), and put the pivot i into one of Lt_1
             return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+2, K-1)
         return False
-    if 1 in Lc:
-        Lt_Z = max(Lt_Z-1, 0)  # reduce the number of 2 in Lt_prime as possible
-        return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
-    if K == 2*Lt_Z:  # Lc and Lt_prime are all 2s
+    if 2*Lt_Z == 2*Lc_Z == K:  # both Lt and Lc prime are all 2s
         return False
-    return not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
+    if 2*Lt_Z != K:  # exists 1
+        can_B_win = not is_A_winning_state(Lt_Z, max(Lc_Z-1, 0), K-1)  # reduce the number of 2 in Lc_prime as possible
+        if can_B_win:
+            return True
+    if 2*Lc_Z != K:  # exists 1
+        can_B_win = not is_A_winning_state(max(Lt_Z-1, 0), Lc_Z, K-1)  # reduce the number of 2 in Lt_prime as possible
+        if can_B_win:
+            return True
+    return False
 
 def update_L(L, count, v):  # Time: O(1)
     L[count[1]] -= v
