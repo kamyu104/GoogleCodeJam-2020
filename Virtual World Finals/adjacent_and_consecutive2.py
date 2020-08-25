@@ -180,9 +180,9 @@ def is_B_winning(tiles, cells):  # Time: O(N)
         ts, cs = find_cell_to_fill(stats)
         if not cs:
             return False
+        assert(len(cs) == 1)
         if not stats:
             candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
-            assert(len(cs) == 1)
             j = next(iter(cs))
             for i in candidates:  # try to put any other than i to the places s (only j)
                 can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
@@ -192,14 +192,13 @@ def is_B_winning(tiles, cells):  # Time: O(N)
             return False
         if len(stats) == 1 and 1 in stats and len(stats[1]) == 1:
             new_ts, new_cs = next(stats[1].iteritems())
-            for k in xrange(2 if len(ts) == 1 else 1):
-                if k == 1:
-                    ts, new_ts = new_ts, ts
-                    cs, new_cs = new_cs, cs 
-                i, j = next(iter(new_ts)), next(iter(cs))
-                if i in ts or len(cs) > 1:  # A would already win or win immediately
-                    continue
-                can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
+            i, j = next(iter(new_ts)), next(iter(cs))
+            can_B_win = (i not in ts) and is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
+            if can_B_win:
+                return can_B_win
+            if len(ts) == 1:
+                i, j = next(iter(ts)), next(iter(new_cs))
+                can_B_win = (len(new_cs) == 1) and is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                 if can_B_win:
                     return can_B_win
             return False
