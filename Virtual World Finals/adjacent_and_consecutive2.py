@@ -145,9 +145,9 @@ def is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K
     can_B_win =  not ((count_of_3_or_up(Lt) >= 1 and count_of_3_or_up(Lc) >= 1) or
                       (K == 2 and (Lt_Z+Lt_delta) == (Lc_Z+Lc_delta) == 1) or
                       (K%2 and 2*((Lt_Z+Lt_delta) + (Lc_Z+Lc_delta)) > K))
-    tiles[i], cells[j] = -2, -2
-    Lt_delta = update_L(Lt, Lt_lookup[i], -1)
     Lc_delta = update_L(Lc, Lc_lookup[j], -1)
+    Lt_delta = update_L(Lt, Lt_lookup[i], -1)
+    tiles[i], cells[j] = -2, -2
     return can_B_win
 
 def is_B_winning(tiles, cells):  # Time: O(N)
