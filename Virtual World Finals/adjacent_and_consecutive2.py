@@ -185,6 +185,7 @@ def is_B_winning(tiles, cells):  # Time: O(N)
             return False
         if not stats:
             candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
+            assert(len(cs) == 1)
             j = next(iter(cs))
             for i in candidates:  # try to put any other than i to the places s (only j)
                 if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
@@ -202,10 +203,12 @@ def is_B_winning(tiles, cells):  # Time: O(N)
                     ts, new_ts = new_ts, ts
                     cs, new_cs = new_cs, cs 
                 i, j = next(iter(new_ts)), next(iter(cs))
-                tiles[i], cells[j] = j, i
-                A_already_won = (j-1 >= 0 and abs(i-cells[j-1]) == 1) or (j+1 < len(cells) and abs(i-cells[j+1]) == 1)
-                can_B_win = not A_already_won and (i not in ts) and not is_A_winning(tiles, cells)
-                tiles[i], cells[j] = -2, -2
+                if i in ts or len(cs) > 1:  # B cannot win
+                    continue
+                if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
+                    ((i-1 >= 0 and tiles[i-1] == -2) or (i+1 < len(tiles) and tiles[i+1] == -2))):
+                    continue
+                can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, j)
                 if can_B_win:
                     return can_B_win
             return False
