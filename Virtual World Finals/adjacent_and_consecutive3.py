@@ -187,7 +187,7 @@ def find_cell_to_fill(active_cells):  # Time: O(1)
             del stats[max_l]
     return stats, ts, cs
 
-def try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs):  # Time: O(logN)
+def B_try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs):  # Time: O(logN)
     assert(len(cs) <= 4)
     interval_i = query_interval(Lt_intervals, i)
     interval_js = {j:query_interval(Lc_intervals, j) for j in cs}
@@ -350,20 +350,20 @@ def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_intervals, Lt_
     if active_tiles:  # try to avoid A win immediately
         if len(active_tiles) == 1:  # one active tile to one or up active cells
             i, cs = next(active_tiles.iteritems())
-            can_B_win = try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs)  # Time: O(logN)
+            can_B_win = B_try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs)  # Time: O(logN)
             if can_B_win:
                 return True
             if len(cs) == 1:
                 j = next(iter(cs))
                 ts = active_cells[j]
-                can_B_win = try_to_avoid_immediately_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
+                can_B_win = B_try_to_avoid_immediately_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
                 if can_B_win:
                     return True
             return False
         if len(active_cells) == 1:  # two or up active tiles to one active cells
             j, ts = next(active_cells.iteritems())
             assert(len(ts) != 1)  # len(ts) == 1 is covered by the previous checks
-            can_B_win = try_to_avoid_immediately_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
+            can_B_win = B_try_to_avoid_immediately_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
             if can_B_win:
                 return True
             return False
