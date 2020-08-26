@@ -99,7 +99,7 @@ def find_cell_to_fill(active_cells):  # Time: O(1)
             del stats[max_l]
     return stats, ts, cs
 
-def try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, cs):  # Time: O(1)
+def B_try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, cs):  # Time: O(1)
     if count_of_3_or_up(Lt) and count_of_3_or_up(Lc):
         # split the only 3 or up of Lt by i and put i into one of valid Lc[1]
         max_key = max(k for k, v in Lt.iteritems() if v != 0)
@@ -258,20 +258,20 @@ def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_lookup, Lt_Z, 
     if active_tiles:  # try to avoid A win immediately
         if len(active_tiles) == 1:  # one active tile to one or up active cells
             i, cs = next(active_tiles.iteritems())
-            can_B_win = try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, cs)
+            can_B_win = B_try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, cs)
             if can_B_win:
                 return True
             if len(cs) == 1:
                 j = next(iter(cs))
                 ts = active_cells[j]
-                can_B_win = try_to_avoid_immediately_win(Lc, Lc_lookup, Lc_Z, Lt, Lt_lookup, Lt_Z, K, j, ts)
+                can_B_win = B_try_to_avoid_immediately_win(Lc, Lc_lookup, Lc_Z, Lt, Lt_lookup, Lt_Z, K, j, ts)
                 if can_B_win:
                     return True
             return False
         if len(active_cells) == 1:  # two or up active tiles to one active cells
             j, ts = next(active_cells.iteritems())
             assert(len(ts) != 1)  # len(ts) == 1 is covered by the previous checks
-            can_B_win = try_to_avoid_immediately_win(Lc, Lc_lookup, Lc_Z, Lt, Lt_lookup, Lt_Z, K, j, ts)
+            can_B_win = B_try_to_avoid_immediately_win(Lc, Lc_lookup, Lc_Z, Lt, Lt_lookup, Lt_Z, K, j, ts)
             if can_B_win:
                 return True
             return False
