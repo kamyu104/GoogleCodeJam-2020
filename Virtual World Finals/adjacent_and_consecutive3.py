@@ -171,7 +171,7 @@ def find_cell_to_fill(active_cells):  # Time: O(1)
         for m in ms:
             lookup[c].add(m)
             count -= 1
-            if not count:
+            if count < 0:
                 return stats, ts, cs
     for c, s in lookup.iteritems():
         stats[len(s)][frozenset(s)].append(c)
