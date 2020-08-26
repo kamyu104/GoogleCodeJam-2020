@@ -186,7 +186,7 @@ def try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i,
         delta = min(1, Lc_Z-reserved_Lc_Z)
     return not is_A_winning_state(Lt_Z, Lc_Z-delta, K-1)  # reduce the number of 2 in Lt_prime as possible
 
-	def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
+def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
     if K == 0:
         return True
     if count_of_3_or_up(Lt) and count_of_3_or_up(Lc):
