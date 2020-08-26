@@ -252,35 +252,29 @@ def try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z,
         if 1 not in Lc or (Lc[1]-sum(interval_js[j][1] == 1 for j in cs) == 0):
             return False
         delta = int(interval_i[1]%2 == 0 or interval_i[0]%2 == 0)  # any pos of even length or even pos of odd length
-        can_B_win = not is_A_winning_state(Lt_Z-delta, Lc_Z, K-1)  # reduce the number of 2 in Lt_prime as possible
-        if can_B_win:
-            return True
-    if interval_i[1] == 1:
-        if K-len(cs) == 0:
-            return False
-        group = defaultdict(set)
-        for j in cs:
-            group[interval_js[j][2], interval_js[j][1]].add(interval_js[j][0])
-        reserved_Lc_Z, delta = 0, 0
-        for (_, l), ps in group.iteritems():
-            count = l//2
-            reserved_Lc_Z += count
-            if l%2 == 0:
-                if len(ps) == l:
-                    count = 0
-            else:
-                for p in ps:
-                    if p%2 == 0:
-                        count -= 1
-            if count:
-                delta = 1
-                break
-        if not delta:
-            delta = min(1, Lc_Z-reserved_Lc_Z)
-        can_B_win = not is_A_winning_state(Lt_Z, Lc_Z-delta, K-1)  # reduce the number of 2 in Lt_prime as possible
-        if can_B_win:
-            return True
-    return False
+        return not is_A_winning_state(Lt_Z-delta, Lc_Z, K-1)  # reduce the number of 2 in Lt_prime as possible
+    if K-len(cs) == 0:
+        return False
+    group = defaultdict(set)
+    for j in cs:
+        group[interval_js[j][2], interval_js[j][1]].add(interval_js[j][0])
+    reserved_Lc_Z, delta = 0, 0
+    for (_, l), ps in group.iteritems():
+        count = l//2
+        reserved_Lc_Z += count
+        if l%2 == 0:
+            if len(ps) == l:
+                count = 0
+        else:
+            for p in ps:
+                if p%2 == 0:
+                    count -= 1
+        if count:
+            delta = 1
+            break
+    if not delta:
+        delta = min(1, Lc_Z-reserved_Lc_Z)
+    return not is_A_winning_state(Lt_Z, Lc_Z-delta, K-1)  # reduce the number of 2 in Lt_prime as possible
 
 def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
     if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
