@@ -327,7 +327,6 @@ def is_B_winning_state(tiles, cells, Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, L
     if (((j-1 >= 0 and cells[j-1] == -2) or (j+1 < len(cells) and cells[j+1] == -2)) and
         ((i-1 >= 0 and tiles[i-1] == -2) or (i+1 < len(tiles) and tiles[i+1] == -2))):
         return False  # A would win immediately
-    tiles[i], cells[j] = j, i
     interval_i = query_interval(Lt_intervals, i)
     interval_j = query_interval(Lc_intervals, j)
     Lt_Z_delta = update_L(Lt, interval_i, 1)
@@ -337,7 +336,6 @@ def is_B_winning_state(tiles, cells, Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, L
                      (K%2 and 2*((Lt_Z+Lt_Z_delta) + (Lc_Z+Lc_Z_delta)) > K))
     update_L(Lc, interval_j, -1)
     update_L(Lt, interval_i, -1)
-    tiles[i], cells[j] = -2, -2
     return can_B_win
 
 def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K):  # Time: O(logN)
