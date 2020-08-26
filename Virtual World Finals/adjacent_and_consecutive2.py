@@ -186,17 +186,25 @@ def try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i,
         delta = min(1, Lc_Z-reserved_Lc_Z)
     return not is_A_winning_state(Lt_Z, Lc_Z-delta, K-1)  # reduce the number of 2 in Lt_prime as possible
 
-def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
-    if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
-        Lt, Lc = Lc, Lt
-        Lt_Z, Lc_Z = Lc_Z, Lt_Z
+	def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
     if K == 0:
         return True
-    if count_of_3_or_up(Lc) > 1:
-        return False
-    if count_of_3_or_up(Lc) == 1:
+    if count_of_3_or_up(Lt) and count_of_3_or_up(Lc):
+        # split the only 3 or up and put the pivot i into one of valid Lc[1]
+        max_key = max(k for k, v in Lt.iteritems() if v != 0)
+        if Lt[max_key] == 1 and 1 in Lc:
+            if max_key == 3:
+                return not is_A_winning_state(Lt_Z-1, Lc_Z, K-1)
+            if max_key == 4:
+                return not is_A_winning_state(Lt_Z-1, Lc_Z, K-1)
+            if max_key == 5:
+                return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
+            return False
+        # put the pivot i of which Lt length is 1 and put it into the valid cells of the only Lc with length 3 or up
+        if 1 not in Lt or count_of_3_or_up(Lc) > 1:
+            return False
         max_key = max(k for k, v in Lc.iteritems() if v != 0)
-        if Lc[max_key] > 1 or 1 not in Lt:
+        if Lc[max_key] > 1:
             return False
         if max_key == 3:  # split 3 into (0, 2) or (1, 1), and put the pivot i into one of Lt_1, using (1, 1) is enough
             return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+0, K-1)
