@@ -188,6 +188,7 @@ def find_cell_to_fill(active_cells):  # Time: O(1)
     return stats, ts, cs
 
 def try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs):  # Time: O(logN)
+    assert(len(cs) <= 4)
     interval_i = query_interval(Lt_intervals, i)
     interval_js = {j:query_interval(Lc_intervals, j) for j in cs}
     if count_of_3_or_up(Lt) and count_of_3_or_up(Lc):
@@ -248,7 +249,7 @@ def try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z,
     if 2*Lt_Z == 2*Lc_Z == K:  # both Lt and Lc prime are all 2s
         return False
     if interval_i[1] > 1:
-        if 1 not in Lc or (Lc[1]-sum(interval_js[j][1] == 1 for j in cs) == 0):  # len(cs) <= 4
+        if 1 not in Lc or (Lc[1]-sum(interval_js[j][1] == 1 for j in cs) == 0):
             return False
         delta = int(interval_i[1]%2 == 0 or interval_i[0]%2 == 0)  # any pos of even length or even pos of odd length
         can_B_win = not is_A_winning_state(Lt_Z-delta, Lc_Z, K-1)  # reduce the number of 2 in Lt_prime as possible
