@@ -187,7 +187,7 @@ def find_cell_to_fill(active_cells):  # Time: O(1)
             del stats[max_l]
     return stats, ts, cs
 
-def B_try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs):  # Time: O(logN)
+def B_try_to_avoid_1_or_2_moves_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs):  # Time: O(logN)
     assert(len(cs) <= 4)
     interval_i = query_interval(Lt_intervals, i)
     interval_js = {j:query_interval(Lc_intervals, j) for j in cs}
@@ -216,34 +216,18 @@ def B_try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_
             if interval_js[j][1] == max_key:
                 group[interval_js[j][1]].add(interval_js[j][0])
         if max_key == 3:  # split 3 into (0, 2) or (1, 1), and put the pivot i into one of Lt_1
-            if max_key not in group or 1 not in group[max_key]:
-                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z, K-1)
-                if can_B_win:
-                    return True
             if max_key not in group or 2 not in group[max_key]:
-                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
-                if can_B_win:
-                    return True
-            if max_key not in group or 3 not in group[max_key]:
-                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z, K-1)
-                if can_B_win:
-                    return True
+                return not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
+            elif max_key not in group or 1 not in group[max_key] or 3 not in group[max_key]:
+                return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
             return False
         if max_key == 4:  # split 4 into (1, 2), and put the pivot i into one of Lt_1
-            if max_key not in group or 2 not in group[max_key]:
-                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
-                if can_B_win:
-                    return True
-            if max_key not in group or 3 not in group[max_key]:
-                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
-                if can_B_win:
-                    return True
+            if max_key not in group or 2 not in group[max_key]or 3 not in group[max_key]:
+                return not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
             return False
         if max_key == 5:  # split 5 into (2, 2), and put the pivot i into one of Lt_1
             if max_key not in group or 3 not in group[max_key]:
-                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z, K-1)
-                if can_B_win:
-                    return True
+                return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
             return False
         return False
     if 2*Lt_Z == 2*Lc_Z == K:  # both Lt and Lc prime are all 2s
@@ -277,8 +261,6 @@ def B_try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_
     return not is_A_winning_state(Lt_Z, Lc_Z-delta, K-1)  # reduce the number of 2 in Lt_prime as possible
 
 def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
-    if K == 0:
-        return True
     if count_of_3_or_up(Lt) and count_of_3_or_up(Lc):
         # split the only 3 or up and put the pivot i into one of valid Lc[1]
         max_key = max(k for k, v in Lt.iteritems() if v != 0)
@@ -297,11 +279,11 @@ def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
         if Lc[max_key] > 1:
             return False
         if max_key == 3:  # split 3 into (0, 2) or (1, 1), and put the pivot i into one of Lt_1, using (1, 1) is enough
-            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+0, K-1)
+            return not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
         if max_key == 4:  # split 4 into (1, 2), and put the pivot i into one of Lt_1
-            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+1, K-1)
+            return not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
         if max_key == 5:  # split 5 into (2, 2), and put the pivot i into one of Lt_1
-            return not is_A_winning_state(Lt_Z, Lc_Z-max_key//2+2, K-1)
+            return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
         return False
     if 2*Lt_Z == 2*Lc_Z == K:  # both Lt and Lc prime are all 2s
         return False
@@ -347,26 +329,23 @@ def is_B_winning_state(tiles, cells, Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, L
     return can_B_win
 
 def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K):  # Time: O(logN)
+    if K == 0:
+        return True
     if active_tiles:  # try to avoid A win immediately
         if len(active_tiles) == 1:  # one active tile to one or up active cells
             i, cs = next(active_tiles.iteritems())
-            can_B_win = B_try_to_avoid_immediately_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs)  # Time: O(logN)
+            can_B_win = B_try_to_avoid_1_or_2_moves_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K, i, cs)  # Time: O(logN)
             if can_B_win:
                 return True
             if len(cs) == 1:
                 j = next(iter(cs))
                 ts = active_cells[j]
-                can_B_win = B_try_to_avoid_immediately_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
-                if can_B_win:
-                    return True
+                return B_try_to_avoid_1_or_2_moves_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
             return False
         if len(active_cells) == 1:  # two or up active tiles to one active cells
             j, ts = next(active_cells.iteritems())
             assert(len(ts) != 1)  # len(ts) == 1 is covered by the previous checks
-            can_B_win = B_try_to_avoid_immediately_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
-            if can_B_win:
-                return True
-            return False
+            return B_try_to_avoid_1_or_2_moves_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
         stats, ts, cs = find_cell_to_fill(active_cells)
         if cs and len(stats) == 1 and 1 in stats and len(stats[1]) == 1:  # one tile with one or up cells, the other is one or up tiles with one cell
             new_ts, new_cs = next(stats[1].iteritems())
@@ -376,9 +355,7 @@ def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_intervals, Lt_
                 return True
             if len(ts) == 1 and len(new_cs) == 1:
                 i, j = next(iter(ts)), next(iter(new_cs))
-                can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K-1, i, j)
-                if can_B_win:
-                    return True
+                return is_B_winning_state(tiles, cells, Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc_Z, K-1, i, j)
             return False
         return False
     return B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K)
@@ -418,6 +395,7 @@ def adjacent_and_consecutive():
             if prev and curr:
                 result[i%2] += 1
         prev = curr
+    assert(result[0] >= result[1])
     return "%s %s" % tuple(result)
 
 for case in xrange(input()):
