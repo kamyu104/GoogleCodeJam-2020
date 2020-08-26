@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Virtual World Finals - Problem B. Adjacent and Consecutive
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce
 #
-# Time:  O(N^2)
+# Time:  O(N^2), could be improved to O(NlogN) by using map or skiplist
 # Space: O(N)
 #
 
@@ -56,7 +56,7 @@ def compress_state(arr):  # Time: O(N)
         if switch:
             switch = False
             curr += 1
-        lookup[i] = (rank[i], counts[curr])
+        lookup[i] = (rank[i], counts[curr], curr)
     return counter, lookup
 
 def count_of_3_or_up(counter):  # Time: O(1)
@@ -98,6 +98,99 @@ def find_cell_to_fill(active_cells):  # Time: O(1)
         if not stats[max_l]:
             del stats[max_l]
     return stats, ts, cs
+
+def try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, cs):  # Time: O(1)
+    if count_of_3_or_up(Lt) and count_of_3_or_up(Lc):
+        # split the only 3 or up of Lt by i and put i into one of valid Lc[1]
+        max_key = max(k for k, v in Lt.iteritems() if v != 0)
+        if Lt[max_key] == 1 and Lt_lookup[i][1] == max_key and 1 in Lc and Lc[1]-sum(Lc_lookup[j][1] == 1 for j in cs) > 0:
+            if max_key == 3:
+                if Lt_lookup[i][0] in (1, 3):
+                    return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
+            if max_key == 4:
+                if Lt_lookup[i][0] in (2, 3):
+                    return not is_A_winning_state(Lt_Z-1, Lc_Z, K-1)
+            if max_key == 5:
+                if Lt_lookup[i][0] == 3:
+                    return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
+            return False
+        # put i of which Lt length is 1 and put it into the valid cells of the only Lc with length 3 or up
+        if Lt_lookup[i][1] > 1 or count_of_3_or_up(Lc) > 1:
+            return False
+        max_key = max(k for k, v in Lc.iteritems() if v != 0)
+        if Lc[max_key] > 1:
+            return False
+        group = defaultdict(set)
+        for j in cs:
+            if Lc_lookup[j][1] == max_key:
+                group[Lc_lookup[j][1]].add(Lc_lookup[j][0])
+        if max_key == 3:  # split 3 into (0, 2) or (1, 1), and put the pivot i into one of Lt_1
+            if max_key not in group or 1 not in group[max_key]:
+                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z, K-1)
+                if can_B_win:
+                    return True
+            if max_key not in group or 2 not in group[max_key]:
+                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
+                if can_B_win:
+                    return True
+            if max_key not in group or 3 not in group[max_key]:
+                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z, K-1)
+                if can_B_win:
+                    return True
+            return False
+        if max_key == 4:  # split 4 into (1, 2), and put the pivot i into one of Lt_1
+            if max_key not in group or 2 not in group[max_key]:
+                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
+                if can_B_win:
+                    return True
+            if max_key not in group or 3 not in group[max_key]:
+                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
+                if can_B_win:
+                    return True
+            return False
+        if max_key == 5:  # split 5 into (2, 2), and put the pivot i into one of Lt_1
+            if max_key not in group or 3 not in group[max_key]:
+                can_B_win = not is_A_winning_state(Lt_Z, Lc_Z, K-1)
+                if can_B_win:
+                    return True
+            return False
+        return False
+    if 2*Lt_Z == 2*Lc_Z == K:  # both Lt and Lc prime are all 2s
+        return False
+    assert(i in Lt_lookup)
+    if Lt_lookup[i][1] > 1:
+        if 1 not in Lc or (Lc[1]-sum(Lc_lookup[j][1] == 1 for j in cs) == 0):  # len(cs) <= 4
+            return False
+        delta = int(Lt_lookup[i][1]%2 == 0 or Lt_lookup[i][0]%2 == 0)  # any pos of even length or even pos of odd length
+        can_B_win = not is_A_winning_state(Lt_Z-delta, Lc_Z, K-1)  # reduce the number of 2 in Lt_prime as possible
+        if can_B_win:
+            return True
+    if Lt_lookup[i][1] == 1:
+        if K-len(cs) == 0:
+            return False
+        group = defaultdict(set)
+        for j in cs:
+            group[Lc_lookup[j][2], Lc_lookup[j][1]].add(Lc_lookup[j][0])
+        reserved_Lc_Z, delta = 0, 0
+        for (_, l), ps in group.iteritems():
+            count = l//2
+            reserved_Lc_Z += count
+            if l%2 == 0:
+                if len(ps) == l:
+                    count = 0
+            else:
+                for p in ps:
+                    if p%2 == 0:
+                        count -= 1
+            if count:
+                delta = 1
+                break
+        if not delta:
+            delta = min(1, Lc_Z-reserved_Lc_Z)
+        can_B_win = not is_A_winning_state(Lt_Z, Lc_Z-delta, K-1)  # reduce the number of 2 in Lt_prime as possible
+        if can_B_win:
+            return True
+    return False
 
 def B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K):  # Time: O(1)
     if count_of_3_or_up(Lt) < count_of_3_or_up(Lc):
@@ -161,31 +254,27 @@ def is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K
     tiles[i], cells[j] = -2, -2
     return can_B_win
 
-def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K):  # Time: O(N)
+def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K):  # Time: O(1)
     if active_tiles:  # try to avoid A win immediately
         if len(active_tiles) == 1:  # one active tile to one or up active cells
             i, cs = next(active_tiles.iteritems())
-            candidates = [c for c, x in enumerate(cells) if x == -2 and c not in cs]
-            for j in candidates:  # try to put i to the places other than s
-                can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K-1, i, j)
-                if can_B_win:
-                    return can_B_win
+            can_B_win = try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i, cs)
+            if can_B_win:
+                return True
             if len(cs) == 1:
                 candidates = [t for t, x in enumerate(tiles) if x == -2 and t != i]
                 j = next(iter(cs))
-                for i in candidates:  # try to put any other than i to the places s (only j)
-                    can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K-1, i, j)
-                    if can_B_win:
-                        return can_B_win
+                ts = active_cells[j]
+                can_B_win = try_to_avoid_immediately_win(Lc, Lc_lookup, Lc_Z, Lt, Lt_lookup, Lt_Z, K, j, ts)
+                if can_B_win:
+                    return True
             return False
         if len(active_cells) == 1:  # two or up active tiles to one active cells
             j, ts = next(active_cells.iteritems())
             assert(len(ts) != 1)  # len(ts) == 1 is covered by the previous checks
-            candidates = [t for t, x in enumerate(tiles) if x == -2 and t not in ts]
-            for i in candidates:  # try to put any other than i to the places s (only j)
-                can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K-1, i, j)
-                if can_B_win:
-                    return can_B_win
+            can_B_win = try_to_avoid_immediately_win(Lc, Lc_lookup, Lc_Z, Lt, Lt_lookup, Lt_Z, K, j, ts)
+            if can_B_win:
+                return True
             return False
         stats, ts, cs = find_cell_to_fill(active_cells)
         if cs and len(stats) == 1 and 1 in stats and len(stats[1]) == 1:  # one tile with one or up cells, the other is one or up tiles with one cell
@@ -193,12 +282,12 @@ def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_lookup, Lt_Z, 
             i, j = next(iter(new_ts)), next(iter(cs))
             can_B_win = (i not in ts) and is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K-1, i, j)
             if can_B_win:
-                return can_B_win
+                return True
             if len(ts) == 1 and len(new_cs) == 1:
                 i, j = next(iter(ts)), next(iter(new_cs))
                 can_B_win = is_B_winning_state(tiles, cells, Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K-1, i, j)
                 if can_B_win:
-                    return can_B_win
+                    return True
             return False
         return False
     return B_try_to_avoid_2_moves_win(Lt, Lt_Z, Lc, Lc_Z, K)
@@ -220,8 +309,8 @@ def adjacent_and_consecutive():
         Lc_Z += update_L(Lc, Lc_lookup[C], 1)
         tiles[M], cells[C] = C, M
         update_immediately_win(tiles, cells, M, C, active_tiles, active_cells)
-        _, Lt_lookup = compress_state(tiles)
-        _, Lc_lookup = compress_state(cells)
+        _, Lt_lookup = compress_state(tiles)  # Time: O(N), could be improved to O(logN) by map or skiplist
+        _, Lc_lookup = compress_state(cells)  # Time: O(N), could be improved to O(logN) by map or skiplist
         K -= 1
         if not A_already_won:
             A_already_won = (C-1 >= 0 and abs(M-cells[C-1]) == 1) or (C+1 < len(cells) and abs(M-cells[C+1]) == 1)
