@@ -141,7 +141,6 @@ def B_try_to_avoid_1_or_2_moves_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K,
         return False
     if 2*Lt_Z == 2*Lc_Z == K:  # both Lt and Lc prime are all 2s
         return False
-    assert(i in Lt_lookup)
     if Lt_lookup[i][1] > 1:
         if 1 not in Lc or (Lc[1]-sum(Lc_lookup[j][1] == 1 for j in cs) == 0):  # len(cs) <= 4
             return False
