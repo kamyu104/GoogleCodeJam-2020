@@ -222,7 +222,7 @@ def B_try_to_avoid_1_or_2_moves_win(Lt, Lt_intervals, Lt_Z, Lc, Lc_intervals, Lc
                 return not is_A_winning_state(Lt_Z, Lc_Z, K-1)
             return False
         if max_key == 4:  # split 4 into (1, 2), and put the pivot i into one of Lt_1
-            if max_key not in group or 2 not in group[max_key]or 3 not in group[max_key]:
+            if max_key not in group or 2 not in group[max_key] or 3 not in group[max_key]:
                 return not is_A_winning_state(Lt_Z, Lc_Z-1, K-1)
             return False
         if max_key == 5:  # split 5 into (2, 2), and put the pivot i into one of Lt_1
