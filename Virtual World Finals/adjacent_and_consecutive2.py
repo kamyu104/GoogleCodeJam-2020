@@ -182,7 +182,7 @@ def try_to_avoid_immediately_win(Lt, Lt_lookup, Lt_Z, Lc, Lc_lookup, Lc_Z, K, i,
         if count:
             delta = 1
             break
-    if not delta:
+    else:
         delta = min(1, Lc_Z-reserved_Lc_Z)
     return not is_A_winning_state(Lt_Z, Lc_Z-delta, K-1)  # reduce the number of 2 in Lt_prime as possible
 
