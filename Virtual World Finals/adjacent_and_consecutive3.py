@@ -348,7 +348,6 @@ def is_B_winning(tiles, cells, active_tiles, active_cells, Lt, Lt_intervals, Lt_
             if can_B_win:
                 return True
             if len(cs) == 1:
-                candidates = [t for t, x in enumerate(tiles) if x == -2 and t != i]
                 j = next(iter(cs))
                 ts = active_cells[j]
                 can_B_win = try_to_avoid_immediately_win(Lc, Lc_intervals, Lc_Z, Lt, Lt_intervals, Lt_Z, K, j, ts)  # Time: O(logN)
