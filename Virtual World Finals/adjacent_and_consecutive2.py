@@ -9,7 +9,7 @@
 
 from collections import defaultdict, Counter
 
-def update_immediately_win(tiles, cells, M, C, active_tiles, active_cells):
+def update_immediately_win(tiles, cells, M, C, active_tiles, active_cells):  # Time: O(1)
     if M in active_tiles:
         for c in active_tiles[M]:
             active_cells[c].remove(M)
