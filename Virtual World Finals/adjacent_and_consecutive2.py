@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Virtual World Finals - Problem B. Adjacent and Consecutive
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ff31/00000000003b53ce
 #
-# Time:  O(N^2), could be improved to O(NlogN) by using map or skiplist
+# Time:  O(N^2), could be improved to O(NlogN) by using ordered set or skip list
 # Space: O(N)
 #
 
@@ -282,8 +282,8 @@ def adjacent_and_consecutive():
         Lc_Z += update_L(Lc, Lc_lookup[C], 1)
         tiles[M], cells[C] = C, M
         update_immediately_win(tiles, cells, M, C, active_tiles, active_cells)
-        _, Lt_lookup = compress_state(tiles)  # Time: O(N), could be improved to O(logN) by map or skiplist
-        _, Lc_lookup = compress_state(cells)  # Time: O(N), could be improved to O(logN) by map or skiplist
+        _, Lt_lookup = compress_state(tiles)  # Time: O(N), could be improved to O(logN) by ordered set or skip list
+        _, Lc_lookup = compress_state(cells)  # Time: O(N), could be improved to O(logN) by ordered set or skip list
         K -= 1
         if not A_already_won:
             A_already_won = (C-1 >= 0 and abs(M-cells[C-1]) == 1) or (C+1 < len(cells) and abs(M-cells[C+1]) == 1)
