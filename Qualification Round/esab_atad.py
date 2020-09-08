@@ -15,9 +15,6 @@ from sys import stdout
 def flip(arr):
   return [x^1 for x in arr]
 
-def reverse(arr):
-  return arr[::-1]
-
 def query(i, count):
     print i+1 if i is not None else 1
     stdout.flush()
@@ -39,7 +36,7 @@ def esab_atad():
             if flip_i is not None and (result[flip_i]^flip_res):
                 result = flip(result)
             if reverse_i is not None and (result[reverse_i]^reverse_res):
-                result = reverse(result)
+                result.reverse()
         result[i], count = query(i, count)
         result[B-i-1], count = query(B-i-1, count)
         if result[i] == result[B-i-1]:
