@@ -3,8 +3,8 @@
 # Google Code Jam 2020 Qualification Round - Problem D. ESAb ATAd
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/0000000000209a9e
 #
-# Time:  O(B^2/4),
-#        query times: B + (((B-10) + (10-2)-1)/(10-2)) * 2, i.e. 124 queries for B = 100
+# Time:  O(B^2),
+#        query times: B + ceil((B-10)/(10-2)) * 2 = B + (((B-10) + (10-2)-1)//(10-2)) * 2, i.e. 124 queries for B = 100
 # Space: O(B)
 #
 # Usage: python interactive_runner.py python local_testing_tool.py 2 -- python esab_atad.py
