@@ -17,7 +17,7 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 |A| [Vestigium](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/000000000020993c)| [Python](./Qualification%20Round/vestigium.py)| _O(N^2)_ | _O(N)_ | Easy | | Math |
 |B| [Nesting Depth](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/0000000000209a9f)| [Python](./Qualification%20Round/nesting_depth.py)| _O(N)_ | _O(1)_ | Easy | | String |
 |C| [Parenting Partnering Returns](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/000000000020bdf9)| [Python](./Qualification%20Round/parenting_partnering_returns.py)| _O(NlogN)_ | _O(1)_ | Easy | | Greedy |
-|D| [ESAb ATAd](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/0000000000209a9e)| [Python](./Qualification%20Round/esab_atad.py) |  _O(B^2/4)_ | _O(B)_ | Medium | | Bit Manipulation |
+|D| [ESAb ATAd](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/0000000000209a9e)| [Python](./Qualification%20Round/esab_atad.py) |  _O(B^2)_ | _O(B)_ | Medium | | Bit Manipulation |
 |E| [Indicium](https://codingcompetitions.withgoogle.com/codejam/round/000000000019fd27/0000000000209aa0)| [Python](./Qualification%20Round/indicium.py) |  _O(N^3 * sqrt(N))_ | _O(N)_ | Hard | | Bipartite Matching, Greedy |
 
 ## Round 1A
