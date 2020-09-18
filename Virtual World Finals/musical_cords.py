@@ -12,26 +12,30 @@ from functools import partial
 from random import randint
 
 def nth_element(nums, n, compare=lambda a, b: a < b):
-    def partition_around_pivot(left, right, pivot_idx, nums, compare):
-        new_pivot_idx = left
-        nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
-        for i in xrange(left, right):
-            if compare(nums[i], nums[right]):
-                nums[i], nums[new_pivot_idx] = nums[new_pivot_idx], nums[i]
-                new_pivot_idx += 1
-        nums[right], nums[new_pivot_idx] = nums[new_pivot_idx], nums[right]
-        return new_pivot_idx
+    def tri_partition(nums, left, right, target, compare):
+        mid = left
+        while mid <= right:
+            if nums[mid] == target:
+                mid += 1
+            elif compare(nums[mid], target):
+                nums[left], nums[mid] = nums[mid], nums[left]
+                left += 1
+                mid += 1
+            else:
+                nums[mid], nums[right] = nums[right], nums[mid]
+                right -= 1
+        return left, right
 
-    left, right = 0, len(nums) - 1
+    left, right = 0, len(nums)-1
     while left <= right:
         pivot_idx = randint(left, right)
-        new_pivot_idx = partition_around_pivot(left, right, pivot_idx, nums, compare)
-        if new_pivot_idx == n:
+        pivot_left, pivot_right = tri_partition(nums, left, right, nums[pivot_idx], compare)
+        if pivot_left <= n <= pivot_right:
             return
-        elif new_pivot_idx > n:
-            right = new_pivot_idx - 1
-        else:  # new_pivot_idx < n
-            left = new_pivot_idx + 1
+        elif pivot_left > n:
+            right = pivot_left-1
+        else:  # pivot_right < n.
+            left = pivot_right+1
 
 def binary_search(left, right, check_fn):
     while left <= right:
@@ -84,10 +88,10 @@ def musical_cords():
                 max_pair[i%N] = j%N
     pairs = {unordered_pair(i, j):f(R, D, L, i, j)+L[i] for i, j in enumerate(max_pair) if j != -1}  # Time: O(N)
     value_pairs = [(v, pair) for pair, v in pairs.iteritems()]
-    nth_element(value_pairs, K, compare=lambda a, b: a > b)  # Time: O(N) on average
+    nth_element(value_pairs, K-1, compare=lambda a, b: a > b)  # Time: O(N) on average
     possible_pairs = {unordered_pair(i, j):f(R, D, L, i, j)+L[i] for _, pair in value_pairs[:K] for i in pair for j in xrange(N) if j != i}  # Time: O(N * K)
     result = possible_pairs.values()
-    nth_element(result, K, compare=lambda a, b: a > b)  # Time: O(N * K) on average
+    nth_element(result, K-1, compare=lambda a, b: a > b)  # Time: O(N * K) on average
     return " ".join(map(lambda x: "%.10f"%x, sorted(result[:K], reverse=True)))  # Time: O(KlogK)
 
 NANODEGREE_180 = 180*10**9
