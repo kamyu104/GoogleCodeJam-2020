@@ -55,6 +55,8 @@ class TreeInfos(object):  # Time: O(NlogN), Space: O(NlogN), N is the number of 
         return self.L[a] <= self.L[b] <= self.R[b] <= self.R[a]
 
     def lca(self, a, b):
+        if self.D[a] > self.D[b]:
+            a, b = b, a
         if self.is_ancestor(a, b):
             return a
         for i in reversed(xrange(len(self.P[a]))):  # O(logN)
