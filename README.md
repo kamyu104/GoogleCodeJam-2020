@@ -10,7 +10,8 @@ Python solutions of Google Code Jam 2020. Solution begins with `*` means it will
 * [Round 2](https://github.com/kamyu104/GoogleCodeJam-2020#round-2)
 * [Round 3](https://github.com/kamyu104/GoogleCodeJam-2020#round-3)
 * [Virtual World Finals](https://github.com/kamyu104/GoogleCodeJam-2020#virtual-world-finals)
-   
+* [Code Jam 2021](https://github.com/kamyu104/GoogleCodeJam-2021)
+ 
 ## Qualification Round
 | # | Title | Solution | Time | Space | Difficulty | Tag | Note |
 |---| ----- | -------- | ---- | ----- | ---------- | --- | ---- |
