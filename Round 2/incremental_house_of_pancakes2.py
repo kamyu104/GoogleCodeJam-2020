@@ -3,7 +3,7 @@
 # Google Code Jam 2020 Round 2 - Problem A. Incremental House of Pancakes
 # https://codingcompetitions.withgoogle.com/codejam/round/000000000019ffb9/00000000003384ea
 #
-# Time:  O(log(L + R))
+# Time:  O(1)
 # Space: O(1)
 #
 
